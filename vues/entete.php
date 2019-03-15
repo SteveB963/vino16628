@@ -29,29 +29,45 @@
 	<body >
 		<header>
 			<div id="entete1">
-				<a href="?requete=accueil"><img id="logo" src="./images/logo_blanc.png"></a>
-				<h1>Vino</h1>
+				<div>
+					<a href="?requete=accueil"><img id="logo" src="./images/logo_blanc.png"></a>
+				</div>
+				<div id="titreEntete">
+					<h1>Vino</h1>
+				</div>
 				<div id="liensSociaux">
 					<a href="#"><i class="fab fa-instagram"></i></a>
 					<a href="#"><i class="fab fa-facebook-square"></i></a>
 					<a href="#"><i class="fab fa-twitter-square"></i></a>
 					<a href="#"><i class="fab fa-pinterest-square"></i></a>
 				</div>
+
 			</div>
 			<div id="imageEntete">
 				
 			</div>
+
+			<input type="checkbox" id="burger">
+			<i class="fas fa-bars"></i>
+			<i class="fas fa-times"></i>
+
 			<nav id="mainNav">
 				<ul>
 				<!--
 					<li><a href="?requete=accueil">Mon cellier</a></li>
-				-->
-					<li><a href="?requete=ajouterNouvelleBouteilleCellier">Ajouter une bouteille au cellier</a></li>
 				
+					<li><a href="?requete=ajouterNouvelleBouteilleCellier">Ajouter une bouteille au cellier</a></li>
+				-->
 				<li><a href="?requete=accueil">Accueil</a></li>
 				<li><a href="#">Vins</a></li>
 				<li><a href="?requete=afficheCellier">Mes Celliers</a></li>
 				<li><a href="#">Mon Compte</a></li>
+				<div id="liensSociauxMobile">
+					<a href="#"><i class="fab fa-instagram"></i></a>
+					<a href="#"><i class="fab fa-facebook-square"></i></a>
+					<a href="#"><i class="fab fa-twitter-square"></i></a>
+					<a href="#"><i class="fab fa-pinterest-square"></i></a>
+				</div>
 				</ul>
 			</nav>
 		</header>
