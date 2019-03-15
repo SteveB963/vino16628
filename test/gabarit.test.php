@@ -96,7 +96,24 @@
 				echo $e->getMessage();
 			}
 			?>
-			
+            
+            
+            <h2>SAQ::getProduits()</h2>
+			<h3></h3>
+			<?php
+
+			$saq = new SAQ();
+			try{
+                echo "test";
+				$saq -> getProduits(5,0);
+			}
+			catch(Exception $e)
+			{
+                echo "erreur";
+				echo $e->getMessage();
+			}
+			?>
+            
 		</div>
 		<div id="footer">
 

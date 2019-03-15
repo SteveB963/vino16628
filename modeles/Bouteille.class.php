@@ -11,7 +11,66 @@
  * 
  */
 class Bouteille extends Modele {
-	const TABLE = 'vino__bouteille';
+	const TABLE = 'bouteille';
+    
+    public function getBouteille($id)
+	{
+		$rows = Array();
+		$res = $this->_db->query('SELECT 
+                                    b.id_bouteille,
+                                    b.nom,
+                                    b.image,
+                                    b.prix,
+                                    b.format,
+                                    b.millesime,
+                                    b.non_liste,
+                                    b.code_saq,
+                                    b.url_saq,
+                                    t.type,
+                                    p.pays 
+                                    FROM '. self::TABLE . ' b 
+                                    JOIN bouteille_type t ON t.id_type = b.type
+                                    JOIN pays p ON p.id_pays = b.pays 
+                                    WHERE b.id_bouteille = ' . $id);
+		if($res->num_rows)
+		{
+            $row = $res->fetch_assoc();
+		}
+		
+		return $row;
+	}
+    
+    public function getPays()
+	{
+		$rows = Array();
+		$res = $this->_db->query('SELECT * FROM pays');
+		if($res->num_rows)
+		{
+            while($row = $res->fetch_assoc())
+			{
+				$rows[] = $row;
+			}
+		}
+		
+		return $rows;
+	}
+    
+    public function getType()
+	{
+		$rows = Array();
+		$res = $this->_db->query('SELECT * FROM bouteille_type');
+		if($res->num_rows)
+		{
+            while($row = $res->fetch_assoc())
+			{
+				$rows[] = $row;
+			}
+		}
+		
+		return $rows;
+	}
+    
+    
     
 	public function getListeBouteille()
 	{
@@ -29,32 +88,29 @@ class Bouteille extends Modele {
 		return $rows;
 	}
 	
-	public function getListeBouteilleCellier()
+	public function getListeBouteilleCellier() 
 	{
 		
 		$rows = Array();
 		$requete ='SELECT 
-						c.id as id_bouteille_cellier,
-						c.id_bouteille, 
-						c.date_achat, 
-						c.garde_jusqua, 
-						c.notes, 
-						c.prix, 
-						c.quantite,
-						c.millesime, 
-						b.id,
-						b.nom, 
-						b.type, 
-						b.image, 
-						b.code_saq, 
-						b.url_saq, 
-						b.pays, 
-						b.description,
-						t.type 
-						from vino__cellier c 
-						INNER JOIN vino__bouteille b ON c.id_bouteille = b.id
-						INNER JOIN vino__type t ON t.id = b.type
+                        c.*,
+                        b.nom,
+                        b.image,
+                        b.code_saq,
+                        b.prix,
+                        b.url_saq,
+                        b.format,
+                        b.millesime,
+                        b.non_liste,
+                        p.pays,
+                        t.type
+                        FROM cellier_contenu c
+                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
+                        JOIN pays p ON p.id_pays = b.pays
+                        JOIN bouteille_type t ON t.id_type = b.type
+                        WHERE c.id_cellier = 1
 						'; 
+        
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -162,12 +218,27 @@ class Bouteille extends Modele {
 		//TODO : Valider les données.
 			
 			
-		$requete = "UPDATE vino__cellier SET quantite = GREATEST(quantite + ". $nombre. ", 0) WHERE id = ". $id;
+		$requete = "UPDATE cellier_contenu SET quantite = GREATEST(quantite + ". $nombre. ", 0) WHERE id = ". $id;
 		//echo $requete;
         $res = $this->_db->query($requete);
         
 		return $res;
 	}
+    
+    public function obtenirQuantiteBouteilleCellier($id)
+	{
+		//TODO : Valider les données.
+			
+			
+		$requete1 = "SELECT quantite from cellier_contenu WHERE id = ". $id;
+		//echo $requete;
+		$res = $this->_db->query($requete1);
+		$row = $res->fetch_assoc();
+        
+		return $row;
+	}
+    
+    
 }
 
 

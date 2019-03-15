@@ -5,9 +5,9 @@
 html, body {
 	height: 100%;
 	margin: 0;
-	background-color: #E5E5E5;
-	
-	font-family: 'Roboto', 'RobotoDraft', sans-serif;
+	background-color: #3c3c40;
+	/*font-family: 'Roboto', 'RobotoDraft', sans-serif;*/
+	font-family: 'Hind', sans-serif;
 	font-size: 95%;
 	
 }
@@ -40,27 +40,380 @@ html, body {
 	
 }
 
-@media all and (max-width:640px)
-{
-	footer
-	{
-		display:none;
-	}
-	
-}
-
 footer
 {
-	position: fixed;;
-	bottom:0px;
+	/*bottom:0px;*/
 	width: 100%;
-	padding-top:3px;
 	text-align: center;
-	background-color:#FFFFFF;
+	background-color:#222224;
 }
-footer p
-{
-	display:inline;
-	padding-right:50px;
-	font-size : 10px;
+
+/********
+ * entete.php
+ ********/
+
+#entete1{
+	height: 100px;
+	background-color: #222224;
+	padding: 20px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	color: white;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: center;	
+}
+
+#entete1 #logo{
+	width: 100px;
+	height: 100px;
+}
+
+#entete1 h1{
+	font-size: 3em;
+	font-family: 'Libre Baskerville', serif;
+}
+
+#entete1 #liensSociaux a{
+	color: white;
+	font-size: 2.2em;
+	margin-left: 10px;
+}
+
+#imageEntete{
+	width: 100%;
+	height: 400px;
+	background-image:url("../images/barrel-black.jpg");
+	background-size: cover;
+	background-position: center;
+}
+
+/* Menu */
+
+#mainNav{
+	background-color: #222224;
+}
+
+#mainNav li a{
+	font-family: 'Libre Baskerville', serif;
+	font-size: 1.2em;
+	text-decoration: none;
+	color: white;
+	transition: 0.5s;
+}
+
+#mainNav li a:hover{
+	color: #730101;
+}
+
+#mainNav ul{
+	list-style: none;
+	width: 80%;
+	height: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.sticky{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10;
+}
+
+.sticky + .content{
+	padding-top: 610px;
+}
+
+/********
+ * Pied.php
+ ********/
+
+#footer1{
+	height: 500px;
+	background-image: url("../images/wine-black.jpg");
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	align-items: center;
+}
+
+#footer1 form{
+	width: 420px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#footer1 form label{
+	display: block;
+	font-size: 1.7em;
+	font-family: 'Libre Baskerville', serif;
+	color: #730101;
+	text-shadow: 1px 1px 2px white;
+}
+
+#footer1 form input{
+	width: 300px;
+	padding-left: 5px;
+}
+
+#footer2{
+	height: 30px;
+	color: white;
+}
+
+/********
+ * Accueil.php
+ ********/
+
+.accueil{
+	position: relative;
+	padding-bottom: 220px;
+}
+#divAccueil{
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.accueil .divBlanche{
+	background-color: white;
+	height: 400px;
+	width: 25%;
+	padding: 20px;
+	margin-top: 25px;
+	min-width: 240px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	box-shadow: 10px 15px 8px #42424270;
+	color: #730101;
+	text-shadow: 1px 1px 1px white;
+	background-size: cover;
+ 	background-position: center;
+ 	text-align: center;
+ 	z-index: 1;
+}
+/*
+@media all and (max-width:890px)
+ {
+ 	.accueil .divBlanche{
+ 		width: 40%;
+ 	}
+ }
+*/
+
+@media all and (max-width:860px)
+ {
+ 	.accueil .divBlanche{
+ 		width: 20%;
+ 		min-width: 200px;
+ 	}
+ }
+
+ @media all and (max-width:736px)
+ {
+ 	.accueil .divBlanche{
+ 		width: 80%;
+ 	}
+ }
+
+ .accueil .divBlanche:nth-child(1){
+ 	background-image: url("../images/cellier.png");	
+ }
+
+  .accueil .divBlanche:nth-child(2){
+ 	background-image: url("../images/boire.png");	
+ }
+
+  .accueil .divBlanche:nth-child(3){
+ 	background-image: url("../images/bac_vin.png");	
+ 	/*margin-bottom: 400px;*/
+ }
+
+.divRouge{
+	width: 100%;
+	height: 300px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background-color: #730101;
+	position: absolute;
+	bottom: 0px;
+	box-shadow: 0px -5px 7px #42424270 inset;
+}
+
+.divRouge a{
+	color: white;
+	text-decoration: none;
+}
+
+/********
+ * Cellier.php
+ ********/
+
+ .cellier{
+ 	display: flex;
+ 	flex-direction: row;
+ 	flex-wrap: wrap;
+ 	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: auto;
+	padding-right: auto;
+	padding-bottom: 20px;
+	padding-top: 20px;
+ }
+
+/* Ajustement du nombre de bouteille afficher selon les 
+	résolutions d'écran */
+ @media all and (max-width:1182px)
+ {
+ 	.bouteille{
+ 		width: 33%;
+ 	}
+ }
+
+ @media all and (max-width:991px)
+ {
+ 	.bouteille{
+ 		width: 50%;
+ 	}
+ }
+
+ @media all and (max-width:599px)
+ {
+ 	.bouteille{
+ 		width: 100%;
+ 	}
+ }
+
+@media all and (min-width:1182px)
+ {
+ 	 .bouteille{
+	 	width: 25%;
+	 }
+ }
+
+ .bouteille{
+ 	min-width: 233px;
+ 	padding-top: 10px;
+ 	padding-bottom: 10px;
+ }
+
+ .img, .description, .options{
+ 	width: 85%;
+ 	margin-left: auto;
+ 	margin-right: auto;
+ 	background-color: white;
+ 	padding: 10px;
+ }
+
+ .img img{
+ 	width: 100%;
+ }
+
+ .description{
+ 	display: flex;
+ 	flex-flow: column nowrap;
+ 	align-content: space-between; 
+ 	/*height: 210px;*/
+ }
+
+ .description .nom{
+ 	height: 45px;
+ 	font-weight: bold;
+ 	text-align: center;
+ 	margin: 0;
+ 	padding-bottom: 15px;
+ 	padding-top: 15px;
+ 	padding-left: 0px;
+ 	color: #730101;
+ 	font-family: 'Libre Baskerville', serif;
+ }
+
+ .description p{
+ 	margin-bottom: 5px;
+ 	margin-top: 5px;
+ 	padding-left: 10px;
+ }
+
+ .options{
+ 	display: flex;
+ 	justify-content: space-around;
+ 	padding: 10px;
+ }
+ .options button{
+ 	width: 32%;
+ 	min-width: 67px;
+ }
+
+
+/********
+ * Ajouter.php
+ ********/
+
+.ajouter{
+	width: 80%;
+	min-width: 400px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding: 20px;
+	padding-left: 50px;
+	background-color: white;
+}
+
+.ajouter h2{
+	color: #730101;
+}
+
+.ajouter > div > label{
+	border-bottom: 2px solid black;
+	padding-bottom: 1px;
+}
+
+.formAjout{
+	width: 60%;
+	margin-right: auto;
+	margin-left: auto;
+	display: flex;
+	flex-flow: column nowrap;
+	border-left: 2px solid #222224;
+	padding-left: 20px;
+}
+
+.ajouter input, textarea{
+	background-color: transparent;
+	border: none;
+	border-bottom: 2px solid black;
+	margin-bottom: 40px;
+}
+
+#labelNom{
+	margin-bottom: 40px;
+}
+
+.ajouter ::placeholder{
+	color: #222224;
+}
+
+.ajouter .hide{
+	display: none;
+}
+
+input:focus{
+	outline: none;
+	border-bottom: 1px solid #730101ba;
+	box-shadow: 0px 2px 2px #730101ba;
+}
+
+.ajouter button{
+	width: 200px;
 }

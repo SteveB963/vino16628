@@ -1,0 +1,25 @@
+/**
+ * @file Script contenant les fonctions relatives au style
+ * @author Alyson Métivier
+ * @version 0.1
+ * @update 2019-03-12
+ * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas *  d’utilisation commerciale 3.0 non transposé)
+ * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
+ *
+ */
+window.addEventListener("load", function(){
+  window.onscroll = function(){ addClass()};
+
+  var menu = document.getElementById("mainNav");
+
+  var sticky = menu.offsetTop;
+
+  function addClass(){
+    if(window.pageYOffset > sticky){
+      menu.classList.add("sticky");
+    }
+    else{
+      menu.classList.remove("sticky");
+    }
+  }
+});

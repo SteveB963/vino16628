@@ -9,16 +9,19 @@
  */
 
 // const BaseURL = "http://vino.jonathanmartel.info/";
-const BaseURL = document.baseURI;
-console.log(BaseURL);
 window.addEventListener('load', function() {
+    const BaseURL = document.baseURI;
+    console.log(BaseURL);
     console.log("load");
     document.querySelectorAll(".btnBoire").forEach(function(element){
-        console.log(element);
+        //console.log(element);
         element.addEventListener("click", function(evt){
+            console.log("click boire");
             let id = evt.target.parentElement.dataset.id;
             let requete = new Request(BaseURL+"index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
-
+            let quantite = document.querySelector("[data-quantite='" + id + "']")
+            console.log(quantite);
+            
             fetch(requete)
             .then(response => {
                 if (response.status === 200) {
@@ -29,6 +32,7 @@ window.addEventListener('load', function() {
               })
               .then(response => {
                 console.debug(response);
+                quantite.innerHTML = 'Quantité : '+ response.quantite;
               }).catch(error => {
                 console.error(error);
               });
@@ -37,11 +41,14 @@ window.addEventListener('load', function() {
     });
 
     document.querySelectorAll(".btnAjouter").forEach(function(element){
-        console.log(element);
         element.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
+            console.log("click ajouter");
 
+            let id = evt.target.parentElement.dataset.id;
+            let requete = new Request(BaseURL+"index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+            let quantite = document.querySelector("[data-quantite='" + id + "']")
+            console.log(quantite);
+            
             fetch(requete)
             .then(response => {
                 if (response.status === 200) {
@@ -52,6 +59,7 @@ window.addEventListener('load', function() {
               })
               .then(response => {
                 console.debug(response);
+                quantite.innerHTML = 'Quantité : '+ response.quantite;
               }).catch(error => {
                 console.error(error);
               });
@@ -59,8 +67,90 @@ window.addEventListener('load', function() {
 
     });
    
+    //bouton modifier
+    document.querySelectorAll(".btnModifier").forEach(function(element){
+        element.addEventListener("click", function(evt){
+            let id = evt.target.parentElement.dataset.id;
+            window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier&id=" + id;
+            /*
+            let id = evt.target.parentElement.dataset.id;
+            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+
+            fetch(requete)
+            .then(response => {
+                if (response.status === 200) {
+                  return response.json();
+                } else {
+                  throw new Error('Erreur');
+                }
+              })
+              .then(response => {
+                console.log(response);
+                window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier";
+              }).catch(error => {
+                console.error(error);
+              });
+              */
+        })
+
+    });
+    
+    //sauvegarde du formulaire
+    var sauver = document.querySelector("[name='sauver']");
+    if(sauver){
+        sauver.addEventListener("click", function(evt){
+            let id = evt.target.parentElement.dataset.id;
+
+            let bouteille = {
+                nom : document.querySelector("[name='nom']"),
+                image : document.querySelector("[name='image']"),
+                prix : document.querySelector("[name='prix']"),
+                format : document.querySelector("[name='format']"),
+                type : document.querySelector("[name='type']"),
+                pays : document.querySelector("[name='pays']"),
+                millesime : document.querySelector("[name='millesime']"),
+                codesaq : document.querySelector("[name='codesaq']"),
+                urlsaq : document.querySelector("[name='urlsaq']"),
+            };
+            /*
+            //contien les valeurs du formulaire
+            var param = {
+                "id_bouteille":bouteille.nom.dataset.id,
+                "date_achat":bouteille.date_achat.value,
+                "garde_jusqua":bouteille.garde_jusqua.value,
+                "notes":bouteille.date_achat.value,
+                "prix":bouteille.prix.value,
+                "quantite":bouteille.quantite.value,
+                "millesime":bouteille.millesime.value,
+              };
+              */
+            let id = evt.target.parentElement.dataset.id;
+            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+
+            fetch(requete)
+            .then(response => {
+                if (response.status === 200) {
+                  return response.json();
+                } else {
+                  throw new Error('Erreur');
+                }
+              })
+              .then(response => {
+                console.log(response);
+                window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier";
+              }).catch(error => {
+                console.error(error);
+              });
+
+        });
+    }
+
+    
+
+    
+    //autocomplete et ajout d'une bouteille
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
-    console.log(inputNomBouteille);
+    //console.log(inputNomBouteille);
     let liste = document.querySelector('.listeAutoComplete');
 
     if(inputNomBouteille){
