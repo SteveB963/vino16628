@@ -40,6 +40,7 @@ window.addEventListener('load', function() {
 
     });
 
+    //bouton ajouter, ajoute un bouteille dans le cellier
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
             console.log("click ajouter");

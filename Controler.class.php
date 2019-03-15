@@ -56,7 +56,7 @@ class Controler
 			$bte = new Bouteille();
             $data = $bte->getListeBouteilleCellier();
 			include("vues/entete.php");
-			include("vues/cellier.php");
+			include("vues/accueil.php");
 			include("vues/pied.php");
                   
 		}
