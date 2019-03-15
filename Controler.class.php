@@ -40,6 +40,9 @@ class Controler
 				case 'boireBouteilleCellier':
 					$this->boireBouteilleCellier();
 					break;
+                case 'uploadPage':
+                    $this->uploadPage();
+					break;
 				default:
 					$this->accueil();
 					break;
@@ -52,15 +55,27 @@ class Controler
          * ////////DOIT ÊTRE MODIFIER POUR POINTER VERS LA PAGE D'ACCEIL////////
          */
 		private function accueil()
-		{            
-			$bte = new Bouteille();
-            $data = $bte->getListeBouteilleCellier();
-			include("vues/entete.php");
-			include("vues/cellier.php");
-			include("vues/pied.php");
+		{  
+            $bte = new Bouteille();
+            include("vues/entete.php");
+            //$saq = new SAQ();
+            //$saq->getProduits(5,500);
+			$data = $bte->getListeBouteilleCellier(); 
+            include("vues/cellier.php");
+            include("vues/pied.php");
                   
 		}
-    
+    //affiche le page accueil apres choisir le trier
+    private function uploadPage()
+		{
+            $bte = new Bouteille();
+            include("vues/entete.php");
+            //var_dump($_GET['trierCellier']) ;
+            $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
+            include("vues/cellier.php");
+            include("vues/pied.php");
+            
+        }
         /**
          * Affiche la liste complète de l'inventaire des bouteilles listées
          *
@@ -114,7 +129,6 @@ class Controler
 			$body = json_decode(file_get_contents('php://input'));
 			if(!empty($body)){
 				$bte = new Bouteille();
-				
 				$resultat = $bte->ajouterBouteilleCellier($body);
 				echo json_encode($resultat);
 			}
@@ -136,7 +150,7 @@ class Controler
 		private function boireBouteilleCellier()
 		{
 			$body = json_decode(file_get_contents('php://input'));
-			
+			//var_dump($body);
 			$bte = new Bouteille();
             //retire une bouteille du cellier et récupère la nouvelle quantité
 			$resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);

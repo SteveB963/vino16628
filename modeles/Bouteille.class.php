@@ -22,6 +22,7 @@ class Bouteille extends Modele {
 	 */
     public function getBouteille($id)
 	{
+        
 		$rows = Array();
 		$res = $this->_db->query('SELECT 
                                     b.id_bouteille,
@@ -118,29 +119,56 @@ class Bouteille extends Modele {
 	 * @return Array $rows les informations de chaque bouteille dans le cellier7
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeBouteilleCellier() 
+	public function getListeBouteilleCellier($trier=0) 
 	{
 		
 		$rows = Array();
+        //choisr les list par trier
+        if(!empty($trier)){
 		$requete ='SELECT 
                         c.*,
-                        b.nom,
-                        b.image,
-                        b.code_saq,
-                        b.prix,
-                        b.url_saq,
-                        b.format,
-                        b.millesime,
-                        b.non_liste,
-                        p.pays,
-                        t.type
+                        b.id_bouteille AS id, 
+						CONCAT(FORMAT(b.prix, 2)," $") As prix, 
+						b.nom AS nom, 
+						b.image AS image, 
+						b.code_saq AS code_saq, 
+						b.url_saq, 
+						p.pays AS pays, 
+						b.millesime AS millesime ,
+                        CONCAT(b.format," ml") AS format,
+						t.type AS type 
                         FROM cellier_contenu c
-                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
+                        JOIN bouteille b ON id = c.id_bouteille 
                         JOIN pays p ON p.id_pays = b.pays
                         JOIN bouteille_type t ON t.id_type = b.type
                         WHERE c.id_cellier = 1
-						'; ///REMPLACER 1 PAR L'ID DU CELLIER
-        
+                        ORDER BY '.$trier.' ASC'
+						; ///REMPLACER 1 PAR L'ID DU CELLIER
+        }
+        //telecharger le data trier par nom
+        else
+         {
+            $requete ='SELECT 
+                        c.*,
+                        b.id_bouteille AS id, 
+						CONCAT(FORMAT(b.prix, 2)," $") As prix, 
+						b.nom AS nom, 
+						b.type, 
+						b.image AS image, 
+						b.code_saq AS code_saq, 
+						b.url_saq, 
+						p.pays AS pays, 
+						b.millesime AS millesime ,
+                        CONCAT(b.format," ml") AS format,
+						t.type AS type 
+                        FROM cellier_contenu c
+                        JOIN bouteille b ON id = c.id_bouteille 
+                        JOIN pays p ON p.id_pays = b.pays
+                        JOIN bouteille_type t ON t.id_type = b.type
+                        WHERE c.id_cellier = 1
+                        ORDER BY nom
+						';
+        }
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)

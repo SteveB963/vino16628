@@ -9,22 +9,22 @@
  */
 
 // const BaseURL = "http://vino.jonathanmartel.info/";
+const BaseURL = document.baseURI;
+console.log(BaseURL);
 window.addEventListener('load', function() {
-    const BaseURL = document.baseURI;
-    console.log(BaseURL);
-    console.log("load");
+    //console.log("load"); 
     document.querySelectorAll(".btnBoire").forEach(function(element){
         //console.log(element);
         element.addEventListener("click", function(evt){
-            console.log("click boire");
+            //console.log("click boire");
             let id = evt.target.parentElement.dataset.id;
             let requete = new Request(BaseURL+"index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
             let quantite = document.querySelector("[data-quantite='" + id + "']")
-            console.log(quantite);
+            //console.log(quantite);
             
             fetch(requete)
             .then(response => {
-                if (response.status === 200) {
+                if(response.status === 200) {
                   return response.json();
                 } else {
                   throw new Error('Erreur');
@@ -42,12 +42,13 @@ window.addEventListener('load', function() {
 
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
-            console.log("click ajouter");
-
+            //console.log("click ajouter");
             let id = evt.target.parentElement.dataset.id;
+             console.log(BaseURL);
             let requete = new Request(BaseURL+"index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+            //console.log(requete);
             let quantite = document.querySelector("[data-quantite='" + id + "']")
-            console.log(quantite);
+            //console.log(quantite);
             
             fetch(requete)
             .then(response => {
@@ -66,7 +67,16 @@ window.addEventListener('load', function() {
         })
 
     });
-   
+    //buttonn Trier 
+    let btnTrier = document.querySelector("[name='btnTrier']");
+        btnTrier.addEventListener("click", function(evt){
+          var trier=document.getElementById('formTrier').value;
+            //console.log(trier);
+            window.location.href = BaseURL + "index.php?requete=uploadPage&trierCellier=" + trier;
+        });
+            
+       
+  
     //bouton modifier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
@@ -124,7 +134,7 @@ window.addEventListener('load', function() {
                 "millesime":bouteille.millesime.value,
               };
               */
-            let id = evt.target.parentElement.dataset.id;
+            //let id = evt.target.parentElement.dataset.id;
             let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
 
             fetch(requete)
