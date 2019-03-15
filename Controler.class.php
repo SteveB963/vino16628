@@ -83,9 +83,11 @@ class Controler
 		private function listeBouteilleCellier()
 		{
 			$bte = new Bouteille();
-            $cellier = $bte->getListeBouteilleCellier();
+            $data = $bte->getListeBouteilleCellier();
+            include("vues/entete.php");
+			include("vues/cellier.php");
+			include("vues/pied.php");
             
-            echo json_encode($cellier);
                   
 		}
 		
@@ -164,26 +166,65 @@ class Controler
          * redirige vers le formulaire de modification d'une bouteille dans un cellier
          * ?? traitement du formulaire à venir .....
          *
-         *  ///////////////////////////////NON COMPLETÉ//////////////////////////////////
+         * 
          */
-        /*
         private function modifierBouteilleCellier()
 		{	
-			//$body = json_decode(file_get_contents('php://input'));
-            
-			$bte = new Bouteille();
-			$resultat['bouteille'] = $bte->getBouteille($_GET['id']);
-			$resultat['pays'] = $bte->getPays();
-			$resultat['type'] = $bte->getType();
-            
-            //echo json_encode($resultat);
-        
-            include("vues/entete.php");
-			include("vues/formBout.php");
-			include("vues/pied.php");
+            $body = json_decode(file_get_contents('php://input'));
+            if(!empty($body)){
+                $donnee = new Bouteille();
+                $resultat['bouteille'] = $bte->getBouteille($_GET['id']);
+                
+                $donnee = new Pays();
+                $resultat['pays'] = $bte->getTousPays();
+                
+                $donnee = new Type();
+                $resultat['type'] = $bte->getTousType();
+
+
+                include("vues/entete.php");
+                include("vues/formBout.php");
+                include("vues/pied.php");
+            }
+            else{
+                $bteAvant = new Bouteille();
+                $bteAvant = $bteAvant -> getBouteille($body -> id);
+                
+                $bteNouvelle = new Bouteille();
+                $bteNouvelle = $bteNouvelle -> getBouteille($body -> id);
+                
+                //vérifie si il y a eu des modifications
+                $duplication = true;
+                for(i = 0; i < count($bteAvant); i++){
+                    if($bteAvant[i] != $bteNouvelle[i]){
+                        $duplication = false;
+                    }
+                }
+                
+                if(!$duplication){
+                    //si bouteille est liste
+                    if(body -> non_liste == 0){
+                        //ajoute nouvelle bouteille non-liste
+                        $bteAjoute = new Bouteille();
+                        $resultat = $bteAjoute -> ajouterBouteilleNonListe($body);
+                        //update sur le contenu de cellier 
+                        //remplace id_bouteille de l'acienne bouteille par la nouvelle bouteille
+                    }
+                    else{
+                        //si deja non liste
+                        //update de la bouteille.
+                    }
+                }
+                else{
+                    
+                }
+                    
+                    
+				//echo json_encode($resultat);
+            }
             
 		}
-		*/
+		
 }
 ?>
 
