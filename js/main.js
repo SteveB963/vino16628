@@ -13,6 +13,7 @@ const BaseURL = document.baseURI;
 console.log(BaseURL);
 window.addEventListener('load', function() {
     //console.log("load"); 
+    //buttonn Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
         //console.log(element);
         element.addEventListener("click", function(evt){
@@ -39,7 +40,7 @@ window.addEventListener('load', function() {
         })
 
     });
-
+    //buttonn ajouter
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
             //console.log("click ajouter");

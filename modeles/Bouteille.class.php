@@ -123,7 +123,7 @@ class Bouteille extends Modele {
 	{
 		
 		$rows = Array();
-        //choisr les list par trier
+        //choisr les list par trier(type,prix,code, format etc..)
         if(!empty($trier)){
 		$requete ='SELECT 
                         c.*,

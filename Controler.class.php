@@ -150,7 +150,6 @@ class Controler
 		private function boireBouteilleCellier()
 		{
 			$body = json_decode(file_get_contents('php://input'));
-			//var_dump($body);
 			$bte = new Bouteille();
             //retire une bouteille du cellier et récupère la nouvelle quantité
 			$resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);

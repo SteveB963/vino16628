@@ -16,7 +16,6 @@
 <?php
     if($data){
         foreach ($data as $cle => $bouteille) {
- 
     ?>
     <div class="bouteille" data-quantite="">
         <div class="img">
