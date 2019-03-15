@@ -13,6 +13,13 @@
 class Bouteille extends Modele {
 	const TABLE = 'bouteille';
     
+     /**
+	 * Récupère tous les informations sur une bouteille
+     *
+     * @param int $id id de la bouteille à récupèrer les informations
+	 *  
+	 * @return Array $rows informations de tous les pays
+	 */
     public function getBouteille($id)
 	{
 		$rows = Array();
@@ -40,6 +47,11 @@ class Bouteille extends Modele {
 		return $row;
 	}
     
+    /**
+	 * récupère tous les pays
+	 *  
+	 * @return Array $rows informations de tous les pays
+	 */
     public function getPays()
 	{
 		$rows = Array();
@@ -55,6 +67,11 @@ class Bouteille extends Modele {
 		return $rows;
 	}
     
+    /**
+	 * récupère tous les types de vins
+	 *  
+	 * @return Array $rows informations de tous les types
+	 */
     public function getType()
 	{
 		$rows = Array();
@@ -71,7 +88,12 @@ class Bouteille extends Modele {
 	}
     
     
-    
+     /**
+	 * récupère tous les bouteilles listés 
+	 *  
+	 * @return Array $rows les informations de chaque bouteille de la bd
+     * ///////////////////VÉRIFIER ET TESTER LA REQUETE SQL////////////////////
+	 */
 	public function getListeBouteille()
 	{
 		
@@ -88,6 +110,14 @@ class Bouteille extends Modele {
 		return $rows;
 	}
 	
+    /**
+	 * récupère tous les bouteilles d'un cellier
+	 * 
+	 * @param int $id id du cellier !!!À VENIR
+     * 
+	 * @return Array $rows les informations de chaque bouteille dans le cellier7
+     * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
+	 */
 	public function getListeBouteilleCellier() 
 	{
 		
@@ -109,7 +139,7 @@ class Bouteille extends Modele {
                         JOIN pays p ON p.id_pays = b.pays
                         JOIN bouteille_type t ON t.id_type = b.type
                         WHERE c.id_cellier = 1
-						'; 
+						'; ///REMPLACER 1 PAR L'ID DU CELLIER
         
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
@@ -125,11 +155,7 @@ class Bouteille extends Modele {
 		else 
 		{
 			throw new Exception("Erreur de requête sur la base de donnée", 1);
-			 //$this->_db->error;
 		}
-		
-		
-		
 		return $rows;
 	}
 	
@@ -142,6 +168,7 @@ class Bouteille extends Modele {
 	 * @throws Exception Erreur de requête sur la base de données 
 	 * 
 	 * @return array id et nom de la bouteille trouvée dans le catalogue
+     *  ///////////////////PAS ÉTÉ TESTÉ ENCORE////////////////////////////
 	 */
        
 	public function autocomplete($nom, $nb_resultat=10)
@@ -151,9 +178,7 @@ class Bouteille extends Modele {
 		$nom = $this->_db->real_escape_string($nom);
 		$nom = preg_replace("/\*/","%" , $nom);
 		 
-		//echo $nom;
 		$requete ='SELECT id, nom FROM vino__bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
-		//var_dump($requete);
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -171,9 +196,6 @@ class Bouteille extends Modele {
 			throw new Exception("Erreur de requête sur la base de données", 1);
 			 
 		}
-		
-		
-		//var_dump($rows);
 		return $rows;
 	}
 	
@@ -184,12 +206,10 @@ class Bouteille extends Modele {
 	 * @param Array $data Tableau des données représentants la bouteille.
 	 * 
 	 * @return Boolean Succès ou échec de l'ajout.
+     *  ///////////////////PAS ÉTÉ TESTÉ ENCORE////////////////////////////
 	 */
 	public function ajouterBouteilleCellier($data)
 	{
-		//TODO : Valider les données.
-		//var_dump($data);	
-		
 		$requete = "INSERT INTO vino__cellier(id_bouteille,date_achat,garde_jusqua,notes,prix,quantite,millesime) VALUES (".
 		"'".$data->id_bouteille."',".
 		"'".$data->date_achat."',".
@@ -215,23 +235,15 @@ class Bouteille extends Modele {
 	 */
 	public function modifierQuantiteBouteilleCellier($id, $nombre)
 	{
-		//TODO : Valider les données.
-			
-			
 		$requete = "UPDATE cellier_contenu SET quantite = GREATEST(quantite + ". $nombre. ", 0) WHERE id = ". $id;
-		//echo $requete;
         $res = $this->_db->query($requete);
         
 		return $res;
 	}
     
     public function obtenirQuantiteBouteilleCellier($id)
-	{
-		//TODO : Valider les données.
-			
-			
+	{				
 		$requete1 = "SELECT quantite from cellier_contenu WHERE id = ". $id;
-		//echo $requete;
 		$res = $this->_db->query($requete1);
 		$row = $res->fetch_assoc();
         
