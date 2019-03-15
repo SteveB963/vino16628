@@ -166,6 +166,7 @@ footer
  		height: 32px;
  		z-index: 2;
  		opacity: 0;
+ 		cursor: pointer;
  	}
 
  	.fa-bars{
@@ -176,6 +177,7 @@ footer
  		font-size: 2.5em;
  		color: white;
  		transition: 1s;
+ 		
  	}
 
  	.fa-times{
