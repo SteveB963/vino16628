@@ -9,17 +9,21 @@
  */
 
 // const BaseURL = "http://vino.jonathanmartel.info/";
-const BaseURL = document.baseURI;
-console.log(BaseURL);
+
 window.addEventListener('load', function() {
+    const BaseURL = document.baseURI;
+    console.log(BaseURL);
     //console.log("load"); 
     //buttonn Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
         //console.log(element);
         element.addEventListener("click", function(evt){
             //console.log("click boire");
+            // pattern poyr annuler le hash en BaseURl
+            var pattern=/.*(?:[?&]locale=([^&]*))?.*/;
+             let URL =BaseURL.replace(pattern,'');
             let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
+            let requete = new Request(URL+"index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
             let quantite = document.querySelector("[data-quantite='" + id + "']")
             //console.log(quantite);
             
@@ -45,8 +49,11 @@ window.addEventListener('load', function() {
         element.addEventListener("click", function(evt){
             //console.log("click ajouter");
             let id = evt.target.parentElement.dataset.id;
-             console.log(BaseURL);
-            let requete = new Request(BaseURL+"index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+             
+            // pattern poyr annuler le hash en BaseURl
+             var pattern=/.*(?:[?&]locale=([^&]*))?.*/;
+             let URL =BaseURL.replace(pattern,'');
+            let requete = new Request(URL+"index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
             //console.log(requete);
             let quantite = document.querySelector("[data-quantite='" + id + "']")
             //console.log(quantite);
@@ -69,20 +76,29 @@ window.addEventListener('load', function() {
 
     });
     //buttonn Trier 
-    let btnTrier = document.querySelector("[name='btnTrier']");
+     let btnTrier = document.querySelector("[name='btnTrier']");
+    if(btnTrier){
         btnTrier.addEventListener("click", function(evt){
           var trier=document.getElementById('formTrier').value;
-            //console.log(trier);
-            window.location.href = BaseURL + "index.php?requete=uploadPage&trierCellier=" + trier;
+            console.log(trier);
+            // pattern poyr annuler le hash en BaseURl
+            var pattern=/.*(?:[?&]locale=([^&]*))?.*/;
+            console.log(BaseURL);
+            let URL =BaseURL.replace(pattern,'');
+            console.log(URL);
+            window.location.href = URL + "index.php?requete=uploadPage&trierCellier=" + trier;
         });
+    }  
+
             
        
   
     //bouton modifier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id;
-            window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier&id=" + id;
+             var pattern=/.*(?:[?&]locale=([^&]*))?.*/;
+             let URL =BaseURL.replace(pattern,'');
+            window.location.href = URL + "index.php?requete=modifierBouteilleCellier&id=" + id;
             /*
             let id = evt.target.parentElement.dataset.id;
             let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
@@ -111,7 +127,9 @@ window.addEventListener('load', function() {
     if(sauver){
         sauver.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
-
+            //let BaseURL ="http://localhost/php/vino16628/";
+             var pattern=/.*(?:[?&]locale=([^&]*))?.*/;
+             let URL =BaseURL.replace(pattern,'');
             let bouteille = {
                 nom : document.querySelector("[name='nom']"),
                 image : document.querySelector("[name='image']"),
@@ -136,7 +154,7 @@ window.addEventListener('load', function() {
               };
               */
             //let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+            let requete = new Request(URL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
 
             fetch(requete)
             .then(response => {
@@ -148,7 +166,7 @@ window.addEventListener('load', function() {
               })
               .then(response => {
                 console.log(response);
-                window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier";
+                window.location.href = URL + "index.php?requete=modifierBouteilleCellier";
               }).catch(error => {
                 console.error(error);
               });
@@ -170,7 +188,7 @@ window.addEventListener('load', function() {
         let nom = inputNomBouteille.value;
         liste.innerHTML = "";
         if(nom){
-          let requete = new Request(BaseURL+"index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
+          let requete = new Request(URL+"index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
           fetch(requete)
               .then(response => {
                   if (response.status === 200) {

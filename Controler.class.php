@@ -54,10 +54,12 @@ class Controler
          *
          * ////////DOIT ÊTRE MODIFIER POUR POINTER VERS LA PAGE D'ACCEIL////////
          */
+     //affiche le page accueil sans le trier
 		private function accueil()
 		{  
             $bte = new Bouteille();
             include("vues/entete.php");
+            //ajouter le produit de SAQ web site
             //$saq = new SAQ();
             //$saq->getProduits(5,500);
 			$data = $bte->getListeBouteilleCellier(); 
