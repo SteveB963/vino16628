@@ -123,7 +123,7 @@ class Bouteille extends Modele {
 	{
 		
 		$rows = Array();
-        //choisr les list par trier(type,prix,code, format etc..)
+        //choisir le type de  trier(type,prix,code, format etc..)
         if(!empty($trier)){
             $requete ='SELECT 
                             c.*,
@@ -145,7 +145,7 @@ class Bouteille extends Modele {
                             ORDER BY '.$trier.' ASC'
                             ; ///REMPLACER 1 PAR L'ID DU CELLIER
         }
-        //telecharger le pag accueil par  le data trier par nom "by default"
+        //telecharger le page accueil par  le data trier par nom "by default"
         else
          {
             $requete ='SELECT 

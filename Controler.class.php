@@ -60,8 +60,8 @@ class Controler
             $bte = new Bouteille();
             include("vues/entete.php");
             //ajouter le produit de SAQ web site
-            //$saq = new SAQ();
-            //$saq->getProduits(5,500);
+           // $saq = new SAQ();
+            //$saq->getProduits(10,600);
 			$data = $bte->getListeBouteilleCellier(); 
             include("vues/cellier.php");
             include("vues/pied.php");

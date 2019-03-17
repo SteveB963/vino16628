@@ -19,7 +19,7 @@ window.addEventListener('load', function() {
         //console.log(element);
         element.addEventListener("click", function(evt){
             //console.log("click boire");
-            // pattern poyr annuler le hash en BaseURl
+            // pattern pour annuler le hash en BaseURl
             var pattern=/.*(?:[?&]locale=([^&]*))?.*/;
              let URL =BaseURL.replace(pattern,'');
             let id = evt.target.parentElement.dataset.id;
@@ -50,7 +50,7 @@ window.addEventListener('load', function() {
             //console.log("click ajouter");
             let id = evt.target.parentElement.dataset.id;
              
-            // pattern poyr annuler le hash en BaseURl
+            // pattern pour annuler le hash en BaseURl
              var pattern=/.*(?:[?&]locale=([^&]*))?.*/;
              let URL =BaseURL.replace(pattern,'');
             let requete = new Request(URL+"index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
@@ -76,12 +76,12 @@ window.addEventListener('load', function() {
 
     });
     //buttonn Trier 
-     let btnTrier = document.querySelector("[name='btnTrier']");
+     let btnTrier = document.getElementById('trier');
     if(btnTrier){
-        btnTrier.addEventListener("click", function(evt){
-          var trier=document.getElementById('formTrier').value;
+        btnTrier.addEventListener("change", function(evt){
+          var trier=document.getElementById('trier').value;
             console.log(trier);
-            // pattern poyr annuler le hash en BaseURl
+            // pattern pour annuler le hash en BaseURl
             var pattern=/.*(?:[?&]locale=([^&]*))?.*/;
             console.log(BaseURL);
             let URL =BaseURL.replace(pattern,'');

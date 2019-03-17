@@ -1,6 +1,6 @@
 <p class="trier">
     Trier le cellier par:
-    <select id="formTrier">
+    <select id="trier">
       <option value="">Select</option>
       <option value="nom">Nom</option>
       <option value="pays">Pays</option>
@@ -10,7 +10,6 @@
       <option value="millesime">Millesime</option>
       <option value="code_saq">Code_SAQ</option>
     </select>
-    <button name='btnTrier'>Trier</button>
 </p>
 <div class="cellier content" name='cellier'>
 <?php
@@ -26,7 +25,7 @@
             <p class="nom"><?php echo $bouteille['nom'] ?></p>
             <p class="quantite" data-quantite="<?php echo $bouteille['id'] ?>"> Quantité : <?php echo $bouteille['quantite'] ?></p>
             <p class="pays">Pays : <?php echo $bouteille['pays'] ?></p>
-            <p class="texte">millesime : <?php echo $bouteille['millesime'] ?></p>
+            <p class="millesime">millesime : <?php echo $bouteille['millesime'] ?></p>
             <p class="type">Type : <?php echo $bouteille['type'] ?></p>
             <p class="prix">Prix: <?php echo $bouteille['prix'] ?></p>
             <p class="format">Format: <?php echo $bouteille['format'] ?></p>

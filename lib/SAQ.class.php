@@ -57,7 +57,6 @@ class SAQ extends Modele {
         //sélectionne tout les divs
         $elements = $doc -> getElementsByTagName("div");
 		$i = 0;
-        
 		foreach ($elements as $key => $noeud) {
             //si le div contient la class "resultat_product"
 			if (strpos($noeud -> getAttribute('class'), "resultats_product") !== false) {
@@ -112,7 +111,7 @@ class SAQ extends Modele {
             
             //nom
 			if ($node -> getAttribute('class') == 'nom') {
-				$info -> nom = utf8_decode(trim($node -> textContent));
+				$info -> nom = trim($node -> textContent);
                 // prendre milessime de nom
                 preg_match("/\d+/", $info -> nom ,$a);
                 //convertion du millesime  en float
@@ -143,7 +142,7 @@ class SAQ extends Modele {
                     $info -> format =floatval($k[0]);
 					//$info -> format = utf8_decode(trim($aRes[2]));
 				}
-                var_dump($info -> format);
+               // var_dump($info -> format);
                 //Type
 				if (isset($aDesc[1][0])) {
 					$info -> type = utf8_decode(trim($aDesc[1][0]));
@@ -176,7 +175,7 @@ class SAQ extends Modele {
      * @return obj stdClass $retour qui contient le resultat de l'operation
 	 */
 	private function ajouteProduit($bte) {
-        echo "dans ajoute produit";
+        //echo "dans ajoute produit";
 		$retour = new stdClass();
 		$retour -> succes = false;
 		$retour -> raison = '';
