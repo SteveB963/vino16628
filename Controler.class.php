@@ -40,6 +40,10 @@ class Controler
 				case 'boireBouteilleCellier':
 					$this->boireBouteilleCellier();
 					break;
+				//À MODIFIER/SUPPRIMER!!!
+				case 'afficheCellier':
+					$this->afficheCellier();
+					break;
 				default:
 					$this->accueil();
 					break;
@@ -49,16 +53,12 @@ class Controler
         /**
          * Affiche la page d'acceil
          *
-         * ////////DOIT ÊTRE MODIFIER POUR POINTER VERS LA PAGE D'ACCEIL////////
          */
 		private function accueil()
-		{            
-			$bte = new Bouteille();
-            $data = $bte->getListeBouteilleCellier();
+		{
 			include("vues/entete.php");
-			include("vues/cellier.php");
-			include("vues/pied.php");
-                  
+			include("vues/accueil.php");
+			include("vues/pied.php");         
 		}
     
         /**
@@ -66,11 +66,22 @@ class Controler
          *
          */
         /////////////AJOUTÉ FUNCTION POUR AFFICHER TOUT LES BOUTEILLES ICI//////////////
-    
-    
-    
-    
-    
+
+
+        /**
+         * Affiche la liste des bouteilles d'un cellier
+         *
+         * ///////////TEMPORAIRE/////////////
+         */
+    	private function afficheCellier()
+		{
+			$bte = new Bouteille();
+            $data = $bte->getListeBouteilleCellier();
+			include("vues/entete.php");
+			include("vues/cellier.php");
+			include("vues/pied.php");
+                  
+		}
     
 		
         /**
