@@ -119,55 +119,30 @@ class Bouteille extends Modele {
 	 * @return Array $rows les informations de chaque bouteille dans le cellier7
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeBouteilleCellier($trier=0) 
+	public function getListeBouteilleCellier($trier='nom') 
 	{
 		
 		$rows = Array();
-        //choisir le type de  trier(type,prix,code, format etc..)
-        if(!empty($trier)){
-            $requete ='SELECT 
-                            c.*,
-                            b.id_bouteille AS id, 
-                            CONCAT(FORMAT(b.prix, 2)," $") As prix, 
-                            b.nom AS nom, 
-                            b.image AS image, 
-                            b.code_saq AS code_saq, 
-                            b.url_saq, 
-                            p.pays AS pays, 
-                            b.millesime AS millesime ,
-                            CONCAT(b.format," ml") AS format,
-                            t.type AS type 
-                            FROM cellier_contenu c
-                            JOIN bouteille b ON id = c.id_bouteille 
-                            JOIN pays p ON p.id_pays = b.pays
-                            JOIN bouteille_type t ON t.id_type = b.type
-                            WHERE c.id_cellier = 1
-                            ORDER BY '.$trier.' ASC'
-                            ; ///REMPLACER 1 PAR L'ID DU CELLIER
-        }
-        //telecharger le page accueil par  le data trier par nom "by default"
-        else
-         {
-            $requete ='SELECT 
+        //choisir le type de  trier (type,prix,code, format etc..)
+        $requete ='SELECT 
                         c.*,
                         b.id_bouteille AS id, 
-                        CONCAT(FORMAT(b.prix, 2)," $") As prix, 
+                        b.prix, 
                         b.nom AS nom, 
-                        b.type, 
                         b.image AS image, 
                         b.code_saq AS code_saq, 
                         b.url_saq, 
                         p.pays AS pays, 
                         b.millesime AS millesime ,
-                        CONCAT(b.format," ml") AS format,
+                        b.format,
                         t.type AS type 
                         FROM cellier_contenu c
                         JOIN bouteille b ON id = c.id_bouteille 
                         JOIN pays p ON p.id_pays = b.pays
                         JOIN bouteille_type t ON t.id_type = b.type
                         WHERE c.id_cellier = 1
-                        ORDER BY nom
-                        ';
+                        ORDER BY '.$trier.' ASC';
+                        ; ///REMPLACER 1 PAR L'ID DU CELLIER
         }
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
@@ -212,7 +187,6 @@ class Bouteille extends Modele {
 			{
 				while($row = $res->fetch_assoc())
 				{
-					$row['nom'] = trim(utf8_encode($row['nom']));
 					$rows[] = $row;
 					
 				}

@@ -27,8 +27,8 @@
             <p class="pays">Pays : <?php echo $bouteille['pays'] ?></p>
             <p class="millesime">millesime : <?php echo $bouteille['millesime'] ?></p>
             <p class="type">Type : <?php echo $bouteille['type'] ?></p>
-            <p class="prix">Prix: <?php echo $bouteille['prix'] ?></p>
-            <p class="format">Format: <?php echo $bouteille['format'] ?></p>
+            <p class="prix">Prix: <?php echo $bouteille['prix'] ?> $</p>
+            <p class="format">Format: <?php echo $bouteille['format'] ?> ml</p>
             <p class="code_SAQ">Code_SAQ: <?php echo $bouteille['code_saq'] ?></p>
             <p><a href="<?php echo $bouteille['url_saq'] ?>">Voir SAQ</a></p>
         

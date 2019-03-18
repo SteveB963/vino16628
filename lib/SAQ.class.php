@@ -22,8 +22,7 @@ class SAQ extends Modele {
     //insert la requete d'ajout dans attribut stmt
 	public function __construct() {
 		parent::__construct();
-		if (!($this -> stmt = $this -> _db -> prepare("INSERT INTO bouteille(nom, type, image, code_saq, pays, prix, url_saq, format, millesime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"))) {
-            
+		if (!($this -> stmt = $this -> _db -> prepare("INSERT INTO bouteille(nom, type, image, code_saq, pays, prix, url_saq, format, millesime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"))) {  
 			echo "Echec de la préparation : (" . $mysqli -> errno . ") " . $mysqli -> error;
 		}
 	}
@@ -53,7 +52,7 @@ class SAQ extends Modele {
 		@$doc -> loadHTML(self::$_webpage);
         echo curl_error($s) . "<br>";
         curl_close($s);
-		
+        
         //sélectionne tout les divs
         $elements = $doc -> getElementsByTagName("div");
 		$i = 0;
@@ -88,7 +87,6 @@ class SAQ extends Modele {
 		foreach ($children as $child) {
 			$innerHTML .= $child -> ownerDocument -> saveXML($child);
 		}
-
 		return $innerHTML;
 	}
 
@@ -112,7 +110,7 @@ class SAQ extends Modele {
             //nom
 			if ($node -> getAttribute('class') == 'nom') {
 				$info -> nom = trim($node -> textContent);
-                // prendre milessime de nom
+                // isole le  milessime de nom
                 preg_match("/\d+/", $info -> nom ,$a);
                 //convertion du millesime  en float
                 if(!empty($a)){
@@ -122,9 +120,7 @@ class SAQ extends Modele {
                      $info -> millesime=0;
                 }
                 //var_dump($info -> millesime);
-            
-                
-                
+               
 			} else if ($node -> getAttribute('class') == 'desc') {
                 //isole les données
 				$res = preg_match_all("/\r\n\s*(.*)\r\n/", $node ->textContent, $aDesc);
@@ -139,6 +135,7 @@ class SAQ extends Modele {
 					$info -> pays = utf8_decode(trim($aRes[1]));
                     //format
                     preg_match("/\d{1,3}/", $aRes[2], $k);
+                    //convertion du format  en float
                     $info -> format =floatval($k[0]);
 					//$info -> format = utf8_decode(trim($aRes[2]));
 				}
@@ -158,14 +155,12 @@ class SAQ extends Modele {
 				$info -> prix = utf8_decode(trim($aRes[1]));
                 //convertion du prix en float
                 $info -> prix = preg_replace('/,/', '.', $aRes[0]);
-                $info -> prix = floatval($info -> prix);
-                
+                $info -> prix = floatval($info -> prix);  
 			}
 		}
 
 		return $info;
 	}
-
     
     /**
 	 * Ajout une bouteille du site de la saq dans la bd
@@ -179,7 +174,7 @@ class SAQ extends Modele {
 		$retour = new stdClass();
 		$retour -> succes = false;
 		$retour -> raison = '';
-
+        
 		//var_dump($bte);
 		// Récupère l'id du type du pays associer
 		$type = $this -> _db -> query("select id_type from bouteille_type where type = '" . $bte -> type . "'");
