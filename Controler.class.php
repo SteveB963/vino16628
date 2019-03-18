@@ -13,8 +13,7 @@
 
 class Controler 
 {
-	
-<<<<<<< HEAD
+
     /**
      * Traite la requête
      * @return void
@@ -61,7 +60,7 @@ class Controler
         private function accueil()
         {  
             include("vues/entete.php");
-            include("vues/acceuil.php");
+            include("vues/accueil.php");
             include("vues/pied.php");
 
         }
