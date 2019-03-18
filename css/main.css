@@ -65,6 +65,14 @@ footer
 	align-items: center;	
 }
 
+#entete1 div{
+	width: 200px;
+}
+
+#titreEntete{
+	text-align: center;
+}
+
 #entete1 #logo{
 	width: 100px;
 	height: 100px;
@@ -81,6 +89,10 @@ footer
 	margin-left: 10px;
 }
 
+#entete1 #liensSociaux{
+	text-align: right;	
+}
+
 #imageEntete{
 	width: 100%;
 	height: 400px;
@@ -88,6 +100,154 @@ footer
 	background-size: cover;
 	background-position: center;
 }
+
+#liensSociauxMobile{
+	display: none;
+}
+
+@media all and (max-width:619px)
+{
+	#liensSociaux{
+		padding-right: 20px;
+		padding-left: 50px;
+		box-sizing: border-box;
+		text-align: center;
+	}
+
+	#mainNav ul {
+		width: 90% !important;
+		padding-left: 0px;
+	}
+}
+
+@media all and (min-width:451px)
+{
+	#burger, .fa-bars, .fa-times{
+		display: none !important;
+	}
+}
+
+/* Menu Hamburger */
+@media all and (max-width:450px)
+ {
+ 	#entete1{
+ 		height: 200px;
+ 		flex-flow: column;
+ 		align-items: center;
+ 		justify-content: space-between;
+ 	}
+
+ 	#entete1 div:nth-child(1){
+ 		display: flex;
+ 		justify-content: space-around;
+ 		height: 150px;
+ 	}
+
+ 	#entete1 #logo{
+ 		width: 150px;
+ 		height: 150px;
+ 	}
+
+ 	#titreEntete{
+ 		font-size: 0.7em;
+ 		height: 60px;
+ 	}
+
+ 	#imageEntete{
+ 		display: none;
+ 	}
+
+ 	#burger{
+ 		position: absolute;
+ 		top: 179px;
+ 		right: 20px;
+ 		display: block;
+ 		width: 40px;
+ 		height: 32px;
+ 		z-index: 2;
+ 		opacity: 0;
+ 		cursor: pointer;
+ 	}
+
+ 	.fa-bars{
+ 		display: block;
+ 		position: absolute;
+ 		top: 177px;
+ 		right: 25px;
+ 		font-size: 2.5em;
+ 		color: white;
+ 		transition: 1s;
+ 		
+ 	}
+
+ 	.fa-times{
+ 		display: block;
+ 		position: absolute;
+ 		top: 177px;
+ 		right: 28px;
+ 		font-size: 2.5em;
+ 		color: white;
+ 		opacity: 0;
+ 		transition: 1s;
+ 	}
+
+ 	#burger:checked ~ .fa-bars{
+ 		opacity: 0;
+ 	}
+
+ 	#burger:checked ~ .fa-times{
+ 		opacity: 1;
+ 	}
+
+ 	#burger:checked ~ #mainNav{
+ 		display: block !important;
+ 	}
+
+ 	#mainNav{
+ 		display: none !important;
+ 		position: absolute;
+ 		top: 220px;
+ 		height: 80%;
+ 		width: 100%;
+ 		z-index: 2;
+ 		display: flex;
+ 		flex-flow: column;
+ 		justify-content: space-around;
+ 		
+ 	}
+
+ 	#mainNav ul{
+ 		display: block;
+ 		padding-top: 20%;
+ 		padding-left: 0px;
+ 		display: flex !important;
+ 		flex-flow: column !important;
+ 		justify-content: space-between !important;
+ 		align-items: center;
+ 		height: 60% !important;
+ 	}
+
+ 	#mainNav ul li{
+ 		width: 100%;
+ 		text-align: center;
+ 		border-bottom: 2px solid #730101;
+ 	}
+
+ 	#liensSociaux{
+ 		display: none;
+ 	}
+
+ 	#liensSociauxMobile{
+ 		display: block;
+ 		font-size: 3em;
+ 	}
+
+ 	#mainNav a{
+ 		text-decoration: none;
+ 		color: #730101;
+ 	}
+
+ }
 
 /* Menu */
 
@@ -121,21 +281,24 @@ footer
 	align-items: center;
 }
 
-.sticky{
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 10;
-}
+@media all and (min-width:451px)
+{
+	.sticky{
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 1;
+	}
 
-.sticky + .content{
-	padding-top: 610px;
+	.sticky + .content{
+		padding-top: 610px;
+	}
 }
 
 /********
  * Pied.php
  ********/
-
+/*
 #footer1{
 	height: 500px;
 	background-image: url("../images/wine-black.jpg");
@@ -162,10 +325,13 @@ footer
 	width: 300px;
 	padding-left: 5px;
 }
-
+*/
 #footer2{
-	height: 30px;
+	height: 50px;
 	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
 }
 
 /********
@@ -360,7 +526,7 @@ footer
  * Ajouter.php
  ********/
 
-.ajouter{
+.mesFormulaires{
 	width: 80%;
 	min-width: 400px;
 	margin-top: 30px;
@@ -370,16 +536,20 @@ footer
 	background-color: white;
 }
 
-.ajouter h2{
+.mesFormulaires h2{
 	color: #730101;
 }
 
-.ajouter > div > label{
+.mesFormulaires > div > label{
 	border-bottom: 2px solid black;
 	padding-bottom: 1px;
 }
 
-.formAjout{
+.formulaire div input{
+	width: 100%;
+}
+
+.formulaire{
 	width: 60%;
 	margin-right: auto;
 	margin-left: auto;
@@ -389,31 +559,92 @@ footer
 	padding-left: 20px;
 }
 
-.ajouter input, textarea{
+.mesFormulaires input, textarea{
 	background-color: transparent;
 	border: none;
 	border-bottom: 2px solid black;
 	margin-bottom: 40px;
 }
 
+.recherche{
+	border: 2px solid black;
+	border-radius: 5px;
+	width: 200px;
+	padding: 5px;
+	height: 25px;
+}
+
+.recherche input{
+	border: none;
+	box-shadow: none;
+}
+
 #labelNom{
 	margin-bottom: 40px;
 }
 
-.ajouter ::placeholder{
+.mesFormulaires ::placeholder{
 	color: #222224;
+	transition: 1s;
 }
 
-.ajouter .hide{
-	display: none;
+.mesFormulaires input:focus::placeholder{
+	color: white;
+}
+
+.mesFormulaires .hide{
+	position: absolute;
+	top: -20px;
+	left: 0;
+	opacity: 0;
+	transition: 1s;
+}
+
+.mesFormulaires input:focus + .hide{
+	opacity: 1;
 }
 
 input:focus{
 	outline: none;
-	border-bottom: 1px solid #730101ba;
-	box-shadow: 0px 2px 2px #730101ba;
 }
 
-.ajouter button{
+.mesFormulaires div{
+	position: relative;
+}
+
+.mesFormulaires button{
 	width: 200px;
+	background-color: #730101;
+	color: white;
+	border: none;
+	box-shadow: 2px 2px 5px grey;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.mesFormulaires button:hover{
+	box-shadow: none;
+}
+
+.formChiffre{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+
+.formChiffre div{
+	width: 45%;
+}
+
+@media all and (max-width:450px)
+{
+	.mesFormulaires{
+		min-width: 200px;
+		width: 100% !important;
+		padding:20px !important;
+		box-sizing: border-box;
+	}
+	.formulaire{
+		width: 90%;
+	}
 }
