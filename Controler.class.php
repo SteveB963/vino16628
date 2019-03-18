@@ -72,8 +72,19 @@ class Controler
          */
     	private function afficheCellier()
 		{
-			$bte = new Bouteille();
+            //ajouter le produit de SAQ web site
+           
+            $i=0;
+            $ajout=false;
+            while(!$ajout){
+                 $saq = new SAQ();
+                $ajout=$saq->getProduits(100,$i,11383473);  
+                 $i++;
+            }
+            
+            $bte = new Bouteille();
             $data = $bte->getListeBouteilleCellier();
+            
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
