@@ -648,3 +648,31 @@ input:focus{
 		width: 90%;
 	}
 }
+
+
+/********
+ * trier
+ ********/
+
+.trier{
+	width: 230px;
+    height: 30px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+    margin-left: 20%;
+    border: 1px solid black;
+    padding:1%;
+    text-align: center;
+    border-radius: 50px 20px;
+	background-color: white;
+    background-color: 
+}
+@media all and (min-width:451px)
+{
+	.trier{
+	width: 250px;
+    margin-left: 40%;
+	
+}
+
+

@@ -22,7 +22,7 @@ class SAQ extends Modele {
     //insert la requete d'ajout dans attribut stmt
 	public function __construct() {
 		parent::__construct();
-		if (!($this -> stmt = $this -> _db -> prepare("INSERT INTO bouteille(nom, type, image, code_saq, pays, prix, url_saq, format) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))) {
+		if (!($this -> stmt = $this -> _db -> prepare("INSERT INTO bouteille(nom, type, image, code_saq, pays, prix, url_saq, format, millesime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"))) {  
 			echo "Echec de la préparation : (" . $mysqli -> errno . ") " . $mysqli -> error;
 		}
 	}
@@ -52,11 +52,10 @@ class SAQ extends Modele {
 		@$doc -> loadHTML(self::$_webpage);
         echo curl_error($s) . "<br>";
         curl_close($s);
-		
+        
         //sélectionne tout les divs
         $elements = $doc -> getElementsByTagName("div");
 		$i = 0;
-        
 		foreach ($elements as $key => $noeud) {
             //si le div contient la class "resultat_product"
 			if (strpos($noeud -> getAttribute('class'), "resultats_product") !== false) {
@@ -69,7 +68,7 @@ class SAQ extends Modele {
 				if ($retour -> succes == false) {
 					echo "erreur : " . $retour -> raison . "<br>";
 					echo "<pre>";
-					var_dump($info);
+					//var_dump($info);
 					echo "</pre>";
 					echo "<br>";
 				} else {
@@ -88,7 +87,6 @@ class SAQ extends Modele {
 		foreach ($children as $child) {
 			$innerHTML .= $child -> ownerDocument -> saveXML($child);
 		}
-
 		return $innerHTML;
 	}
 
@@ -111,23 +109,37 @@ class SAQ extends Modele {
             
             //nom
 			if ($node -> getAttribute('class') == 'nom') {
-				$info -> nom = utf8_decode(trim($node -> textContent));
-                
-                
+				$info -> nom = trim($node -> textContent);
+                // isole le  milessime de nom
+                preg_match("/\d+/", $info -> nom ,$a);
+                //convertion du millesime  en float
+                if(!empty($a)){
+                     $info -> millesime=floatval($a[0]);
+                }
+                else{
+                     $info -> millesime=0;
+                }
+                //var_dump($info -> millesime);
+               
 			} else if ($node -> getAttribute('class') == 'desc') {
                 //isole les données
 				$res = preg_match_all("/\r\n\s*(.*)\r\n/", $node ->textContent, $aDesc);
                 //code SAQ
 				if (isset($aDesc[1][2])) {
 					preg_match("/\d{8}/", $aDesc[1][2], $aRes);
-					$info -> code_SAQ = utf8_decode(trim($aRes[0]));
+					$info -> code_SAQ = floatval($aRes[0]);
 				}
                 //Pays
 				if (isset($aDesc[1][1])) {
 					preg_match("/(.*),(.*)/", $aDesc[1][1], $aRes);
 					$info -> pays = utf8_decode(trim($aRes[1]));
-					$info -> format = utf8_decode(trim($aRes[2]));
+                    //format
+                    preg_match("/\d{1,3}/", $aRes[2], $k);
+                    //convertion du format  en float
+                    $info -> format =floatval($k[0]);
+					//$info -> format = utf8_decode(trim($aRes[2]));
 				}
+               // var_dump($info -> format);
                 //Type
 				if (isset($aDesc[1][0])) {
 					$info -> type = utf8_decode(trim($aDesc[1][0]));
@@ -143,14 +155,12 @@ class SAQ extends Modele {
 				$info -> prix = utf8_decode(trim($aRes[1]));
                 //convertion du prix en float
                 $info -> prix = preg_replace('/,/', '.', $aRes[0]);
-                $info -> prix = floatval($info -> prix);
-                
+                $info -> prix = floatval($info -> prix);  
 			}
 		}
 
 		return $info;
 	}
-
     
     /**
 	 * Ajout une bouteille du site de la saq dans la bd
@@ -160,12 +170,12 @@ class SAQ extends Modele {
      * @return obj stdClass $retour qui contient le resultat de l'operation
 	 */
 	private function ajouteProduit($bte) {
-        echo "dans ajoute produit";
+        //echo "dans ajoute produit";
 		$retour = new stdClass();
 		$retour -> succes = false;
 		$retour -> raison = '';
-
-		var_dump($bte);
+        
+		//var_dump($bte);
 		// Récupère l'id du type du pays associer
 		$type = $this -> _db -> query("select id_type from bouteille_type where type = '" . $bte -> type . "'");
 		$pays = $this -> _db -> query("select id_pays from pays where pays = '" . $bte -> pays . "'");
@@ -173,12 +183,13 @@ class SAQ extends Modele {
 		if ($type -> num_rows == 1 && $pays -> num_rows == 1) {
 			$type = $type -> fetch_assoc();
             $pays = $pays -> fetch_assoc();
-
+            //var_dump($type);
+            //var_dump($pays);
             //vérifie si le code SAQ correspond à une bouteille déjà entré de la bd
 			$rows = $this -> _db -> query("select id_bouteille from bouteille where code_saq = '" . $bte -> code_SAQ . "'");
 			if ($rows -> num_rows < 1) {
                 //insère les inforamtions dans la bd
-				$this -> stmt -> bind_param("sisiidsi", $bte -> nom, $type['id_type'], $bte -> img, $bte -> code_SAQ, $pays['id_pays'], $bte -> prix, $bte -> url, $bte -> format);
+                $this -> stmt -> bind_param("sisiidsii", $bte -> nom, $type['id_type'], $bte -> img, $bte -> code_SAQ, $pays['id_pays'], $bte -> prix, $bte -> url, $bte -> format, $bte -> millesime);
 				$retour -> succes = $this -> stmt -> execute();
 			} else {
 				$retour -> succes = false;

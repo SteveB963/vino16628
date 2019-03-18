@@ -1,6 +1,6 @@
 <?php
      $bteAvant = new Bouteille();
-     $bteAvant = $bteAvant -> getBouteille(1);
+     $bteAvant = $bteAvant -> getBouteille(506);
         //$valeurs = Array();
     foreach($bteAvant as $champ => $valeur){
                     $valeurs[$champ] = $bteAvant[$champ];
@@ -8,10 +8,10 @@
 
     var_dump($valeurs);
 ?>
-<div class="ajouter content">
+<div class="mesFormulaires content">
     <h2>Modification d'une bouteille au cellier</h2>
     <div class="nouvelleBouteille" vertical layout>
-        <form class="formAjout">
+        <form class="formulaire">
             <label id="labelNom">Nom : </label><input name="nom" value="<?php echo $donnee['bouteille']['nom'] ?>">
             <label class="hide">Image : </label><input name="image" value="<?php echo $donnee['bouteille']['image'] ?>">
             <label class="hide">Prix : </label><input name="prix" value="<?php echo $donnee['bouteille']['prix'] ?>">

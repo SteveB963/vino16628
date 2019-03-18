@@ -75,35 +75,36 @@ class Bouteille extends Modele {
 	 * @return Array $rows les informations de chaque bouteille dans le cellier7
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeBouteilleCellier() 
+	public function getListeBouteilleCellier($trier='nom') 
 	{
 		$rows = Array();
-		$requete ='SELECT 
+        //choisir le type de  trier (type,prix,code, format etc..)
+        $requete ='SELECT 
                         c.*,
-                        b.nom,
-                        b.image,
-                        b.code_saq,
-                        b.prix,
-                        b.url_saq,
+                        b.id_bouteille AS id, 
+                        b.prix, 
+                        b.nom AS nom, 
+                        b.image AS image, 
+                        b.code_saq AS code_saq, 
+                        b.url_saq, 
+                        p.pays AS pays, 
+                        b.millesime AS millesime ,
                         b.format,
-                        b.millesime,
-                        b.non_liste,
-                        p.pays,
-                        t.type
+                        t.type AS type 
                         FROM cellier_contenu c
                         JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
                         JOIN pays p ON p.id_pays = b.id_pays
                         JOIN bouteille_type t ON t.id_type = b.id_type
                         WHERE c.id_cellier = 1
-						'; ///REMPLACER 1 PAR L'ID DU CELLIER
-        
+                        ORDER BY '.$trier.' ASC';
+                        ; ///REMPLACER 1 PAR L'ID DU CELLIER
+      
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
 			{
 				while($row = $res->fetch_assoc())
 				{
-					$row['nom'] = trim(utf8_encode($row['nom']));
 					$rows[] = $row;
 				}
 			}
@@ -141,7 +142,6 @@ class Bouteille extends Modele {
 			{
 				while($row = $res->fetch_assoc())
 				{
-					$row['nom'] = trim(utf8_encode($row['nom']));
 					$rows[] = $row;
 					
 				}
@@ -167,14 +167,14 @@ class Bouteille extends Modele {
         $requete = "INSERT INTO bouteille(nom, image, prix, format, id_type, id_pays, millesime, code_saq, url_saq, non_liste) VALUES (" .
         "'" . $data->nom . "'," .
         "'" . $data->image . "'," .
-        "'" . $data->prix . "'," .
-        "'" . $data->format . "'," .
-        "'" . $data->type . "'," .
-        "'" . $data->pays . "'," .
-        "'" . $data->millesime . "'," .
-        "'" . $data->code_saq . "'," .
+        "'" . floatval($data->prix) . "'," .
+        "'" . intval($data->format) . "'," .
+        "'" . intval($data->id_type) . "'," .
+        "'" . intval($data->id_pays) . "'," .
+        "'" . intval($data->millesime) . "'," .
+        "'" . intval($data->code_saq) . "'," .
         "'" . $data->url_saq . "'," .
-        "'1')";
+        "1)";
 
         $res = $this->_db->query($requete);
         
@@ -188,19 +188,20 @@ class Bouteille extends Modele {
 	 * 
 	 * @return Boolean Succès ou échec de l'ajout.
 	 */
-	public function modifierBouteilleNonListe($data)
+	public function modiferBouteilleNonListe($data)
 	{
-		$requete = "INSERT INTO bouteille(nom, image, prix, format, type, pays, millesime, code_saq, url_saq, non_liste) VALUES (" .
-		"'" . $data->nom . "'," .
-		"'" . $data->image . "'," .
-		"'" . $data->prix . "'," .
-		"'" . $data->format . "'," .
-		"'" . $data->type . "'," .
-		"'" . $data->pays . "'," .
-		"'" . $data->millesime . "',)" .
-		"'" . $data->code_saq . "',)" .
-		"'" . $data->url_saq . "',)" .
-		"'1')";
+		$requete = "UPDATE bouteille SET 
+            nom = '" . $data->nom . "'," .
+            "image = '" . $data->image . "'," .
+            "prix = '" . floatval($data->prix) . "'," .
+            "format = '" . intval($data->format) . "'," .
+            "id_type = '" . intval($data->id_type) . "'," .
+            "id_pays = '" . intval($data->id_pays) . "'," .
+            "millesime = '" . intval($data->millesime) . "'," .
+            "code_saq = '" . intval($data->code_saq) . "'," .
+            "url_saq = '" . $data->url_saq . "'," .
+            "non_liste = 1 
+            WHERE id_bouteille = " . $data -> id_bouteille;
         
         $res = $this->_db->query($requete);
         
@@ -285,10 +286,12 @@ class Bouteille extends Modele {
 	 * @return Boolean Succès ou échec de l'update
 	 */
     public function getDernBouteille(){
-        $requete = "SELECT MAX(id_bouteille) FROM " . self::TABLE;
-        $resultat = $this->_db->query($requete);
+        $requete = "SELECT MAX(id_bouteille) as max FROM " . self::TABLE;
+        $res = $this->_db->query($requete);
         
-        return $resultat;
+        $row = $res->fetch_assoc();
+        
+        return $row['max'];
     }
     
     

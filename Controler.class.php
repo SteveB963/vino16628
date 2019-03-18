@@ -13,42 +13,45 @@
 
 class Controler 
 {
-	
-		/**
-		 * Traite la requête
-		 * @return void
-		 */
-		public function gerer()
-		{
-			
-			switch ($_GET['requete']) {
-				case 'listeBouteilleCellier':
-					$this->listeBouteilleCellier();
-					break;
-				case 'autocompleteBouteille':
-					$this->autocompleteBouteille();
-					break;
-				case 'ajouterNouvelleBouteilleCellier':
-					$this->ajouterNouvelleBouteilleCellier();
-					break;
-				case 'ajouterBouteilleCellier':
-					$this->ajouterBouteilleCellier();
-					break;
-                case 'modifierBouteilleCellier':
-					$this->modifierBouteilleCellier();
-					break;
-				case 'boireBouteilleCellier':
-					$this->boireBouteilleCellier();
-					break;
-				//À MODIFIER/SUPPRIMER!!!
-				case 'afficheCellier':
-					$this->afficheCellier();
-					break;
-				default:
-					$this->accueil();
-					break;
-			}
-		}
+
+    /**
+     * Traite la requête
+     * @return void
+     */
+    public function gerer()
+    {
+
+        switch ($_GET['requete']) {
+            case 'listeBouteilleCellier':
+                $this->listeBouteilleCellier();
+                break;
+            case 'autocompleteBouteille':
+                $this->autocompleteBouteille();
+                break;
+            case 'ajouterNouvelleBouteilleCellier':
+                $this->ajouterNouvelleBouteilleCellier();
+                break;
+            case 'ajouterBouteilleCellier':
+                $this->ajouterBouteilleCellier();
+                break;
+            case 'modifierBouteilleCellier':
+                $this->modifierBouteilleCellier();
+                break;
+            case 'boireBouteilleCellier':
+                $this->boireBouteilleCellier();
+                break;
+            case 'afficheCellier':
+                $this->afficheCellier();
+                break;
+            case 'uploadPage':
+                $this->uploadPage();
+                break;
+            default:
+                $this->accueil();
+                break;
+        }
+    }
+
 
         /**
          * Affiche la page d'acceil
@@ -61,14 +64,8 @@ class Controler
 			include("vues/pied.php");
 		}
     
-        /**
-         * Affiche la liste complète de l'inventaire des bouteilles listées
-         *
-         */
-        /////////////AJOUTÉ FUNCTION POUR AFFICHER TOUT LES BOUTEILLES ICI//////////////
-
-
-        /**
+    
+     /**
          * Affiche la liste des bouteilles d'un cellier
          *
          * ///////////TEMPORAIRE/////////////
@@ -201,8 +198,8 @@ class Controler
                 $resultat = new stdClass();
                 $resultat -> succes = false;
                 
-                $bteAvant = new Bouteille();
-                $bteAvant = $bteAvant -> getBouteille($body -> bte -> id_bouteille);
+                $bte = new Bouteille();
+                $bteAvant = $bte -> getBouteille($body -> bte -> id_bouteille);
                 
                 $bteNouvelle = (array) $body -> bte;
                 
@@ -220,17 +217,16 @@ class Controler
                     //si bouteille est liste
                     if($body -> bte -> non_liste == 0){
                         //ajoute nouvelle bouteille non-liste
-                        $bteAjoute = new Bouteille();
-                        $resultat -> succes = $bteAjoute -> ajouterBouteilleNonListe($body -> bte);
-                        $resultat -> status = "ajoute bouteille";
-                        //$resultat -> succes = true;
+                        $resultat -> succes = $bte -> ajouterBouteilleNonListe($body -> bte);
+                        $resultat -> status = "ajoute bouteille ";
+                        
                         //update sur le contenu de cellier 
                         if($resultat -> succes == true){
-                            /*
-                            $dernId = $bteAjoute -> getDernBouteille();
-                            $resultat -> succes = $bteAjoute -> remplaceBouteilleCellier($body-> bte -> id,$dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
-                            */
-                            $resultat -> status .= "Remplace bouteille";
+                            
+                            $dernId = $bte -> getDernBouteille();
+                            $resultat -> succes = $bte -> remplaceBouteilleCellier($body-> bte -> id_bouteille, $dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
+                            
+                            $resultat -> status .= "Remplace bouteille" . $dernId;
                         }
                         else{
                             $resultat  -> erreur = "erreur d'insertion dans la bd";
@@ -238,12 +234,9 @@ class Controler
 
                     }
                     else{
-                        /*
                         //si deja non liste
                         //update de la bouteille.
-                        $bte = new Bouteille();
-                        $resultat -> succes = $bte -> modiferBouteilleNonListe();
-                        */
+                        $resultat -> succes = $bte -> modiferBouteilleNonListe($body -> bte);
                         $resultat -> status = "modifier bouteille";
                     }
                     
@@ -255,7 +248,19 @@ class Controler
             }
             
         }
-		
+    
+    
+        //affiche le page accueil apres choisir le trier(par select box)
+        private function uploadPage()
+        {
+            $bte = new Bouteille();
+            include("vues/entete.php");
+            $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
+            include("vues/cellier.php");
+            include("vues/pied.php");
+
+        }
+
 }
 ?>
 
