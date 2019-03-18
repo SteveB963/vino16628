@@ -92,8 +92,8 @@ class Bouteille extends Modele {
                         t.type
                         FROM cellier_contenu c
                         JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
-                        JOIN pays p ON p.id_pays = b.pays
-                        JOIN bouteille_type t ON t.id_type = b.type
+                        JOIN pays p ON p.id_pays = b.id_pays
+                        JOIN bouteille_type t ON t.id_type = b.id_type
                         WHERE c.id_cellier = 1
 						'; ///REMPLACER 1 PAR L'ID DU CELLIER
         

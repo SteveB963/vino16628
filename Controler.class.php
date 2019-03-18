@@ -52,7 +52,6 @@ class Controler
         /**
          * Affiche la page d'acceil
          *
-         * ////////DOIT ÊTRE MODIFIER POUR POINTER VERS LA PAGE D'ACCEIL////////
          */
 		private function accueil()
 		{            
@@ -207,18 +206,22 @@ class Controler
                 }
 
                 if(!$duplication){
-                    $resultat -> erreur = "pas de duplication";
-                    /*
+                    $resultat -> status = "pas de duplication";
+                    
                     //si bouteille est liste
                     if($body -> bte -> nonliste == 0){
                         //ajoute nouvelle bouteille non-liste
                         $bteAjoute = new Bouteille();
-                        $resultat -> succes = $bteAjoute -> ajouterBouteilleNonListe($body -> bte);
-
+                        //$resultat -> succes = $bteAjoute -> ajouterBouteilleNonListe($body -> bte);
+                        $resultat -> status = "ajoute bouteille";
+                        $resultat -> succes = true;
                         //update sur le contenu de cellier 
-                        if($resultat){
+                        if($resultat -> succes == true){
+                            /*
                             $dernId = $bteAjoute -> getDernBouteille();
                             $resultat -> succes = $bteAjoute -> remplaceBouteilleCellier($body-> bte -> id,$dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
+                            */
+                            $resultat -> status .= "Remplace bouteille";
                         }
                         else{
                             $resultat  -> erreur = "erreur d'insertion dans la bd";
@@ -226,15 +229,18 @@ class Controler
 
                     }
                     else{
+                        /*
                         //si deja non liste
                         //update de la bouteille.
                         $bte = new Bouteille();
                         $resultat -> succes = $bte -> modiferBouteilleNonListe();
+                        */
+                        $resultat -> status = "modifier bouteille";
                     }
-                    */
+                    
                 }
                 else{
-                    $resultat -> erreur = "duplication";
+                    $resultat -> status = "duplication";
                 }
                 echo trim(json_encode($resultat));
             }
