@@ -22,7 +22,6 @@
 		<link href="https://fonts.googleapis.com/css?family=Hind:500" rel="stylesheet">
 		
 		<base href="<?php echo BASEURL; ?>">
-		<!--<script src="./js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>-->
 		<script src="./js/main.js"></script>
 		<script src="./js/stylemenu.js"></script>
 	</head>
@@ -50,7 +49,7 @@
 				
 				<li><a href="?requete=accueil">Accueil</a></li>
 				<li><a href="#">Vins</a></li>
-				<li><a href="?requete=afficheCellier">Mes Celliers</a></li>
+				<li><a href="?requete=listeBouteilleCellier">Mes Celliers</a></li>
 				<li><a href="#">Mon Compte</a></li>
 				</ul>
 			</nav>

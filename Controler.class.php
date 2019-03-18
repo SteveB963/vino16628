@@ -40,6 +40,9 @@ class Controler
 				case 'boireBouteilleCellier':
 					$this->boireBouteilleCellier();
 					break;
+                case 'traitementModifierBouteilleCellier':
+                    $this->traitementModifierBouteilleCellier();
+                    break;
 				default:
 					$this->accueil();
 					break;
@@ -168,62 +171,75 @@ class Controler
          *
          * 
          */
-        private function modifierBouteilleCellier()
-		{	
+        private function modifierBouteilleCellier(){
             $body = json_decode(file_get_contents('php://input'));
-            if(!empty($body)){
-                $donnee = new Bouteille();
-                $resultat['bouteille'] = $bte->getBouteille($_GET['id']);
-                
-                $donnee = new Pays();
-                $resultat['pays'] = $bte->getTousPays();
-                
-                $donnee = new Type();
-                $resultat['type'] = $bte->getTousType();
+	
+            if(empty($body)){
+                $bte = new Bouteille();
+                $donnee['bouteille'] = $bte->getBouteille($_GET['id']);
 
+                $pays = new Pays();
+                $donnee['pays'] = $pays->getTousPays();
+
+                $type = new Type();
+                $donnee['type'] = $type->getTousTypes();
 
                 include("vues/entete.php");
                 include("vues/formBout.php");
                 include("vues/pied.php");
             }
+            
             else{
-                $bteAvant = new Bouteille();
-                $bteAvant = $bteAvant -> getBouteille($body -> id);
+                $resultat = new stdClass();
+                $resultat -> succes = false;
                 
-                $bteNouvelle = new Bouteille();
-                $bteNouvelle = $bteNouvelle -> getBouteille($body -> id);
+                $bteAvant = new Bouteille();
+                $bteAvant = $bteAvant -> getBouteille($body -> bte -> id_bouteille);
+                
+                $bteNouvelle = (array) $body -> bte;
                 
                 //vérifie si il y a eu des modifications
                 $duplication = true;
-                for(i = 0; i < count($bteAvant); i++){
-                    if($bteAvant[i] != $bteNouvelle[i]){
+                foreach($bteAvant as $champ => $valeur){
+                    if($bteAvant[$champ] != $bteNouvelle[$champ]){
                         $duplication = false;
                     }
                 }
-                
+
                 if(!$duplication){
+                    $resultat -> erreur = "pas de duplication";
+                    /*
                     //si bouteille est liste
-                    if(body -> non_liste == 0){
+                    if($body -> bte -> nonliste == 0){
                         //ajoute nouvelle bouteille non-liste
                         $bteAjoute = new Bouteille();
-                        $resultat = $bteAjoute -> ajouterBouteilleNonListe($body);
+                        $resultat -> succes = $bteAjoute -> ajouterBouteilleNonListe($body -> bte);
+
                         //update sur le contenu de cellier 
-                        //remplace id_bouteille de l'acienne bouteille par la nouvelle bouteille
+                        if($resultat){
+                            $dernId = $bteAjoute -> getDernBouteille();
+                            $resultat -> succes = $bteAjoute -> remplaceBouteilleCellier($body-> bte -> id,$dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
+                        }
+                        else{
+                            $resultat  -> erreur = "erreur d'insertion dans la bd";
+                        }
+
                     }
                     else{
                         //si deja non liste
                         //update de la bouteille.
+                        $bte = new Bouteille();
+                        $resultat -> succes = $bte -> modiferBouteilleNonListe();
                     }
+                    */
                 }
                 else{
-                    
+                    $resultat -> erreur = "duplication";
                 }
-                    
-                    
-				//echo json_encode($resultat);
+                echo trim(json_encode($resultat));
             }
             
-		}
+        }
 		
 }
 ?>

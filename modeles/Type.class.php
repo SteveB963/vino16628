@@ -11,7 +11,7 @@
  * 
  */
 class Type extends Modele {
-	const TABLE = 'type';
+	const TABLE = 'bouteille_type';
     
     /**
      * récupère tous les types et leur informaitons

@@ -11,8 +11,6 @@
 // const BaseURL = "http://vino.jonathanmartel.info/";
 window.addEventListener('load', function() {
     const BaseURL = document.baseURI;
-    console.log(BaseURL);
-    console.log("load");
     document.querySelectorAll(".btnBoire").forEach(function(element){
         //console.log(element);
         element.addEventListener("click", function(evt){
@@ -68,80 +66,44 @@ window.addEventListener('load', function() {
 
     });
    
-    //bouton modifier
+    //bouton modifier, dans le cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
             window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier&id=" + id;
-            /*
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
-
-            fetch(requete)
-            .then(response => {
-                if (response.status === 200) {
-                  return response.json();
-                } else {
-                  throw new Error('Erreur');
-                }
-              })
-              .then(response => {
-                console.log(response);
-                window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier";
-              }).catch(error => {
-                console.error(error);
-              });
-              */
         })
 
     });
     
-    //sauvegarde du formulaire
+    //sauvegarde du formulaire, sauvegrade les modifications effectués
     var sauver = document.querySelector("[name='sauver']");
     if(sauver){
         sauver.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id;
-
             let bouteille = {
-                nom : document.querySelector("[name='nom']"),
-                image : document.querySelector("[name='image']"),
-                prix : document.querySelector("[name='prix']"),
-                format : document.querySelector("[name='format']"),
-                type : document.querySelector("[name='type']"),
-                pays : document.querySelector("[name='pays']"),
-                millesime : document.querySelector("[name='millesime']"),
-                codesaq : document.querySelector("[name='codesaq']"),
-                urlsaq : document.querySelector("[name='urlsaq']"),
+                id_bouteille : document.querySelector("[name='id']").value,
+                nom : document.querySelector("[name='nom']").value,
+                image : document.querySelector("[name='image']").value,
+                prix : document.querySelector("[name='prix']").value,
+                format : document.querySelector("[name='format']").value,
+                id_type : document.querySelector("[name='type']").value,
+                id_pays : document.querySelector("[name='pays']").value,
+                millesime : document.querySelector("[name='millesime']").value,
+                code_saq : document.querySelector("[name='codesaq']").value,
+                url_saq : document.querySelector("[name='urlsaq']").value,
+                non_liste : document.querySelector("[name='nonliste']").value
             };
-            /*
-            //contien les valeurs du formulaire
-            var param = {
-                "id_bouteille":bouteille.nom.dataset.id,
-                "date_achat":bouteille.date_achat.value,
-                "garde_jusqua":bouteille.garde_jusqua.value,
-                "notes":bouteille.date_achat.value,
-                "prix":bouteille.prix.value,
-                "quantite":bouteille.quantite.value,
-                "millesime":bouteille.millesime.value,
-              };
-              */
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+            
+            bouteille = JSON.stringify(bouteille);
+            
+            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', headers: {"Content-Type": "application/json"}, body: '{"bte": ' + bouteille + '}'});
 
             fetch(requete)
-            .then(response => {
-                if (response.status === 200) {
-                  return response.json();
-                } else {
-                  throw new Error('Erreur');
-                }
-              })
-              .then(response => {
-                console.log(response);
-                window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier";
-              }).catch(error => {
+            .then(response => response.json())
+            .then(data =>{
+                console.log(data);
+            }).catch(error => {
                 console.error(error);
-              });
+            });
 
         });
     }
@@ -232,7 +194,7 @@ window.addEventListener('load', function() {
                     console.log(response);
                   
                   }).catch(error => {
-                    console.error(error);
+                   console.error(error);
                   });
         
         });
