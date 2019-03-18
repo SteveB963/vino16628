@@ -13,68 +13,62 @@
 
 class Controler 
 {
-	
-		/**
-		 * Traite la requête
-		 * @return void
-		 */
-		public function gerer()
-		{
-			
-			switch ($_GET['requete']) {
-				case 'listeBouteilleCellier':
-					$this->listeBouteilleCellier();
-					break;
-				case 'autocompleteBouteille':
-					$this->autocompleteBouteille();
-					break;
-				case 'ajouterNouvelleBouteilleCellier':
-					$this->ajouterNouvelleBouteilleCellier();
-					break;
-				case 'ajouterBouteilleCellier':
-					$this->ajouterBouteilleCellier();
-					break;
-                case 'modifierBouteilleCellier':
-					$this->modifierBouteilleCellier();
-					break;
-				case 'boireBouteilleCellier':
-					$this->boireBouteilleCellier();
-					break;
-				//À MODIFIER/SUPPRIMER!!!
-				case 'afficheCellier':
-					$this->afficheCellier();
-					break;
-				case 'creerUnCellier':
-					$this->creerUnCellier();
-					break;
-				case 'creerUnCellierSuccess':
-					$this->creerUnCellierSuccess();
-					break;
-				default:
-					$this->accueil();
-					break;
-			}
-		}
+
+    /**
+     * Traite la requête
+     * @return void
+     */
+    public function gerer()
+    {
+
+        switch ($_GET['requete']) {
+            case 'listeBouteilleCellier':
+                $this->listeBouteilleCellier();
+                break;
+            case 'autocompleteBouteille':
+                $this->autocompleteBouteille();
+                break;
+            case 'ajouterNouvelleBouteilleCellier':
+                $this->ajouterNouvelleBouteilleCellier();
+                break;
+            case 'ajouterBouteilleCellier':
+                $this->ajouterBouteilleCellier();
+                break;
+            case 'modifierBouteilleCellier':
+                $this->modifierBouteilleCellier();
+                break;
+            case 'boireBouteilleCellier':
+                $this->boireBouteilleCellier();
+                break;
+            case 'afficheCellier':
+                $this->afficheCellier();
+				break;
+			case 'creerUnCellier':
+				$this->creerUnCellier();
+				break;
+            case 'uploadPage':
+                $this->uploadPage();
+                break;
+            default:
+                $this->accueil();
+                break;
+        }
+    }
+
 
         /**
-         * Affiche la page d'acceil
+         * affiche le page accueil le trier par nom by default
          *
          */
-		private function accueil()
-		{
-			include("vues/entete.php");
-			include("vues/accueil.php");
-			include("vues/pied.php");         
-		}
+        private function accueil()
+        {  
+            include("vues/entete.php");
+            include("vues/accueil.php");
+            include("vues/pied.php");
+
+        }
     
-        /**
-         * Affiche la liste complète de l'inventaire des bouteilles listées
-         *
-         */
-        /////////////AJOUTÉ FUNCTION POUR AFFICHER TOUT LES BOUTEILLES ICI//////////////
-
-
-        /**
+     /**
          * Affiche la liste des bouteilles d'un cellier
          *
          * ///////////TEMPORAIRE/////////////
@@ -88,23 +82,7 @@ class Controler
 			include("vues/pied.php");
                   
 		}
-    //test git
-		
-        /**
-         * Affiche le liste de bouteille dans un cellier
-         *
-         * @param int $id id du cellier à afficher
-         *
-         * /////////DOIT ÊTRE MODIFIER POUR RÉCUPÉRER UN ID DE CELLIER////////
-         */
-		private function listeBouteilleCellier()
-		{
-			$bte = new Bouteille();
-            $cellier = $bte->getListeBouteilleCellier();
-            
-            echo json_encode($cellier);
-                  
-		}
+    
 		
          /**
          * 
@@ -145,77 +123,120 @@ class Controler
 		}
 		
     
-        /**
-         * Retirer une bouteille du cellier
-         * ?? ajout d'une note dans historique pour les statistiques
-         *
-         */
-		private function boireBouteilleCellier()
-		{
-			$body = json_decode(file_get_contents('php://input'));
-			
-			$bte = new Bouteille();
-            //retire une bouteille du cellier et récupère la nouvelle quantité
-			$resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
-			$resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
-			echo json_encode($resultat);
-		}
+    //affiche le page accueil apres choisir le trier(par select box)
+    private function uploadPage()
+    {
+        $bte = new Bouteille();
+        include("vues/entete.php");
+        $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
+        include("vues/cellier.php");
+        include("vues/pied.php");
 
-        /**
-         * Ajoute une bouteille du cellier
-         * ?? ajout d'une note dans historique pour les statistiques
-         *
-         */
-		private function ajouterBouteilleCellier()
-		{
-			$body = json_decode(file_get_contents('php://input'));
-			
-			$bte = new Bouteille();
-            //ajoute une bouteille au cellier et récupère la nouvelle quantité
-			$resultat = $bte->modifierQuantiteBouteilleCellier($body->id, 1);
-			$resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
-			echo json_encode($resultat);
-		}
+    }
+    /**
+     * Affiche la liste complète de l'inventaire des bouteilles listées
+     *
+     */
+    /////////////AJOUTÉ FUNCTION POUR AFFICHER TOUT LES BOUTEILLES ICI//////////////
+
+
+
+
+
+
+
+    /**
+     * Affiche le liste de bouteille dans un cellier
+     *
+     * @param int $id id du cellier à afficher
+     *
+     * /////////DOIT ÊTRE MODIFIER POUR RÉCUPÉRER UN ID DE CELLIER////////
+     */
+    private function listeBouteilleCellier()
+    {
+        $bte = new Bouteille();
+        $cellier = $bte->getListeBouteilleCellier();
+
+        echo json_encode($cellier);
+
+    }
+
+	
+	private function creerUnCellier()
+	{			
+			include("vues/entete.php");
+			include("vues/creerCellier.php");
+			include("vues/pied.php");			
 		
-        /**
-         * redirige vers le formulaire de modification d'une bouteille dans un cellier
-         * ?? traitement du formulaire à venir .....
-         *
-         *  ///////////////////////////////NON COMPLETÉ//////////////////////////////////
-         */
-        /*
-        private function modifierBouteilleCellier()
-		{	
-			//$body = json_decode(file_get_contents('php://input'));
-            
-			$bte = new Bouteille();
-			$resultat['bouteille'] = $bte->getBouteille($_GET['id']);
-			$resultat['pays'] = $bte->getPays();
-			$resultat['type'] = $bte->getType();
-            
-            //echo json_encode($resultat);
-        
-            include("vues/entete.php");
-			include("vues/formBout.php");
-			include("vues/pied.php");
-            
-		}
-		*/
-		private function creerUnCellier()
-		{			
-				include("vues/entete.php");
-				include("vues/creerCellier.php");
-				include("vues/pied.php");			
-            
-		}
+	}
 
-		private function creerUnCellierSuccess()
-		{			
-			$body = json_decode(file_get_contents('php://input'));			    	
-			$cel = new Cellier();				
-			$resultat = $cel->creerUnNouveauCellier($body);
-			echo json_encode($resultat);			            
-		}
+	private function creerUnCellierSuccess()
+	{			
+		$body = json_decode(file_get_contents('php://input'));			    	
+		$cel = new Cellier();				
+		$resultat = $cel->creerUnNouveauCellier($body);
+		echo json_encode($resultat);			            
+	}
+		
+	
+
+
+
+    /**
+     * Retirer une bouteille du cellier
+     * ?? ajout d'une note dans historique pour les statistiques
+     *
+     */
+    private function boireBouteilleCellier()
+    {
+        $body = json_decode(file_get_contents('php://input'));
+        $bte = new Bouteille();
+        //retire une bouteille du cellier et récupère la nouvelle quantité
+        $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
+        $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
+        echo json_encode($resultat);
+    }
+
+    /**
+     * Ajoute une bouteille du cellier
+     * ?? ajout d'une note dans historique pour les statistiques
+     *
+     */
+    private function ajouterBouteilleCellier()
+    {
+        $body = json_decode(file_get_contents('php://input'));
+
+        $bte = new Bouteille();
+        //ajoute une bouteille au cellier et récupère la nouvelle quantité
+        $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, 1);
+        $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
+        echo json_encode($resultat);
+    }
+
+    /**
+     * redirige vers le formulaire de modification d'une bouteille dans un cellier
+     * ?? traitement du formulaire à venir .....
+     *
+     *  ///////////////////////////////NON COMPLETÉ//////////////////////////////////
+     */
+    /*
+    private function modifierBouteilleCellier()
+    {	
+        //$body = json_decode(file_get_contents('php://input'));
+
+        $bte = new Bouteille();
+        $resultat['bouteille'] = $bte->getBouteille($_GET['id']);
+        $resultat['pays'] = $bte->getPays();
+        $resultat['type'] = $bte->getType();
+
+        //echo json_encode($resultat);
+
+        include("vues/entete.php");
+        include("vues/formBout.php");
+        include("vues/pied.php");
+
+    }
+    */
 }
 ?>
 

@@ -9,6 +9,7 @@
  */
 
 // const BaseURL = "http://vino.jonathanmartel.info/";
+
 window.addEventListener('load', function() {
     const BaseURL = document.baseURI;
     console.log(BaseURL);
@@ -67,15 +68,14 @@ window.addEventListener('load', function() {
     document.querySelectorAll(".btnBoire").forEach(function(element){
         //console.log(element);
         element.addEventListener("click", function(evt){
-            console.log("click boire");
             let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
+            let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
             let quantite = document.querySelector("[data-quantite='" + id + "']")
-            console.log(quantite);
+            //console.log(quantite);
             
             fetch(requete)
             .then(response => {
-                if (response.status === 200) {
+                if(response.status === 200) {
                   return response.json();
                 } else {
                   throw new Error('Erreur');
@@ -90,16 +90,15 @@ window.addEventListener('load', function() {
         })
 
     });
-
+    //buttonn ajouter
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
-            console.log("click ajouter");
-
+            //console.log("click ajouter");
             let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+            let requete = new Request("index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+            //console.log(requete);
             let quantite = document.querySelector("[data-quantite='" + id + "']")
-            console.log(quantite);
-            
+            //console.log(quantite);  
             fetch(requete)
             .then(response => {
                 if (response.status === 200) {
@@ -117,12 +116,23 @@ window.addEventListener('load', function() {
         })
 
     });
-   
+    //buttonn Trier par le selct box value
+     let btnTrier = document.getElementById('trier');
+    if(btnTrier){
+        btnTrier.addEventListener("change", function(evt){
+          var trier=document.getElementById('trier').value;
+            console.log(trier);
+            window.location.href = "index.php?requete=uploadPage&trierCellier=" + trier;
+        });
+    }  
+
+            
+       
+  
     //bouton modifier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id;
-            window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier&id=" + id;
+            window.location.href ="index.php?requete=modifierBouteilleCellier&id=" + id;
             /*
             let id = evt.target.parentElement.dataset.id;
             let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
@@ -151,7 +161,6 @@ window.addEventListener('load', function() {
     if(sauver){
         sauver.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
-
             let bouteille = {
                 nom : document.querySelector("[name='nom']"),
                 image : document.querySelector("[name='image']"),
@@ -175,9 +184,8 @@ window.addEventListener('load', function() {
                 "millesime":bouteille.millesime.value,
               };
               */
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
-
+            //let id = evt.target.parentElement.dataset.id;
+            let requete = new Request("index.php?requete=modifierBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
             fetch(requete)
             .then(response => {
                 if (response.status === 200) {
@@ -188,7 +196,7 @@ window.addEventListener('load', function() {
               })
               .then(response => {
                 console.log(response);
-                window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier";
+                window.location.href =BaseURL + "index.php?requete=modifierBouteilleCellier";
               }).catch(error => {
                 console.error(error);
               });
@@ -197,20 +205,17 @@ window.addEventListener('load', function() {
     }
 
     
-
-    
     //autocomplete et ajout d'une bouteille
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
     //console.log(inputNomBouteille);
     let liste = document.querySelector('.listeAutoComplete');
-
     if(inputNomBouteille){
       inputNomBouteille.addEventListener("keyup", function(evt){
         console.log(evt);
         let nom = inputNomBouteille.value;
         liste.innerHTML = "";
         if(nom){
-          let requete = new Request(BaseURL+"index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
+          let requete = new Request("index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
           fetch(requete)
               .then(response => {
                   if (response.status === 200) {
@@ -269,7 +274,7 @@ window.addEventListener('load', function() {
             "quantite":bouteille.quantite.value,
             "millesime":bouteille.millesime.value,
           };
-          let requete = new Request(BaseURL+"index.php?requete=ajouterNouvelleBouteilleCellier", {method: 'POST', body: JSON.stringify(param)});
+          let requete = new Request("index.php?requete=ajouterNouvelleBouteilleCellier", {method: 'POST', body: JSON.stringify(param)});
             fetch(requete)
                 .then(response => {
                     if (response.status === 200) {
