@@ -218,12 +218,12 @@ class Controler
                     $resultat -> status = "pas de duplication";
                     
                     //si bouteille est liste
-                    if($body -> bte -> nonliste == 0){
+                    if($body -> bte -> non_liste == 0){
                         //ajoute nouvelle bouteille non-liste
                         $bteAjoute = new Bouteille();
-                        //$resultat -> succes = $bteAjoute -> ajouterBouteilleNonListe($body -> bte);
+                        $resultat -> succes = $bteAjoute -> ajouterBouteilleNonListe($body -> bte);
                         $resultat -> status = "ajoute bouteille";
-                        $resultat -> succes = true;
+                        //$resultat -> succes = true;
                         //update sur le contenu de cellier 
                         if($resultat -> succes == true){
                             /*

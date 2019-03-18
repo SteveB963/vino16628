@@ -164,16 +164,16 @@ class Bouteille extends Modele {
 	 */
 	public function ajouterBouteilleNonListe($data)
 	{
-        $requete = "INSERT INTO bouteille(nom, image, prix, format, type, pays, millesime, code_saq, url_saq, non_liste) VALUES (" .
+        $requete = "INSERT INTO bouteille(nom, image, prix, format, id_type, id_pays, millesime, code_saq, url_saq, non_liste) VALUES (" .
         "'" . $data->nom . "'," .
         "'" . $data->image . "'," .
         "'" . $data->prix . "'," .
         "'" . $data->format . "'," .
         "'" . $data->type . "'," .
         "'" . $data->pays . "'," .
-        "'" . $data->millesime . "',)" .
-        "'" . $data->code_saq . "',)" .
-        "'" . $data->url_saq . "',)" .
+        "'" . $data->millesime . "'," .
+        "'" . $data->code_saq . "'," .
+        "'" . $data->url_saq . "'," .
         "'1')";
 
         $res = $this->_db->query($requete);
