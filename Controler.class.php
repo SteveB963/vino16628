@@ -44,6 +44,12 @@ class Controler
 				case 'afficheCellier':
 					$this->afficheCellier();
 					break;
+				case 'creerUnCellier':
+					$this->creerUnCellier();
+					break;
+				case 'creerUnCellierSuccess':
+					$this->creerUnCellierSuccess();
+					break;
 				default:
 					$this->accueil();
 					break;
@@ -195,6 +201,21 @@ class Controler
             
 		}
 		*/
+		private function creerUnCellier()
+		{			
+				include("vues/entete.php");
+				include("vues/creerCellier.php");
+				include("vues/pied.php");			
+            
+		}
+
+		private function creerUnCellierSuccess()
+		{			
+			$body = json_decode(file_get_contents('php://input'));			    	
+			$cel = new Cellier();				
+			$resultat = $cel->creerUnNouveauCellier($body);
+			echo json_encode($resultat);			            
+		}
 }
 ?>
 

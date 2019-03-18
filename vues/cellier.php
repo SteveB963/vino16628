@@ -1,3 +1,4 @@
+<div id="creerCellier"><p><a href="?requete=creerUnCellier">Creer votre cellier</a></p></div>
 <div class="cellier content">
 
 <?php

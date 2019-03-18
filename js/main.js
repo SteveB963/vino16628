@@ -13,6 +13,57 @@ window.addEventListener('load', function() {
     const BaseURL = document.baseURI;
     console.log(BaseURL);
     console.log("load");
+
+    let btnCreer = document.querySelector("[name='creerCellier']");
+    console.log(btnCreer);
+    
+    if(btnCreer){
+      let cellier = {
+       
+        nom : document.querySelector("[name='nom']"),
+        id_usager : document.querySelector("[name='id_usager']"),
+        
+      };
+      btnCreer.addEventListener("click", function(){
+
+        alert("o creer");        
+        var param = {            
+          "id_usager":cellier.id_usager.value,
+          "nom":cellier.nom.value,
+        };
+        let requete = new Request(BaseURL+"index.php?requete=creerUnCellierSuccess", {method: 'POST', body: JSON.stringify(param)});
+        
+        // let requete = new http.Request(BaseURL+"index.php?requete=creerUnCellierSuccess");  
+        alert("o pas");
+        fetch(requete)
+              .then(response => {
+                  if (response.status === 200) {
+                    return response.json();
+                  } else {
+                    throw new Error('Erreur');
+                  }
+                })
+                .then(response => {
+                   console.log(response);
+                   alert("o fitigue");
+                
+                }).catch(error => {
+                  console.error(error);
+                });
+             
+      
+      });
+    }
+
+
+
+
+
+
+
+
+
+
     document.querySelectorAll(".btnBoire").forEach(function(element){
         //console.log(element);
         element.addEventListener("click", function(evt){
