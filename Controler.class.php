@@ -82,7 +82,7 @@ class Controler
 			include("vues/pied.php");
                   
 		}
-    
+    //test git
 		
         /**
          * Affiche le liste de bouteille dans un cellier
