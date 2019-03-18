@@ -14,6 +14,7 @@
 class Controler 
 {
 	
+<<<<<<< HEAD
     /**
      * Traite la requête
      * @return void
@@ -40,6 +41,9 @@ class Controler
             case 'boireBouteilleCellier':
                 $this->boireBouteilleCellier();
                 break;
+            case 'afficheCellier':
+                $this->afficheCellier();
+                break;
             case 'uploadPage':
                 $this->uploadPage();
                 break;
@@ -49,24 +53,34 @@ class Controler
         }
     }
 
-        /**
-         * Affiche la page d'acceil
-         *
-         * ////////DOIT ÊTRE MODIFIER POUR POINTER VERS LA PAGE D'ACCEIL////////
-         */
-     //affiche le page accueil le trier par nom by default
-    private function accueil()
-    {  
-        $bte = new Bouteille();
-        include("vues/entete.php");
-        //ajouter le produit de SAQ web site
-         //$saq = new SAQ();
-        //$saq->getProduits(5,0);
-        $data = $bte->getListeBouteilleCellier(); 
-        include("vues/cellier.php");
-        include("vues/pied.php");
 
-    }
+        /**
+         * affiche le page accueil le trier par nom by default
+         *
+         */
+        private function accueil()
+        {  
+            include("vues/entete.php");
+            include("vues/acceuil.php");
+            include("vues/pied.php");
+
+        }
+    
+     /**
+         * Affiche la liste des bouteilles d'un cellier
+         *
+         * ///////////TEMPORAIRE/////////////
+         */
+    	private function afficheCellier()
+		{
+			$bte = new Bouteille();
+            $data = $bte->getListeBouteilleCellier();
+			include("vues/entete.php");
+			include("vues/cellier.php");
+			include("vues/pied.php");
+                  
+		}
+    
     
     //affiche le page accueil apres choisir le trier(par select box)
     private function uploadPage()
@@ -141,7 +155,7 @@ class Controler
         }
 
 
-    }
+    }       
 
 
     /**
