@@ -22,6 +22,7 @@ class Bouteille extends Modele {
 	 */
     public function getBouteille($id)
 	{
+        
 		$rows = Array();
 		$res = $this->_db->query('SELECT 
                                     b.id_bouteille,
@@ -118,36 +119,37 @@ class Bouteille extends Modele {
 	 * @return Array $rows les informations de chaque bouteille dans le cellier7
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeBouteilleCellier() 
+	public function getListeBouteilleCellier($trier='nom') 
 	{
 		
 		$rows = Array();
-		$requete ='SELECT 
+        //choisir le type de  trier (type,prix,code, format etc..)
+        $requete ='SELECT 
                         c.*,
-                        b.nom,
-                        b.image,
-                        b.code_saq,
-                        b.prix,
-                        b.url_saq,
+                        b.id_bouteille AS id, 
+                        b.prix, 
+                        b.nom AS nom, 
+                        b.image AS image, 
+                        b.code_saq AS code_saq, 
+                        b.url_saq, 
+                        p.pays AS pays, 
+                        b.millesime AS millesime ,
                         b.format,
-                        b.millesime,
-                        b.non_liste,
-                        p.pays,
-                        t.type
+                        t.type AS type 
                         FROM cellier_contenu c
-                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
+                        JOIN bouteille b ON id = c.id_bouteille 
                         JOIN pays p ON p.id_pays = b.pays
                         JOIN bouteille_type t ON t.id_type = b.type
                         WHERE c.id_cellier = 1
-						'; ///REMPLACER 1 PAR L'ID DU CELLIER
-        
+                        ORDER BY '.$trier.' ASC';
+                        ; ///REMPLACER 1 PAR L'ID DU CELLIER
+      
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
 			{
 				while($row = $res->fetch_assoc())
 				{
-					$row['nom'] = trim(utf8_encode($row['nom']));
 					$rows[] = $row;
 				}
 			}
@@ -185,7 +187,6 @@ class Bouteille extends Modele {
 			{
 				while($row = $res->fetch_assoc())
 				{
-					$row['nom'] = trim(utf8_encode($row['nom']));
 					$rows[] = $row;
 					
 				}
