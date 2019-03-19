@@ -4,19 +4,19 @@
         <form class="formulaire">
             <div>
                 <input type="text" name="nom" value="<?php echo $donnee['bouteille']['nom'] ?>" placeholder="Nom :"><label for="nom">Nom : </label>
-                <p class="erreur"></p>
+                <p class="erreurNom"><?php  ?></p>
             </div>
             <div>
                 <input type="text" name="image" value="<?php echo $donnee['bouteille']['image'] ?>" placeholder="Image :"><label for="image">Image : </label>
-                <p class="erreur"></p>
+                <p class="erreurImage"></p>
             </div>
             <div>
-                <input type="text" name="prix" value="<?php echo $donnee['bouteille']['prix'] ?>" placeholder="Prix :"><label for="prix">Prix : </label>
-                <p class="erreur"></p>
+                <input type="text" name="prix" value="<?php echo $donnee['bouteille']['prix'] ?>" maxlength="9" placeholder="Prix :"><label for="prix">Prix : </label>
+                <p class="erreurPrix"></p>
             </div>
             <div>
-                <input type="text" name="format" value="<?php echo $donnee['bouteille']['format'] ?>" placeholder="Format : (ml)"><label for="format">Format : </label>
-                <p class="erreur"></p>
+                <input type="text" name="format" value="<?php echo $donnee['bouteille']['format'] ?>" maxlength="7" placeholder="Format : (ml)"><label for="format">Format : </label>
+                <p class="erreurFormat"></p>
             </div>
             <div>
                 <label for="type">Type : </label>
@@ -57,20 +57,21 @@
                 </select>
             </div>
             <div>
-                <input type="text" name="millesime" value="<?php echo $donnee['bouteille']['millesime'] ?>" placeholder="Millésime :"><label for="millesime">Millésime : </label>
-                <p class="erreur"></p>
+                <input type="text" name="millesime" value="<?php echo $donnee['bouteille']['millesime'] ?>" maxlength="4" placeholder="Millésime :"><label for="millesime">Millésime : </label>
+                <p class="erreurMillesime"></p>
             </div>
             <div>
-                <input type="text" name="codesaq" value="<?php echo $donnee['bouteille']['code_saq'] ?>" placeholder="Code SAQ :"><label for="codesaq">Code SAQ : </label>
-                <p class="erreur"></p>
+                <input type="text" name="codesaq" value="<?php echo $donnee['bouteille']['code_saq'] ?>" maxlength="8" placeholder="Code SAQ :"><label for="codesaq">Code SAQ : </label>
+                <p class="erreurCodesaq"></p>
             </div>
             <div>
                 <input type="text" name="urlsaq" value="<?php echo $donnee['bouteille']['url_saq'] ?>" placeholder="URL SAQ :"><label for="urlsaq">URL SAQ : </label>
-                <p class="erreur"></p>
+                <p class="erreurUrlsaq"></p>
             </div>
         </form>
         <input type="hidden" name="id" value="<?php echo $donnee['bouteille']['id_bouteille'] ?>">
         <input type="hidden" name="nonliste" value="<?php echo $donnee['bouteille']['non_liste'] ?>">
         <button name="sauver">Modifier la bouteille</button>
+        <p class="msg attention"></p>
     </div>
 </div>

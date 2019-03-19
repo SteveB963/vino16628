@@ -8,18 +8,15 @@
  *
  */
 
-// const BaseURL = "http://vino.jonathanmartel.info/";
-
 window.addEventListener('load', function() {
     const BaseURL = document.baseURI;
+    
     //buttonn Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
-        //console.log(element);
         element.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
             let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
             let quantite = document.querySelector("[data-quantite='" + id + "']")
-            //console.log(quantite);
             
             fetch(requete)
             .then(response => {
@@ -66,7 +63,7 @@ window.addEventListener('load', function() {
 
     });
    
-    //bouton modifier, dans le cellier
+    //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
@@ -75,6 +72,79 @@ window.addEventListener('load', function() {
         })
 
     });
+    
+    //vérifie les champs et sauvegrade les modifications effectués
+    var sauver = document.querySelector("[name='sauver']");
+    if(sauver){
+        sauver.addEventListener("click", function(evt){
+            let id = evt.target.parentElement.dataset.id; 
+            let bouteille = {
+                id_bouteille : document.querySelector("[name='id']").value,
+                nom : document.querySelector("[name='nom']").value,
+                image : document.querySelector("[name='image']").value,
+                prix : document.querySelector("[name='prix']").value.replace(/,/,'.'),
+                format : document.querySelector("[name='format']").value,
+                id_type : document.querySelector("[name='type']").value,
+                id_pays : document.querySelector("[name='pays']").value,
+                millesime : document.querySelector("[name='millesime']").value,
+                code_saq : document.querySelector("[name='codesaq']").value,
+                url_saq : document.querySelector("[name='urlsaq']").value,
+                non_liste : document.querySelector("[name='nonliste']").value
+            };
+            
+            let verif = {
+                nom : verifChamp(bouteille.nom,"text"),
+                image : verifChamp(bouteille.image,"text"),
+                prix : verifChamp(bouteille.prix,"prix"),
+                format : verifChamp(bouteille.format,"num"),
+                millesime : verifChamp(bouteille.millesime,"num",4),
+                code_saq : verifChamp(bouteille.code_saq,"num",8),
+                url_saq : verifChamp(bouteille.url_saq,"text")
+            };
+            
+            //document.querySelector(".erreurNom").innerHTML = "khdsgfhjs";
+            let body = { 
+                bte :  bouteille,
+                verif : verif
+            }
+            
+            bouteille = JSON.stringify(body);
+            
+            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', headers: {"Content-Type": "application/json"}, body: bouteille });
+
+            fetch(requete)
+            .then(response => response.json())
+            .then(data =>{
+                console.log(data);
+                
+                document.querySelector(".erreurNom").innerHTML = data.erreur.nom;
+                document.querySelector(".erreurImage").innerHTML = data.erreur.image;
+                document.querySelector(".erreurPrix").innerHTML = data.erreur.prix;
+                document.querySelector(".erreurFormat").innerHTML = data.erreur.format;
+                document.querySelector(".erreurMillesime").innerHTML = data.erreur.millesime;
+                document.querySelector(".erreurCodesaq").innerHTML = data.erreur.code_saq;
+                document.querySelector(".erreurUrlsaq").innerHTML = data.erreur.url_saq;
+                
+                if(data.succes == true){
+                    document.querySelector(".msg").innerHTML = "Modification sauvegarder";
+                }
+                else if(data.succes == "dup"){
+                    document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
+                }
+                else{
+                    document.querySelector(".msg").innerHTML = "Corriger les erreurs et réessayer";
+                }
+                /*
+                setTimeout(function(){ 
+                    document.querySelector(".msg").innerHTML = "";
+                }, 2000);
+                */
+            }).catch(error => {
+                console.error(error);
+            });
+
+        });
+    }
     
     //buttonn Trier par le selct box value
      let btnTrier = document.getElementById('trier');
@@ -85,40 +155,6 @@ window.addEventListener('load', function() {
             window.location.href = "index.php?requete=uploadPage&trierCellier=" + trier;
         });
     } 
-    
-    //sauvegarde du formulaire, sauvegrade les modifications effectués
-    var sauver = document.querySelector("[name='sauver']");
-    if(sauver){
-        sauver.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id;
-            let bouteille = {
-                id_bouteille : document.querySelector("[name='id']").value,
-                nom : document.querySelector("[name='nom']").value,
-                image : document.querySelector("[name='image']").value,
-                prix : document.querySelector("[name='prix']").value,
-                format : document.querySelector("[name='format']").value,
-                id_type : document.querySelector("[name='type']").value,
-                id_pays : document.querySelector("[name='pays']").value,
-                millesime : document.querySelector("[name='millesime']").value,
-                code_saq : document.querySelector("[name='codesaq']").value,
-                url_saq : document.querySelector("[name='urlsaq']").value,
-                non_liste : document.querySelector("[name='nonliste']").value
-            };
-            
-            bouteille = JSON.stringify(bouteille);
-            
-            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', headers: {"Content-Type": "application/json"}, body: '{"bte": ' + bouteille + '}'});
-
-            fetch(requete)
-            .then(response => response.json())
-            .then(data =>{
-                console.log(data);
-            }).catch(error => {
-                console.error(error);
-            });
-
-        });
-    }
 
     
     //autocomplete et ajout d'une bouteille
@@ -208,8 +244,60 @@ window.addEventListener('load', function() {
         
         });
       } 
-  }
+    }
     
-
+    
+    
+    function verifChamp(champ,type,long = 0){  
+        var resultat = "";
+        let regex = "";
+        if(champ.trim() != "" && champ.replace(/<(?:.|\n)*?>/gm, '') != ""){
+            if(long != 0 && champ.length < long){
+                resultat = "Entré trop courte, " + long + " caratères min."
+            }
+            else{
+                switch(type){
+                    case 'text' :
+                        regex = new RegExp(/^.+$/);
+                        resultat = regex.test(champ);
+                        if(!resultat){
+                            resultat = "Entré invalide";
+                        }
+                        else{
+                            resultat = "";
+                        }
+                        break;
+                    case 'prix' :
+                        regex = new RegExp(/^\d{1,6}(.\d{1,2})?$/);
+                        resultat = regex.test(champ);
+                        if(!resultat){
+                            resultat = "Le prix que vous avez entré est invalide";
+                        }
+                        else{
+                            resultat = "";
+                        }
+                        break;
+                    case 'date' :
+                        break;
+                    case 'num' :
+                        regex = new RegExp(/^\d+$/);
+                        resultat = regex.test(champ);
+                        if(!resultat){
+                            resultat = "Entrez un nombre valide";
+                        }
+                        else{
+                            resultat = "";
+                        }
+                        break;
+                }
+            }
+        }
+        else{
+            resultat = "veuillez remplir le champ";
+        }
+        
+        return resultat;
+    }
+    
 });
 

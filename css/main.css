@@ -571,8 +571,9 @@ footer
 }
 
 /*erreur des champs du formulaire*/
-.mesFormulaires .erreur{
+.formulaire > div > p{
     margin:2px 0 0;
+    color:red;
 }
 
 .recherche{
@@ -639,6 +640,10 @@ input:focus, select:focus{
 
 .mesFormulaires button:hover{
 	box-shadow: none;
+}
+
+.attention{
+    background-color:firebrick;
 }
 
 .formChiffre{

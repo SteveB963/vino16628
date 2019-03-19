@@ -172,9 +172,9 @@ class Controler
 		
         /**
          * redirige vers le formulaire de modification d'une bouteille dans un cellier
-         * ?? traitement du formulaire à venir .....
+         * et traite le formulaire
          *
-         * 
+         * @return obj $resultat resultat des requetes sql et retourne les erreurs.
          */
         private function modifierBouteilleCellier(){
             $body = json_decode(file_get_contents('php://input'));
@@ -196,54 +196,72 @@ class Controler
             
             else{
                 $resultat = new stdClass();
+                $resultat -> erreur = $body -> verif;
                 $resultat -> succes = false;
+                $erreur = false;
                 
-                $bte = new Bouteille();
-                $bteAvant = $bte -> getBouteille($body -> bte -> id_bouteille);
+                $verif = (array) $body -> verif;
                 
-                $bteNouvelle = (array) $body -> bte;
-                
-                //vérifie si il y a eu des modifications
-                $duplication = true;
-                foreach($bteAvant as $champ => $valeur){
-                    if($bteAvant[$champ] != $bteNouvelle[$champ]){
-                        $duplication = false;
+                foreach($verif as $err){
+                    if($err != ""){
+                        $erreur = true;
                     }
                 }
-
-                if(!$duplication){
-                    $resultat -> status = "pas de duplication";
+                
+                
+                if(!$erreur){
                     
-                    //si bouteille est liste
-                    if($body -> bte -> non_liste == 0){
-                        //ajoute nouvelle bouteille non-liste
-                        $resultat -> succes = $bte -> ajouterBouteilleNonListe($body -> bte);
-                        $resultat -> status = "ajoute bouteille ";
-                        
-                        //update sur le contenu de cellier 
-                        if($resultat -> succes == true){
-                            
-                            $dernId = $bte -> getDernBouteille();
-                            $resultat -> succes = $bte -> remplaceBouteilleCellier($body-> bte -> id_bouteille, $dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
-                            
-                            $resultat -> status .= "Remplace bouteille" . $dernId;
+                    $bte = new Bouteille();
+                    $bteAvant = $bte -> getBouteille($body -> bte -> id_bouteille);
+
+                    $bteNouvelle = (array) $body -> bte;
+
+                    //vérifie si il y a eu des modifications
+                    $duplication = true;
+                    foreach($bteAvant as $champ => $valeur){
+                        if($bteAvant[$champ] != $bteNouvelle[$champ]){
+                            $duplication = false;
                         }
+                    }
+                    //si modification
+                    if(!$duplication){
+                        //si bouteille est listé
+                        if($body -> bte -> non_liste == 0){
+                            //vérification des champs du formulaire
+
+                            //si vérif est correct
+                            //ajoute nouvelle bouteille non-liste
+                            $resultat -> succes = $bte -> ajouterBouteilleNonListe($body -> bte);
+                            $resultat -> status = "ajoute bouteille ";
+
+                            //update sur le contenu de cellier 
+                            if($resultat -> succes == true){
+
+                                $dernId = $bte -> getDernBouteille();
+                                $resultat -> succes = $bte -> remplaceBouteilleCellier($body-> bte -> id_bouteille, $dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
+
+                                $resultat -> status .= "Remplace bouteille" . $dernId;
+                            }
+                            else{
+                                $resultat  -> erreur = "erreur d'insertion dans la bd";
+                            }
+                            //si erreur dans les champs
+                            //retourne les erreurs selon les champs
+                        }
+                        //si non listé
                         else{
-                            $resultat  -> erreur = "erreur d'insertion dans la bd";
+                            //si deja non liste
+                            //update de la bouteille.
+                            $resultat -> succes = $bte -> modiferBouteilleNonListe($body -> bte);
+                            $resultat -> status = "modifier bouteille";
                         }
-
                     }
+                    //si pas de modification
                     else{
-                        //si deja non liste
-                        //update de la bouteille.
-                        $resultat -> succes = $bte -> modiferBouteilleNonListe($body -> bte);
-                        $resultat -> status = "modifier bouteille";
+                        $resultat -> succes = "dup";
                     }
-                    
                 }
-                else{
-                    $resultat -> status = "duplication";
-                }
+                
                 echo trim(json_encode($resultat));
             }
             
