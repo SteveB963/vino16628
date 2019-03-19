@@ -54,6 +54,15 @@ class Controler
             case 'login':
                 $this->login();
                 break;
+            case 'deconnexion':
+                $this->deconnexion();
+                break;
+            case 'inscription':
+                $this->inscription();
+                break;
+            case 'creerCompteUsager':
+                $this->creerCompteUsager();
+                break;
             default:
                 $this->accueil();
                 break;
@@ -67,6 +76,7 @@ class Controler
      */
     private function compte()
     {
+        //Si l'utilisateur est connecté
         if(isset($_SESSION["idUtilisateur"])){
             //Afficher informations de l'utilisateur
             include("vues/entete.php");
@@ -74,6 +84,7 @@ class Controler
             include("vues/pied.php");
         }
         else{
+            //Afficher la page de login
             include("vues/entete.php");
             include("vues/login.php");
             include("vues/pied.php");
@@ -81,34 +92,131 @@ class Controler
     }
 
     /**
-     * Affiche différentes pages concernant le login selon
-     *  si l'utilisateur est connecté ou pas.
+     * Vérifie l'authentification de l'utilisateur puis le redirige vers
+     *  la page "monCompte.php" si l'authentification est acceptée. Dans le
+     *  cas inverse, l'utilisateur reste sur la page de login.
      *
      */
     private function login()
     {
-        var_dump($_POST["nom"]);
-        if(isset($_POST["nom"]) && isset($_POST["prenom"]) && isset($_POST["motPasse"])){
+        //Si l'utilisateur arrive par la page de login et que les champs sont remplis
+        if(isset($_POST["courriel"]) && isset($_POST["motPasse"])){
             $log = new Login();
-            $correcteInfos = $log->authentification($_POST["nom"], $_POST["prenom"], $_POST["motPasse"]);
+            $correcteInfos = $log->authentification($_POST["courriel"], $_POST["motPasse"]);
             var_dump($correcteInfos);
+
+            //Si l'utilisateur a entré les bonnes informations
             if($correcteInfos == true)
             {
-                $_SESSION["idUtilisateur"] = $_POST["nom"] . $_POST["prenom"];
+                //On crée une variable session et on le redirige vers la
+                //page "monCompte.php"
+                $_SESSION["idUtilisateur"] = $_POST["courriel"];
+                include("vues/entete.php");
+                include("vues/monCompte.php");
+                include("vues/pied.php");
+            }
+            //Si les informations de sont pas bonnes
+            else
+            {
+                //On crée un message d'erreur à afficher dans la page login
+                $msgErreur = "Les informations entré sont incorrectes";
+                include("vues/entete.php");
+                include("vues/login.php");
+                include("vues/pied.php");
+            }         
+        }
+        //Si l'utilisateur à simplement entré l'URL et qu'il est déja connecté
+        else if(isset($_SESSION["idUtilisateur"]))
+        {
+            include("vues/entete.php");
+            include("vues/monCompte.php");
+            include("vues/pied.php");
+        }
+        
+    }
+
+    /**
+     * Ferme la session en cours afin de déconnecter l'utilisateur
+     *  puis le redirige vers la page de connexion.
+     *
+     */
+    private function deconnexion()
+    {
+        $_SESSION = array();
+
+        if(isset($_COOKIE[session_name()]))
+        {
+            setcookie(session_name(), '', time() - 3600);
+        }
+
+        session_destroy();
+
+        $msgConfirmation = "Votre session à bien été fermée.";
+        include("vues/entete.php");
+        include("vues/login.php");
+        include("vues/pied.php");
+    }
+
+    /**
+     * Redirige l'utilisateur vers la page d'inscription.
+     *
+     */
+    private function inscription()
+    {
+        //Si l'utilisateur est connecté
+        if(isset($_SESSION["idUtilisateur"]))
+        {
+            include("vues/entete.php");
+            include("vues/monCompte.php");
+            include("vues/pied.php");
+        }
+        else
+        {
+            include("vues/entete.php");
+            include("vues/inscription.php");
+            include("vues/pied.php");
+        }
+    }
+
+    /**
+     * Ferme la session en cours afin de déconnecter l'utilisateur
+     *  puis le redirige vers la page de connexion.
+     *
+     */
+    private function creerCompteUsager()
+    {
+        if($_POST["prenomInscri"] !="" && $_POST["nomInscri"] !="" && $_POST["courrielInscri"] !="" && $_POST["motPasseInscri"] !="")
+        {
+            $cpt = new Login();
+
+            $motPasseEncrypte = password_hash($_POST["motPasseInscri"], PASSWORD_DEFAULT);
+            $ajoutFonctionel = $cpt->nouveauCompte($_POST["prenomInscri"], $_POST["nomInscri"], $_POST["courrielInscri"], $motPasseEncrypte);
+
+            if($ajoutFonctionel)
+            {
+                //On crée une variable session et on le redirige vers la
+                //page "monCompte.php"
+                $_SESSION["idUtilisateur"] = $_POST["courrielInscri"];
                 include("vues/entete.php");
                 include("vues/monCompte.php");
                 include("vues/pied.php");
             }
             else
             {
-                $msgErreur = "Les informations entré sont incorrectes";
+                $msgErreur = "Un compte est déjà lié à cette adresse courriel.";
                 include("vues/entete.php");
-                include("vues/login.php");
+                include("vues/inscription.php");
                 include("vues/pied.php");
             }
-                
+            
         }
-        
+        else
+        {
+            $msgErreur = "Tout les champs doivent être remplis!";
+            include("vues/entete.php");
+            include("vues/inscription.php");
+            include("vues/pied.php");
+        }
     }
 
 

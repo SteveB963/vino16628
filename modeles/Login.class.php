@@ -22,12 +22,11 @@ class Login extends Modele{
 	 * @return boolean	true Signifie que les informations sont correcte
 	 *		   boolean	false Signifie que les informations sont fausses
 	 */
-    public function authentification($nom, $prenom, $motDePasse)
+    public function authentification($courriel, $motDePasse)
 	{
-		var_dump($nom . $prenom . $motDePasse);
 		$rows = Array();
 		//À ajouter pour filtrer les variables: mysqli_real_escape_string
-		$res = $this->_db->query('SELECT motpasse FROM ' . self::TABLE . ' WHERE nom = "' . $nom . '" AND prenom = "' . $prenom . '"');
+		$res = $this->_db->query('SELECT motpasse FROM ' . self::TABLE . ' WHERE email = "' . $courriel . '"');
 		//SELECT motpasse FROM usager WHERE nom = 'Jean' AND prenom = 'Admin'
 
 		if($res->num_rows)
@@ -35,9 +34,8 @@ class Login extends Modele{
 
             while($row = $res->fetch_assoc())
             {
-            	var_dump($row["motpasse"]);
             	//Si le mot de passe est identique...
-            	if(/*password_verify($motDePasse, $row)*/ $motDePasse == $row["motpasse"]){
+            	if(password_verify($motDePasse, $row["motpasse"]) /*$motDePasse == $row["motpasse"]*/){
             		//Retourne vrai
             		return true;
             	}else{
@@ -46,6 +44,56 @@ class Login extends Modele{
             	}
             }
 		}
+	}
+
+	/**
+	 * Ajout - Création d'un nouveau compte usager
+     *
+     * @param string $prenomInscri Le prenom d'utilisateur entré dans le formulaire
+     *		  string $nomInscri Le nom d'utilisateur entré dans le formulaire
+     *		  string $courrielInscri Le courriel d'utilisateur entré dans le 
+     *		  		 formulaire
+     *		  string $motDePasse Le mot de passe entré dans le formulaire
+	 *  
+	 */
+    public function nouveauCompte($prenomInscri, $nomInscri, $courrielInscri, $motDePasse)
+	{
+		$rows = Array();
+		$allMails = $this->_db->query('SELECT email FROM ' . self::TABLE);
+		$mailExistant = false;
+
+		//Vérifier si le email entrer pour la création du nouveau
+		//compte est déjà existant
+		if($allMails->num_rows)
+		{
+
+            while($row = $allMails->fetch_assoc())
+            {
+            	if($courrielInscri == $row["email"]){
+            		$mailExistant = true;
+            		break;
+            	}else{
+            		$mailExistant = false;
+            	}
+            }
+		}
+
+		if($mailExistant == false)
+		{
+			//À ajouter pour filtrer les variables: mysqli_real_escape_string
+			$res = $this->_db->query('INSERT INTO usager (nom, prenom, email, motpasse) VALUES ( "' . $nomInscri . '",' 
+						. '"' . $prenomInscri . '",'
+						. '"' . $courrielInscri . '",'
+						. '"' . $motDePasse . '")');
+			//INSERT INTO usager (nom, prenom, email, motpasse) VALUES ("test", "ajout", "test@gmail.com", "passetest")	
+
+			return $res;
+		}
+		else
+		{
+			return false;
+		}
+		
 	}
 }
 

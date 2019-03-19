@@ -10,20 +10,26 @@
 						</div>";
 			}
 
+			if(isset($msgConfirmation))
+			{
+				echo "<div class='divConf'>
+							<p>$msgConfirmation</p>
+						</div>";
+			}
+
+			//var_dump($_SESSION["idUtilisateur"]);
+
 		?>
 		<div>
-			<input type="text" name="nom" placeholder="Nom">
-			<label for="nom" class="hide">Nom:</label>
+			<input type="email" name="courriel" placeholder="Courriel">
+			<label for="courriel" class="hide">Courriel:</label>
 		</div>
 		<div>
-			<input type="text" name="prenom" placeholder="Prenom">
-			<label for="prenom" class="hide">Prenom:</label>
-		</div>
-		<div>
-			<input type="text" name="motPasse" placeholder="Mot de passe">
+			<input type="password" name="motPasse" placeholder="Mot de passe">
 			<label for="motPasse" class="hide">Mot de passe:</label>
 		</div>
 		<button>Se connecter</button>
 		<input type="hidden" name="requete" value="login">
+		<p>Je souhaite <a href="index.php?requete=inscription">m'inscrire</a>!</p>
 	</form>
 </div>
