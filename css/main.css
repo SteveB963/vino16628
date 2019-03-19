@@ -545,7 +545,7 @@ footer
 	padding-bottom: 1px;
 }
 
-.formulaire div input{
+.formulaire div input, .formulaire div select{
 	width: 100%;
 }
 
@@ -559,11 +559,20 @@ footer
 	padding-left: 20px;
 }
 
-.mesFormulaires input, textarea{
+.formulaire > div{
+    margin-bottom: 40px;
+}
+
+/*champs du formulaire*/
+.mesFormulaires input, textarea, select{
 	background-color: transparent;
 	border: none;
 	border-bottom: 2px solid black;
-	margin-bottom: 40px;
+}
+
+/*erreur des champs du formulaire*/
+.mesFormulaires .erreur{
+    margin:2px 0 0;
 }
 
 .recherche{
@@ -592,19 +601,24 @@ footer
 	color: white;
 }
 
-.mesFormulaires .hide{
+.mesFormulaires label[for]{
 	position: absolute;
 	top: -20px;
 	left: 0;
-	opacity: 0;
 	transition: 1s;
 }
 
+/*cache le label lorsque le champ est vide*/
+.hide{
+    opacity:0;
+}
+
+/*affiche le label lorsque l'input lier n'est pas vide*/
 .mesFormulaires input:focus + .hide{
 	opacity: 1;
 }
 
-input:focus{
+input:focus, select:focus{
 	outline: none;
 }
 
@@ -620,6 +634,7 @@ input:focus{
 	box-shadow: 2px 2px 5px grey;
 	border-radius: 5px;
 	padding: 5px;
+    margin-top:10px;
 }
 
 .mesFormulaires button:hover{
