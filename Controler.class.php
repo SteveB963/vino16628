@@ -11,6 +11,8 @@
  * 
  */
 
+session_start();
+
 class Controler 
 {
 
@@ -46,10 +48,67 @@ class Controler
             case 'uploadPage':
                 $this->uploadPage();
                 break;
+            case 'compte':
+                $this->compte();
+                break;
+            case 'login':
+                $this->login();
+                break;
             default:
                 $this->accueil();
                 break;
         }
+    }
+
+    /**
+     * Affiche différentes pages concernant le login selon
+     *  si l'utilisateur est connecté ou pas.
+     *
+     */
+    private function compte()
+    {
+        if(isset($_SESSION["idUtilisateur"])){
+            //Afficher informations de l'utilisateur
+            include("vues/entete.php");
+            include("vues/monCompte.php");
+            include("vues/pied.php");
+        }
+        else{
+            include("vues/entete.php");
+            include("vues/login.php");
+            include("vues/pied.php");
+        }
+    }
+
+    /**
+     * Affiche différentes pages concernant le login selon
+     *  si l'utilisateur est connecté ou pas.
+     *
+     */
+    private function login()
+    {
+        var_dump($_POST["nom"]);
+        if(isset($_POST["nom"]) && isset($_POST["prenom"]) && isset($_POST["motPasse"])){
+            $log = new Login();
+            $correcteInfos = $log->authentification($_POST["nom"], $_POST["prenom"], $_POST["motPasse"]);
+            var_dump($correcteInfos);
+            if($correcteInfos == true)
+            {
+                $_SESSION["idUtilisateur"] = $_POST["nom"] . $_POST["prenom"];
+                include("vues/entete.php");
+                include("vues/monCompte.php");
+                include("vues/pied.php");
+            }
+            else
+            {
+                $msgErreur = "Les informations entré sont incorrectes";
+                include("vues/entete.php");
+                include("vues/login.php");
+                include("vues/pied.php");
+            }
+                
+        }
+        
     }
 
 
