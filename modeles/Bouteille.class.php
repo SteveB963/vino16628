@@ -123,7 +123,8 @@ class Bouteille extends Modele {
 	{
 		
 		$rows = Array();
-        //choisir le type de  trier (type,prix,code, format etc..)
+		//choisir le type de  trier (type,prix,code, format etc..)
+		//test
         $requete ='SELECT 
                         c.*,
                         b.id_bouteille AS id, 
