@@ -62,7 +62,11 @@ footer
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
-	align-items: center;	
+	align-items: center;
+    z-index:1;
+    position:sticky;
+        top:0px;
+        left:0px;
 }
 
 #entete1 div{
@@ -250,9 +254,13 @@ footer
  }
 
 /* Menu */
+nav{
+    height:50px;
+}
 
 #mainNav{
 	background-color: #222224;
+    z-index:2;
 }
 
 #mainNav li a{
@@ -287,7 +295,7 @@ footer
 		position: fixed;
 		top: 0;
 		width: 100%;
-		z-index: 1;
+		z-index: 2;
 	}
 
 	.sticky + .content{
