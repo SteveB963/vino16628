@@ -39,15 +39,13 @@ class Controler
                 break;
             case 'boireBouteilleCellier':
                 $this->boireBouteilleCellier();
-                break;
+                break;                
             case 'afficheCellier':
                 $this->afficheCellier();
 				break;
 			case 'creerUnCellier':
                 $this->creerUnCellier();
-               
-                break;
-			
+                break;			
 			case 'afficheListCellier':
                 $this->afficheListCellier();
 				break;
@@ -82,7 +80,7 @@ class Controler
 		{
             
 			$bte = new Bouteille();
-            $data = $bte->getListeBouteilleCellier($_GET['id']);
+            $data = $bte->getListeBouteilleCellier($_GET['id_cellier']);
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
@@ -90,8 +88,8 @@ class Controler
 		}
 		private function afficheListCellier()
 		{
-            if ($_POST['id_usager']){
-                 $id=$_POST['id_usager'];
+            if ($_GET['id_usager']){
+                $id=$_GET['id_usager'];
                 }
             else 
                 $id=2;
@@ -188,7 +186,8 @@ class Controler
 		
 		$body = json_decode(file_get_contents('php://input'));
 			if(!empty($body)){
-				$cel = new Cellier();				
+                $cel = new Cellier();
+                				
 				$resultat = $cel->creerUnNouveauCellier($body);				
                 echo json_encode($resultat);
                			

@@ -30,6 +30,7 @@ window.addEventListener('load', function() {
           "id_usager":cellier.id_usager.value,
           "nom":cellier.nom.value,
         };
+      
         let requete = new Request(BaseURL+"index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
         
         
@@ -42,8 +43,9 @@ window.addEventListener('load', function() {
                   }
                 })
                 .then(response => {
-                  
+                 
                   console.log(response);
+                 
                 
                 }).catch(error => {
                   console.error(error);
