@@ -40,30 +40,27 @@ class Cellier extends Modele {
 	 * @return Array $rows les informations de chaque cellier 
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeCellier() 
+	public function getListeCellier($id) 
 	{
 		
 		$rows = Array();
-		$requete ='SELECT * FROM cellier WHERE id_usager = 1'; 
-        
+		$requete = 'SELECT * FROM cellier WHERE id_usager = ' . $id;		
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
 			{
 				while($row = $res->fetch_assoc())
 				{
-					$row['nom'] = trim(utf8_encode($row['nom']));
 					$rows[] = $row;
 				}
 			}
 		}
 		else 
-		{
-			throw new Exception("Erreur de requête sur la base de donnée", 1);
-		}
+			{
+				throw new Exception("Erreur de requête sur la base de donnée", 1);
+			}
 		return $rows;
-	}	
-
+	}
 
 
 

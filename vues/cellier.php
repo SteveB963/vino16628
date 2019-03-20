@@ -1,6 +1,6 @@
-<div id="creerCellier"><p><a href="?requete=creerUnCellier">Creer votre cellier</a></p></div>
-<div class="cellier content">
 
+<div class="cellier content">
+<p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Creer votre cellier</a></p>
 <p class="trier">
     Trier le cellier par:
     <select id="trier">

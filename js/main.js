@@ -25,17 +25,14 @@ window.addEventListener('load', function() {
         id_usager : document.querySelector("[name='id_usager']"),
         
       };
-      btnCreer.addEventListener("click", function(){
-
-        alert("o creer");        
+      btnCreer.addEventListener("click", function(){              
         var param = {            
           "id_usager":cellier.id_usager.value,
           "nom":cellier.nom.value,
         };
-        let requete = new Request(BaseURL+"index.php?requete=creerUnCellierSuccess", {method: 'POST', body: JSON.stringify(param)});
+        let requete = new Request(BaseURL+"index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
         
-        // let requete = new http.Request(BaseURL+"index.php?requete=creerUnCellierSuccess");  
-        alert("o pas");
+        
         fetch(requete)
               .then(response => {
                   if (response.status === 200) {
@@ -45,21 +42,17 @@ window.addEventListener('load', function() {
                   }
                 })
                 .then(response => {
-                   console.log(response);
-                   alert("o fitigue");
+                  
+                  console.log(response);
                 
                 }).catch(error => {
                   console.error(error);
                 });
-             
+       
+         
       
       });
     }
-
-
-
-
-
 
 
 

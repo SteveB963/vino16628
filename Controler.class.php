@@ -44,7 +44,12 @@ class Controler
                 $this->afficheCellier();
 				break;
 			case 'creerUnCellier':
-				$this->creerUnCellier();
+                $this->creerUnCellier();
+               
+                break;
+			
+			case 'afficheListCellier':
+                $this->afficheListCellier();
 				break;
             case 'uploadPage':
                 $this->uploadPage();
@@ -75,13 +80,29 @@ class Controler
          */
     	private function afficheCellier()
 		{
+            
 			$bte = new Bouteille();
-            $data = $bte->getListeBouteilleCellier();
+            $data = $bte->getListeBouteilleCellier($_GET['id']);
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
                   
 		}
+		private function afficheListCellier()
+		{
+            if ($_POST['id_usager']){
+                 $id=$_POST['id_usager'];
+                }
+            else 
+                $id=2;
+            include("vues/entete.php");
+			 $cel = new Cellier();
+             $data = $cel->getListeCellier($id);
+            include("vues/listCellier.php");
+			include("vues/pied.php");
+                  
+		}
+    
     
 		
          /**
@@ -163,21 +184,24 @@ class Controler
 
 	
 	private function creerUnCellier()
-	{			
-			include("vues/entete.php");
-			include("vues/creerCellier.php");
-			include("vues/pied.php");			
+	{	
+		
+		$body = json_decode(file_get_contents('php://input'));
+			if(!empty($body)){
+				$cel = new Cellier();				
+				$resultat = $cel->creerUnNouveauCellier($body);				
+                echo json_encode($resultat);
+               			
+			}
+			else{
+				include("vues/entete.php");
+				include("vues/creerCellier.php");
+				include("vues/pied.php");
+			}					
 		
 	}
 
-	private function creerUnCellierSuccess()
-	{			
-		$body = json_decode(file_get_contents('php://input'));			    	
-		$cel = new Cellier();				
-		$resultat = $cel->creerUnNouveauCellier($body);
-		echo json_encode($resultat);			            
-	}
-		
+	
 	
 
 

@@ -3,12 +3,13 @@
 
     <div class="nouvelleBouteille" vertical layout>
         
-            <form class="formAjout">
+            <form class="formAjout"method="POST" action="index.php?requete=afficheListCellier">
                 
                 <label for="id_usager">id_usager : </label><input type="number" name="id_usager">
                 <label for="nom">Nom : </label><input type="text" name="nom">
-                
-                <button name="creerCellier">Créer votre cellier</button>
+                <!-- <input type="hidden"  name="listeCellier" value="1"> -->
+               
+                 <button name="creerCellier">Créer votre cellier</button>
             </form>
             
         

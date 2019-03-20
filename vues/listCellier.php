@@ -1,28 +1,29 @@
 
-<div class="cellier content">
+<div >
 
 <?php
 foreach ($data as $cle => $cellier) {
  
     ?>
     <div class="bouteille" data-quantite="">
-        <div class="img">
+        <!-- <div class="img">
             
             <img src="https:<?php echo $cellier['image'] ?>">
-        </div>
+        </div> -->
         <div class="description">
-            <p class="nom"><?php echo $cellier['nom'] ?></p>
+            <p class="nom"><a href="?requete=afficheCellier&id= <?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
            
         </div>
         
     </div>
-    <div id="creerCellier"><p><a href="?requete=creerUnCellier">Créer votre cellier</a></p></div>
+   
 <?php
 
 
 }
 
-?>	
+?>
+ <p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Créer votre cellier</a></p>	
 </div>
 
 
