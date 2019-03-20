@@ -643,7 +643,11 @@ input:focus, select:focus{
 }
 
 .attention{
-    background-color:firebrick;
+    color:red;
+}
+
+.succes{
+    color:green;
 }
 
 .formChiffre{

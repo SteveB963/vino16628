@@ -125,20 +125,32 @@ window.addEventListener('load', function() {
                 document.querySelector(".erreurCodesaq").innerHTML = data.erreur.code_saq;
                 document.querySelector(".erreurUrlsaq").innerHTML = data.erreur.url_saq;
                 
-                if(data.succes == true){
-                    document.querySelector(".msg").innerHTML = "Modification sauvegarder";
-                }
-                else if(data.succes == "dup"){
-                    document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
+                if(data.echec){
+                    document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i>" + data.echec;
                 }
                 else{
-                    document.querySelector(".msg").innerHTML = "Corriger les erreurs et réessayer";
+                    if(data.succes == true){
+                        document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
+                        document.querySelector(".msg").firstElementChild.classList.add("succes");
+                        if(data.status == "remplaceBouteille"){
+                            document.querySelector("[name='id']").setAttribute("value", data.idNouvelle);
+                            document.querySelector("[name='nonliste']").setAttribute("value", 1);
+                            history.pushState("modification", "Vino", BaseURL + "index.php?requete=modifierBouteilleCellier&id=" + data.idNouvelle);
+                        }
+                    }
+                    else if(data.succes == "dup"){
+                        document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
+                    }
+                    else{
+                        document.querySelector(".msg").classList.add("attention");
+                        document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
+                    }
+                    /*
+                    setTimeout(function(){ 
+                        document.querySelector(".msg").innerHTML = "";
+                    }, 2000);
+                    */
                 }
-                /*
-                setTimeout(function(){ 
-                    document.querySelector(".msg").innerHTML = "";
-                }, 2000);
-                */
             }).catch(error => {
                 console.error(error);
             });

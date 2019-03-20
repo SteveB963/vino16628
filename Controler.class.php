@@ -210,10 +210,10 @@ class Controler
                 
                 
                 if(!$erreur){
-                    
+                    //récupération des infos de la bouteille avant modif
                     $bte = new Bouteille();
                     $bteAvant = $bte -> getBouteille($body -> bte -> id_bouteille);
-
+                    //tableau contenant les modif.
                     $bteNouvelle = (array) $body -> bte;
 
                     //vérifie si il y a eu des modifications
@@ -227,33 +227,33 @@ class Controler
                     if(!$duplication){
                         //si bouteille est listé
                         if($body -> bte -> non_liste == 0){
-                            //vérification des champs du formulaire
-
-                            //si vérif est correct
                             //ajoute nouvelle bouteille non-liste
                             $resultat -> succes = $bte -> ajouterBouteilleNonListe($body -> bte);
-                            $resultat -> status = "ajoute bouteille ";
-
-                            //update sur le contenu de cellier 
+                            
+                            //remplace la bouteille liste par la nouvelle bouteille non liste
                             if($resultat -> succes == true){
-
+                                //recupération de l'id du dernier ajout
                                 $dernId = $bte -> getDernBouteille();
+                                $resultat -> idNouvelle = $dernId;
+                                //remplace l'id_bouteille dans le cellier avec la nouvelle id
                                 $resultat -> succes = $bte -> remplaceBouteilleCellier($body-> bte -> id_bouteille, $dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
-
-                                $resultat -> status .= "Remplace bouteille" . $dernId;
+                                $resultat -> status = "remplaceBouteille";
+                                
+                                if($resultat -> succes == false){
+                                    $resultat  -> echec = "erreur lors du remplacement";
+                                }
                             }
                             else{
-                                $resultat  -> erreur = "erreur d'insertion dans la bd";
+                                $resultat  -> echec = "erreur lors de l'insertion";
                             }
-                            //si erreur dans les champs
-                            //retourne les erreurs selon les champs
                         }
                         //si non listé
                         else{
-                            //si deja non liste
-                            //update de la bouteille.
+                            //si deja non liste,update de la bouteille.
                             $resultat -> succes = $bte -> modiferBouteilleNonListe($body -> bte);
-                            $resultat -> status = "modifier bouteille";
+                            if($resultat -> succes == false){
+                                    $resultat  -> echec = "erreur lors de la mise à jour";
+                                }
                         }
                     }
                     //si pas de modification

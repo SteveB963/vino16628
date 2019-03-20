@@ -72,6 +72,6 @@
         <input type="hidden" name="id" value="<?php echo $donnee['bouteille']['id_bouteille'] ?>">
         <input type="hidden" name="nonliste" value="<?php echo $donnee['bouteille']['non_liste'] ?>">
         <button name="sauver">Modifier la bouteille</button>
-        <p class="msg attention"></p>
+        <p class="msg"></p>
     </div>
 </div>
