@@ -24,7 +24,7 @@
     if($data){
          ?>
         <div class="count">
-            <h3> Resultat-<?php echo sizeof($data)?> Bouteille</h3>
+            <h4> Resultat-<?php echo sizeof($data)?> Bouteilles</h4>
         </div>
         <?php
         foreach ($data as $cle => $bouteille) 
@@ -61,8 +61,8 @@
     else{
         ?>
         <div class="erreur">
-            <h3>Recherche pour cet mot-clé Resultat-0</h3>
-            <h4>Essayez avec un autre mot-clé.</h5>
+            <h4>Recherche pour cet mot-clé Resultat-0</h4>
+            <h4>Essayez avec un autre mot-clé.</h4>
        </div>
         <?php
     }

@@ -687,11 +687,11 @@ input:focus{
 
 .search{
 	float:center;
-    margin-left: 25%;
+    margin-left: 20%;
     margin-top:2%;
 }
 .search input{
-    width:200px;
+    width:270px;
     border:none;
     margin-right:0px;
 }
@@ -714,7 +714,7 @@ input:focus{
 	
 }
 .listeChercheAutoComplete{
-    width:200px;
+    width:270px;
     list-style: none;
     color:black;
     padding:0px;
@@ -724,26 +724,18 @@ input:focus{
 }
 
 /********
- * erreur
+ * erreur&&count
  ********/
 
-.erreur{
-    font-size: 24px;
+.erreur, .count{
+     width:100%;
+    font-family: 'Roboto', 'RobotoDraft', sans-serif;
+    font-size: 20px;
     color:white;
-    font-style:bold;
     text-align: center;
 }
-/********
- * erreur
- ********/
 
-.count{
-    width:100%;
-    font-size: 24px;
-    color:white;
-    font-style:bold;
-    text-align: center;
-}
+
 
 
 
