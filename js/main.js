@@ -120,6 +120,7 @@ window.addEventListener('load', function() {
   
    
     //button chercher le valeur dans mon cellier
+   
     let btnChercher = document.getElementById('cherche');
     //console.log(btnChercher);
     //quand on click en button chercher 

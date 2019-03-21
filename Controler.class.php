@@ -98,8 +98,15 @@
             include("vues/pied.php");
 
         }
-
-        //affiche le page cellier avec le resultat de choisir
+        //autocomplte de rechercher le valeur 
+         private function autocompleteCherche()
+        {
+            $body = json_decode(file_get_contents('php://input'));
+            $bte = new Bouteille();
+            $list = $bte->autocompleteCherche($body->cherche);
+            echo json_encode($list);
+        }
+        //affiche le page cellier avec le resultat de recherche
         private function chercheValue()
         {
             $bte = new Bouteille();
@@ -148,13 +155,7 @@
             echo json_encode($listeBouteille);
 
         }
-           private function autocompleteCherche()
-        {
-            $body = json_decode(file_get_contents('php://input'));
-            $bte = new Bouteille();
-            $list = $bte->autocompleteCherche($body->cherche);
-            echo json_encode($list);
-        }
+          
         /**
          * 
          *
