@@ -244,6 +244,7 @@ window.addEventListener('load', function() {
       } 
   }
   
+  //Inscription - Ajout d'un nouveau compte
   let compte = {
     prenom : document.querySelector("[name='prenomInscri']"),
     nom : document.querySelector("[name='nomInscri']"),
@@ -264,7 +265,6 @@ window.addEventListener('load', function() {
       fetch(requete)
         .then(response => {
           if (response.status === 200) {
-            console.log(response);
             return response.json();
           } else {
             throw new Error('Erreur');
@@ -279,6 +279,8 @@ window.addEventListener('load', function() {
     });
   }
 
+
+  //Connexion - Gestion du formulaire de connexion
   let infoConnection = {
     courriel : document.querySelector("[name='courrielCo']"),
     motDePasse : document.querySelector("[name='motPasseCo']"),
@@ -302,11 +304,15 @@ window.addEventListener('load', function() {
           }
         })
         .then(response => {
+          //Redirection vers la page monCompte lorsque la
+          //connection à réussie.
           console.log(response);
           if(response == true){
             window.location.href ="index.php?requete=compte";
           }
           else{
+            //Affichage d'un message d'erreur lorsque la 
+            //connexion à échoué.
             document.querySelector("[name='msgErreur']").classList.add('errorBox');
             var messageErreur = "Les informations entrées sont incorrectes.";
             document.querySelector("[name='msgErreur']").innerHTML = messageErreur;

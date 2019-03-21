@@ -20,6 +20,8 @@
 			}
 
 		?>
+		<div name="msgErreur"></div>
+		<div name="msgConfirmation"></div>
 		<div>
 			<input type="text" name="prenomInscri" placeholder="Prenom">
 			<label for="prenomInscri" class="hide">Prenom:</label>

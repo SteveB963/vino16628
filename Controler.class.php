@@ -198,12 +198,20 @@ class Controler
     private function creerCompteUsager()
     {
         $body = json_decode(file_get_contents('php://input'));
-        var_dump($body);
         if(!empty($body)){
             $cpt = new Login();
             $ajoutFonctionel = $cpt->nouveauCompte($body);
             
-            echo json_encode($testee);
+            if($ajoutFonctionel == true){
+                $return1 = true;
+                echo json_encode($return1);
+                $_SESSION["idUtilisateur"] = $body->courrielInscri;
+            }
+            else{
+                $return1 = false;
+                echo json_encode($return1);
+            }
+            
             /*
             if($ajoutFonctionel)
             {
@@ -222,14 +230,16 @@ class Controler
                 include("vues/pied.php");
             }
             */
-        }/*
+        }
         else
         {
+            echo json_encode(false);   
+        /*
             $msgErreur = "Tout les champs doivent être remplis!";
             include("vues/entete.php");
             include("vues/inscription.php");
-            include("vues/pied.php");
-        }*/
+            include("vues/pied.php");*/
+        }
     }
 
 
