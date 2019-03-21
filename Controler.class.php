@@ -88,16 +88,18 @@ class Controler
 		}
 		private function afficheListCellier()
 		{
-            if ($_GET['id_usager']){
-                $id=$_GET['id_usager'];
+            if ($_POST['id_usager']){
+                $id=$_POST['id_usager'];
                 }
             else 
                 $id=2;
             include("vues/entete.php");
-			 $cel = new Cellier();
-             $data = $cel->getListeCellier($id);
+			$cel = new Cellier();
+            $data = $cel->getListeCellier($id);
+            var_dump($data);
             include("vues/listCellier.php");
-			include("vues/pied.php");
+            include("vues/pied.php");
+            // header("Refresh:0; url=" . BASEURL . "index.php?requete=afficheListCellier");
                   
 		}
     
@@ -190,7 +192,7 @@ class Controler
                 				
 				$resultat = $cel->creerUnNouveauCellier($body);				
                 echo json_encode($resultat);
-               			
+                header("Refresh:0; url=" . BASEURL . "index.php?requete=afficheListCellier");			
 			}
 			else{
 				include("vues/entete.php");
