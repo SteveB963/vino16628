@@ -1,16 +1,8 @@
 <div class="inscription mesFormulaires content">
 	<h2>Inscription</h2>
 	<p>Veuillez remplir le formulaire ci-dessous afin de vous inscrire.</p>
-	<!-- <form class="formulaire" method="POST" action="index.php?requete=creerCompteUsager"> -->
 		<form class="formulaire">
 		<?php
-
-			if(isset($msgErreur))
-			{
-				echo "<div class='divErreur'>
-							<p>$msgErreur</p>
-						</div>";
-			}
 
 			if(isset($msgConfirmation))
 			{
@@ -21,7 +13,6 @@
 
 		?>
 		<div name="msgErreur"></div>
-		<div name="msgConfirmation"></div>
 		<div>
 			<input type="text" name="prenomInscri" placeholder="Prenom">
 			<label for="prenomInscri" class="hide">Prenom:</label>

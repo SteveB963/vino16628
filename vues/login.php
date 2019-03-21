@@ -1,6 +1,5 @@
 <div class="login mesFormulaires content">
 	<h2>Connexion</h2>
-	<!--<form class="formulaire" method="POST" action="index.php?requete=login">-->
 		<form class="formulaire">
 		<?php
 
@@ -23,7 +22,6 @@
 			<label for="motPasseCo" class="hide">Mot de passe:</label>
 		</div>
 		<input type="button" name="seConnecter" value="Se connecter">
-		<!--<input type="hidden" name="requete" value="login">-->
 		<p>Je souhaite <a href="index.php?requete=inscription">m'inscrire</a>!</p>
 	</form>
 </div>

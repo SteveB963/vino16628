@@ -63,182 +63,12 @@ class Controler
             case 'creerCompteUsager':
                 $this->creerCompteUsager();
                 break;
+            case 'modificationCompte':
+                $this->modificationCompte();
+                break;
             default:
                 $this->accueil();
                 break;
-        }
-    }
-
-    /**
-     * Affiche différentes pages concernant le login selon
-     *  si l'utilisateur est connecté ou pas.
-     *
-     */
-    private function compte()
-    {
-        //Si l'utilisateur est connecté
-        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
-            //Afficher informations de l'utilisateur
-            include("vues/entete.php");
-            include("vues/monCompte.php");
-            include("vues/pied.php");
-        }
-        else{
-            //Afficher la page de login
-            include("vues/entete.php");
-            include("vues/login.php");
-            include("vues/pied.php");
-        }
-    }
-
-    /**
-     * Vérifie l'authentification de l'utilisateur puis le redirige vers
-     *  la page "monCompte.php" si l'authentification est acceptée. Dans le
-     *  cas inverse, l'utilisateur reste sur la page de login.
-     *
-     */
-    private function login()
-    {
-        //Si l'utilisateur arrive par la page de login et que les champs sont remplis
-        /*if(isset($_POST["courriel"]) && isset($_POST["motPasse"])){*/
-        $body = json_decode(file_get_contents('php://input'));
-        if(!empty($body) /*&& $body->courrielCo != "" && $body->motPassCo != ""*/){
-            if($body->courrielCo == "" && $body->motPassCo == ""){
-                echo json_encode(false);
-            }
-            else{
-                $log = new Login();
-                $correcteInfos = $log->authentification($body);
-
-                //var_dump($correcteInfos);
-                echo json_encode($correcteInfos);
-                if($correcteInfos == true)
-                {
-                    $_SESSION["idUtilisateur"] = $body->courrielCo;
-                }
-            }
-            
-/*
-            //Si l'utilisateur a entré les bonnes informations
-            if($correcteInfos == true)
-            {
-                //On crée une variable session et on le redirige vers la
-                //page "monCompte.php"
-                $_SESSION["idUtilisateur"] = $_POST["courriel"];
-                include("vues/entete.php");
-                include("vues/monCompte.php");
-                include("vues/pied.php");
-            }
-            //Si les informations de sont pas bonnes
-            else
-            {
-                //On crée un message d'erreur à afficher dans la page login
-                $msgErreur = "Les informations entré sont incorrectes";
-                include("vues/entete.php");
-                include("vues/login.php");
-                include("vues/pied.php");
-            }  */       
-        }
-        else
-        {
-            $varreturn = false;
-            echo json_encode($varreturn);
-        }
-        
-    }
-
-    /**
-     * Ferme la session en cours afin de déconnecter l'utilisateur
-     *  puis le redirige vers la page de connexion.
-     *
-     */
-    private function deconnexion()
-    {
-        $_SESSION = array();
-
-        if(isset($_COOKIE[session_name()]))
-        {
-            setcookie(session_name(), '', time() - 3600);
-        }
-
-        session_destroy();
-
-        $msgConfirmation = "Votre session à bien été fermée.";
-        include("vues/entete.php");
-        include("vues/login.php");
-        include("vues/pied.php");
-    }
-
-    /**
-     * Redirige l'utilisateur vers la page d'inscription.
-     *
-     */
-    private function inscription()
-    {
-        //Si l'utilisateur est connecté
-        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
-        {
-            include("vues/entete.php");
-            include("vues/monCompte.php");
-            include("vues/pied.php");
-        }
-        else
-        {
-            include("vues/entete.php");
-            include("vues/inscription.php");
-            include("vues/pied.php");
-        }
-    }
-
-    /**
-     * Ferme la session en cours afin de déconnecter l'utilisateur
-     *  puis le redirige vers la page de connexion.
-     *
-     */
-    private function creerCompteUsager()
-    {
-        $body = json_decode(file_get_contents('php://input'));
-        if(!empty($body)){
-            $cpt = new Login();
-            $ajoutFonctionel = $cpt->nouveauCompte($body);
-            
-            if($ajoutFonctionel == true){
-                $return1 = true;
-                echo json_encode($return1);
-                $_SESSION["idUtilisateur"] = $body->courrielInscri;
-            }
-            else{
-                $return1 = false;
-                echo json_encode($return1);
-            }
-            
-            /*
-            if($ajoutFonctionel)
-            {
-                //On crée une variable session et on le redirige vers la
-                //page "monCompte.php"
-                $_SESSION["idUtilisateur"] = $_POST["courrielInscri"];
-                include("vues/entete.php");
-                include("vues/monCompte.php");
-                include("vues/pied.php");
-            }
-            else
-            {
-                $msgErreur = "Un compte est déjà lié à cette adresse courriel.";
-                include("vues/entete.php");
-                include("vues/inscription.php");
-                include("vues/pied.php");
-            }
-            */
-        }
-        else
-        {
-            echo json_encode(false);   
-        /*
-            $msgErreur = "Tout les champs doivent être remplis!";
-            include("vues/entete.php");
-            include("vues/inscription.php");
-            include("vues/pied.php");*/
         }
     }
 
@@ -401,6 +231,151 @@ class Controler
 
     }
     */
+
+    /**
+     * Affiche différentes pages concernant le login selon
+     *  si l'utilisateur est connecté ou pas.
+     *
+     */
+    private function compte()
+    {
+        //Si l'utilisateur est connecté
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
+            //Afficher informations de l'utilisateur
+            $monCpt = new Login();
+            $donnees = $monCpt->getCompte($_SESSION["idUtilisateur"]);
+            include("vues/entete.php");
+            include("vues/monCompte.php");
+            include("vues/pied.php");
+        }
+        else{
+            //Afficher la page de login
+            include("vues/entete.php");
+            include("vues/login.php");
+            include("vues/pied.php");
+        }
+    }
+
+    /**
+     * Vérifie l'authentification de l'utilisateur puis le redirige vers
+     *  la page "monCompte.php" si l'authentification est acceptée. Dans le
+     *  cas inverse, l'utilisateur reste sur la page de login.
+     *
+     */
+    private function login()
+    {
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body)){
+            if($body->courrielCo == "" && $body->motPassCo == ""){
+                echo json_encode(false);
+            }
+            else{
+                $log = new Login();
+                $correcteInfos = $log->authentification($body);
+
+                echo json_encode($correcteInfos);
+
+                //Création de la variable session lorsque la connexion réussie
+                if($correcteInfos == true)
+                {
+                    $_SESSION["idUtilisateur"] = $body->courrielCo;
+                }
+            } 
+        }
+        else
+        {
+            $varreturn = false;
+            echo json_encode($varreturn);
+        }
+        
+    }
+
+    /**
+     * Ferme la session en cours afin de déconnecter l'utilisateur
+     *  puis le redirige vers la page de connexion.
+     *
+     */
+    private function deconnexion()
+    {
+        $_SESSION = array();
+
+        if(isset($_COOKIE[session_name()]))
+        {
+            setcookie(session_name(), '', time() - 3600);
+        }
+
+        session_destroy();
+
+        $msgConfirmation = "Votre session à bien été fermée.";
+        include("vues/entete.php");
+        include("vues/login.php");
+        include("vues/pied.php");
+    }
+
+    /**
+     * Redirige l'utilisateur vers la page d'inscription.
+     *
+     */
+    private function inscription()
+    {
+        //Si l'utilisateur est connecté
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+        {
+            include("vues/entete.php");
+            include("vues/monCompte.php");
+            include("vues/pied.php");
+        }
+        else
+        {
+            include("vues/entete.php");
+            include("vues/inscription.php");
+            include("vues/pied.php");
+        }
+    }
+
+    /**
+     * Ferme la session en cours afin de déconnecter l'utilisateur
+     *  puis le redirige vers la page de connexion.
+     *
+     */
+    private function creerCompteUsager()
+    {
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body)){
+            $cpt = new Login();
+            $ajoutFonctionel = $cpt->nouveauCompte($body);
+            
+            if($ajoutFonctionel == true){
+                $return1 = true;
+                echo json_encode($return1);
+                $_SESSION["idUtilisateur"] = $body->courrielInscri;
+            }
+            else{
+                $return1 = false;
+                echo json_encode($return1);
+            }
+        }
+        else
+        {
+            echo json_encode(false);   
+        }
+    }
+
+/*
+    /**
+     * affiche le formulaire de modification et affectues les 
+     *  modifications.
+     *
+    *//*
+    private function modificationCompte()
+    {  
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body)){
+
+        }
+    }
+
+*/
 }
 ?>
 

@@ -323,6 +323,13 @@ window.addEventListener('load', function() {
         });
     });
   }
-
+/*
+  let btnModif = document.querySelector("[name='modifierCompte']");
+  if(btnModif){
+    btnModif.addEventListener("click", function(evt){
+      window.location.href = "index.php?requete=modificationCompte";
+    });
+  }
+*/
 });
 
