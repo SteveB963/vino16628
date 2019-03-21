@@ -160,7 +160,6 @@ class Bouteille extends Modele {
 		}
 		return $rows;
 	}
-	
 	/**
 	 * Cette méthode permet de retourner les résultats de recherche pour la fonction d'autocomplete de l'ajout des bouteilles dans le cellier
 	 * 
@@ -180,7 +179,7 @@ class Bouteille extends Modele {
 		$nom = $this->_db->real_escape_string($nom);
 		$nom = preg_replace("/\*/","%" , $nom);
 		 
-		$requete ='SELECT id, nom FROM vino__bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
+		$requete ='SELECT id_bouteille, nom FROM bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -200,9 +199,60 @@ class Bouteille extends Modele {
 		return $rows;
 	}
 	
-	
 	/**
-	 * Cette méthode ajoute une ou des bouteilles au cellier
+	 * Cette méthode permet de retourner les résultats de recherche pour la fonction d'autocomplete de le valeur de recherche
+	 * 
+	 * @param string $cherche La chaine de caractère à rechercher
+	 * @param integer $nb_resultat Le nombre de résultat maximal à retourner.
+	 * 
+	 * @throws Exception Erreur de requête sur la base de données 
+	 * 
+	 * @return array result de le valeur dans le base de donnees
+     *  
+	 */
+       
+	public function autocompleteCherche($cherche, $nb_resultat=10)
+	{
+		
+		$rows = Array();
+		$cherche = $this->_db->real_escape_string($cherche);
+		$cherche = preg_replace("/\*/","%" , $cherche);
+		$requete ='SELECT nom as result FROM bouteille where LOWER(nom) like LOWER("%'. $cherche .'%")
+        UNION All
+        SELECT distinct pays.pays as result FROM bouteille JOIN pays ON bouteille.pays=pays.id_pays where LOWER(pays.pays) like LOWER("%'. $cherche.'%")
+        UNION All
+        SELECT  prix as result FROM bouteille where LOWER(prix) like LOWER("%'. $cherche.'%")
+        UNION All
+        SELECT  type as result FROM bouteille_type where LOWER(type) like LOWER("%'. $cherche.'%")
+        UNION All
+        SELECT  format as result FROM bouteille where LOWER(format) like LOWER("%'. $cherche.'%")
+        UNION All
+        SELECT millesime as result FROM bouteille where LOWER(millesime) like LOWER("%'. $cherche.'%")
+        UNION All
+        SELECT code_saq as result FROM bouteille where LOWER(code_saq) like LOWER("%'.$cherche.'%")
+        LIMIT 0,'. $nb_resultat;
+        //var_dump($requete);
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;	
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de données", 1);
+			 
+		}
+		return $rows;
+	}
+    	/**
+	 *
+	/**
+	 * Cette méthode ajoute une ou des payss au cellier
 	 * 
 	 * @param Array $data Tableau des données représentants la bouteille.
 	 * 
@@ -250,7 +300,55 @@ class Bouteille extends Modele {
         
 		return $row;
 	}
-    
+    // requette pour cherche le valeur en cellier
+    public function ChercheEnCellier($cherche) 
+	{
+		
+		$rows = Array();
+        //filtre le data par value de champ recherche
+        $requete ='SELECT 
+                        c.*,
+                        b.id_bouteille AS id, 
+                        b.prix, 
+                        b.nom AS nom, 
+                        b.image AS image, 
+                        b.code_saq AS code_saq, 
+                        b.url_saq, 
+                        p.pays AS pays, 
+                        b.millesime AS millesime ,
+                        b.format,
+                        t.type AS type 
+                        FROM cellier_contenu c
+                        JOIN bouteille b ON id = c.id_bouteille 
+                        JOIN pays p ON p.id_pays = b.pays
+                        JOIN bouteille_type t ON t.id_type = b.type
+                        WHERE c.id_cellier = 1
+                        AND (b.nom like LOWER("%'. $cherche .'%")
+                        OR b.nom like LOWER("%'. $cherche .'%")
+                        OR b.prix like LOWER("%'. $cherche .'%")
+                        OR b.code_saq like LOWER("%'. $cherche .'%")
+                        OR p.pays like LOWER("%'. $cherche .'%")
+                        OR b.millesime like LOWER("%'. $cherche .'%")
+                        OR b.format like LOWER("%'. $cherche .'%")
+                        OR t.type like LOWER("%'. $cherche .'%")
+                        OR c.quantite like LOWER("%'. $cherche .'%"))
+                        ';
+                        ; 
+        //var_dump($requete);
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;
+				}
+			}
+		}
+
+		return $rows;
+	}
+	
     
 }
 

@@ -67,18 +67,96 @@ window.addEventListener('load', function() {
 
     });
     //buttonn Trier par le selct box value
-     let btnTrier = document.getElementById('trier');
+    let btnTrier = document.getElementById('trier');
     if(btnTrier){
         btnTrier.addEventListener("change", function(evt){
-          var trier=document.getElementById('trier').value;
+            var trier=document.getElementById('trier').value;
             console.log(trier);
             window.location.href = "index.php?requete=uploadPage&trierCellier=" + trier;
         });
     }  
 
-            
-       
+    //autocomplete de rechercher champ
+
+     let inputCherche = document.getElementById('searchValue');
+    //console.log(inputNomBouteille);
+    let listeCherche = document.querySelector('.listeChercheAutoComplete');
+    if(inputCherche){
+        inputCherche.addEventListener("keyup", function(evt){
+        console.log(evt);
+        let cherche= inputCherche.value;
+        listeCherche.innerHTML = "";
+        if(cherche){
+            let requete = new Request("index.php?requete=autocompleteCherche", {method: 'POST', body: '{"cherche": "'+cherche+'"}'});
+            fetch(requete)
+              .then(response => {
+                  if (response.status === 200) {
+                    return response.json();
+                  } else {
+                    throw new Error('Erreur');
+                  }
+                })
+                .then(response => {
+                  //console.log(response);
+                  response.forEach(function(element){
+                    listeCherche.innerHTML += "<li class='listCherche' id='"+element.result +"'>"+element.result+"</a></li>";
+                  })
+                }).catch(error => {
+                  console.error(error);
+                });
+            }
+        });
+    }
+    if( listeCherche){
+        listeCherche.addEventListener("click", function(evt){
+            console.dir(evt.target)
+            if(evt.target.className == 'listCherche'){
+                inputCherche.value = evt.target.id;
+                console.log(evt.target.id);
+                listeCherche.innerHTML = "";
+            }
+        });
+    }
   
+   
+    //button chercher le valeur dans mon cellier
+    let btnChercher = document.getElementById('cherche');
+    //console.log(btnChercher);
+    //quand on click en button chercher 
+    if(btnChercher){
+       btnChercher.addEventListener('click', function(){
+            var inputCherche= document.getElementById('searchValue').value;
+            console.log(inputCherche);
+            //verifier le champ de chercher est vide ou pas
+            if(inputCherche!=''){
+                window.location.href = "index.php?requete=chercheValue&inputCherche=" + inputCherche;
+             }
+            else{
+                alert('Vous devez entrer une valeur de champ rechercher');
+                window.location.href = "index.php?requete=afficheCellier" ;
+            }
+        });
+    }
+   //quand entrer le valeur de champ cherche vous pouvez click enter en clavier
+   let inpChercher=document.getElementById('searchValue');
+    if(inpChercher){
+        inpChercher.addEventListener('keyup', function(){
+           if (event.keyCode === 13) {
+                //console.log("coucou");
+                let inputCherche= document.getElementById('searchValue').value;
+                console.log(inputCherche);
+                //verifier le champ de chercher est vide ou pas
+                if(inputCherche!=''){
+                    window.location.href = "index.php?requete=chercheValue&inputCherche=" + inputCherche;
+                 }
+                else{
+                    alert('Vous devez entrer une valeur de champ rechercher');
+                    window.location.href = "index.php?requete=afficheCellier" ;
+                }
+           }
+        });
+    }
+
     //bouton modifier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
@@ -179,7 +257,7 @@ window.addEventListener('load', function() {
                   
                  
                   response.forEach(function(element){
-                    liste.innerHTML += "<li data-id='"+element.id +"'>"+element.nom+"</li>";
+                    liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
                   })
                 }).catch(error => {
                   console.error(error);
@@ -199,18 +277,18 @@ window.addEventListener('load', function() {
         notes : document.querySelector("[name='notes']"),
       };
 
+    if(liste){
+        liste.addEventListener("click", function(evt){
+            console.dir(evt.target)
+            if(evt.target.tagName == "LI"){
+                bouteille.nom.dataset.id = evt.target.dataset.id;
+                bouteille.nom.innerHTML = evt.target.innerHTML;
+                liste.innerHTML = "";
+                inputNomBouteille.value = "";
 
-      liste.addEventListener("click", function(evt){
-        console.dir(evt.target)
-        if(evt.target.tagName == "LI"){
-          bouteille.nom.dataset.id = evt.target.dataset.id;
-          bouteille.nom.innerHTML = evt.target.innerHTML;
-          
-          liste.innerHTML = "";
-          inputNomBouteille.value = "";
-
-        }
-      });
+            }
+        });
+    }
 
       let btnAjouter = document.querySelector("[name='ajouterBouteilleCellier']");
       if(btnAjouter){
