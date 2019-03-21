@@ -1,35 +1,29 @@
 <div class="login mesFormulaires content">
 	<h2>Connexion</h2>
-	<form class="formulaire" method="POST" action="index.php?requete=login">
+	<!--<form class="formulaire" method="POST" action="index.php?requete=login">-->
+		<form class="formulaire">
 		<?php
-
-			if(isset($msgErreur))
-			{
-				echo "<div class='divErreur'>
-							<p>$msgErreur</p>
-						</div>";
-			}
 
 			if(isset($msgConfirmation))
 			{
-				echo "<div class='divConf'>
+				echo "<div class='confirmBox'>
 							<p>$msgConfirmation</p>
 						</div>";
 			}
 
-			//var_dump($_SESSION["idUtilisateur"]);
-
 		?>
+		<div name="msgErreur"></div>
+		<div name="msgConfirmation"></div>
 		<div>
-			<input type="email" name="courriel" placeholder="Courriel">
-			<label for="courriel" class="hide">Courriel:</label>
+			<input type="email" name="courrielCo" placeholder="Courriel">
+			<label for="courrielCo" class="hide">Courriel:</label>
 		</div>
 		<div>
-			<input type="password" name="motPasse" placeholder="Mot de passe">
-			<label for="motPasse" class="hide">Mot de passe:</label>
+			<input type="password" name="motPasseCo" placeholder="Mot de passe">
+			<label for="motPasseCo" class="hide">Mot de passe:</label>
 		</div>
-		<button>Se connecter</button>
-		<input type="hidden" name="requete" value="login">
+		<input type="button" name="seConnecter" value="Se connecter">
+		<!--<input type="hidden" name="requete" value="login">-->
 		<p>Je souhaite <a href="index.php?requete=inscription">m'inscrire</a>!</p>
 	</form>
 </div>

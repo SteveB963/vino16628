@@ -1,10 +1,9 @@
 <div class="monCompte content">
-	<h2>Informations de votre compte</h2>
 	<?php
 
-	var_dump($_SESSION["idUtilisateur"]);
+	//var_dump($_SESSION["idUtilisateur"]);
 
 	?>
-
+	<h2>Mon Compte</h2>
 	<a href="index.php?requete=deconnexion">Déconnexion</a>
 </div>

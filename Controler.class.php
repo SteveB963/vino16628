@@ -77,7 +77,7 @@ class Controler
     private function compte()
     {
         //Si l'utilisateur est connecté
-        if(isset($_SESSION["idUtilisateur"])){
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
             //Afficher informations de l'utilisateur
             include("vues/entete.php");
             include("vues/monCompte.php");
@@ -100,11 +100,25 @@ class Controler
     private function login()
     {
         //Si l'utilisateur arrive par la page de login et que les champs sont remplis
-        if(isset($_POST["courriel"]) && isset($_POST["motPasse"])){
-            $log = new Login();
-            $correcteInfos = $log->authentification($_POST["courriel"], $_POST["motPasse"]);
-            var_dump($correcteInfos);
+        /*if(isset($_POST["courriel"]) && isset($_POST["motPasse"])){*/
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body) /*&& $body->courrielCo != "" && $body->motPassCo != ""*/){
+            if($body->courrielCo == "" && $body->motPassCo == ""){
+                echo json_encode(false);
+            }
+            else{
+                $log = new Login();
+                $correcteInfos = $log->authentification($body);
 
+                //var_dump($correcteInfos);
+                echo json_encode($correcteInfos);
+                if($correcteInfos == true)
+                {
+                    $_SESSION["idUtilisateur"] = $body->courrielCo;
+                }
+            }
+            
+/*
             //Si l'utilisateur a entré les bonnes informations
             if($correcteInfos == true)
             {
@@ -123,14 +137,12 @@ class Controler
                 include("vues/entete.php");
                 include("vues/login.php");
                 include("vues/pied.php");
-            }         
+            }  */       
         }
-        //Si l'utilisateur à simplement entré l'URL et qu'il est déja connecté
-        else if(isset($_SESSION["idUtilisateur"]))
+        else
         {
-            include("vues/entete.php");
-            include("vues/monCompte.php");
-            include("vues/pied.php");
+            $varreturn = false;
+            echo json_encode($varreturn);
         }
         
     }
@@ -164,7 +176,7 @@ class Controler
     private function inscription()
     {
         //Si l'utilisateur est connecté
-        if(isset($_SESSION["idUtilisateur"]))
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
             include("vues/entete.php");
             include("vues/monCompte.php");
@@ -185,13 +197,14 @@ class Controler
      */
     private function creerCompteUsager()
     {
-        if($_POST["prenomInscri"] !="" && $_POST["nomInscri"] !="" && $_POST["courrielInscri"] !="" && $_POST["motPasseInscri"] !="")
-        {
+        $body = json_decode(file_get_contents('php://input'));
+        var_dump($body);
+        if(!empty($body)){
             $cpt = new Login();
-
-            $motPasseEncrypte = password_hash($_POST["motPasseInscri"], PASSWORD_DEFAULT);
-            $ajoutFonctionel = $cpt->nouveauCompte($_POST["prenomInscri"], $_POST["nomInscri"], $_POST["courrielInscri"], $motPasseEncrypte);
-
+            $ajoutFonctionel = $cpt->nouveauCompte($body);
+            
+            echo json_encode($testee);
+            /*
             if($ajoutFonctionel)
             {
                 //On crée une variable session et on le redirige vers la
@@ -208,15 +221,15 @@ class Controler
                 include("vues/inscription.php");
                 include("vues/pied.php");
             }
-            
-        }
+            */
+        }/*
         else
         {
             $msgErreur = "Tout les champs doivent être remplis!";
             include("vues/entete.php");
             include("vues/inscription.php");
             include("vues/pied.php");
-        }
+        }*/
     }
 
 
@@ -229,7 +242,6 @@ class Controler
             include("vues/entete.php");
             include("vues/accueil.php");
             include("vues/pied.php");
-
         }
     
      /**

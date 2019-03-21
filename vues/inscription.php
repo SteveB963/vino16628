@@ -1,7 +1,8 @@
 <div class="inscription mesFormulaires content">
-	<h2>Connexion</h2>
+	<h2>Inscription</h2>
 	<p>Veuillez remplir le formulaire ci-dessous afin de vous inscrire.</p>
-	<form class="formulaire" method="POST" action="index.php?requete=creerCompteUsager">
+	<!-- <form class="formulaire" method="POST" action="index.php?requete=creerCompteUsager"> -->
+		<form class="formulaire">
 		<?php
 
 			if(isset($msgErreur))
@@ -35,6 +36,6 @@
 			<input type="password" name="motPasseInscri" placeholder="Mot de passe">
 			<label for="motPasseInscri" class="hide">Mot de passe:</label>
 		</div>
-		<button>S'inscrire!</button>
+		<input type="button" name="ajouterNouveauCompte" value="S'inscrire!">
 	</form>
 </div>
