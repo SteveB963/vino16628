@@ -648,7 +648,14 @@ input:focus{
 		width: 90%;
 	}
 }
-
+.listeAutoComplete{
+    width:200px;
+    list-style: none;
+    color:black;
+    padding:0px;
+    display:block;
+    background-color: white;
+}
 
 /********
  * trier
@@ -707,9 +714,15 @@ input:focus{
 	
 }
 .listeChercheAutoComplete{
+    width:200px;
     list-style: none;
-    color:azure;
+    color:black;
+    padding:0px;
+    display:block;
+    margin-top: 0px;
+    background-color: white;
 }
+
 /********
  * erreur
  ********/
@@ -720,6 +733,18 @@ input:focus{
     font-style:bold;
     text-align: center;
 }
+/********
+ * erreur
+ ********/
+
+.count{
+    width:100%;
+    font-size: 24px;
+    color:white;
+    font-style:bold;
+    text-align: center;
+}
+
 
 
 

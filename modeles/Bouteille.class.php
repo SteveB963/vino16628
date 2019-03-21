@@ -306,7 +306,7 @@ class Bouteille extends Modele {
 		
 		$rows = Array();
         //filtre le data par value de champ recherche
-        $requete ='SELECT 
+        $requete ='SELECT
                         c.*,
                         b.id_bouteille AS id, 
                         b.prix, 
@@ -332,8 +332,7 @@ class Bouteille extends Modele {
                         OR b.format like LOWER("%'. $cherche .'%")
                         OR t.type like LOWER("%'. $cherche .'%")
                         OR c.quantite like LOWER("%'. $cherche .'%"))
-                        ';
-                        ; 
+                    '; 
         //var_dump($requete);
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{

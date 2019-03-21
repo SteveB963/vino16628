@@ -22,9 +22,15 @@
 <div class="cellier content" name='cellier'>
 <?php
     if($data){
+         ?>
+        <div class="count">
+            <h3> Resultat-<?php echo sizeof($data)?> Bouteille</h3>
+        </div>
+        <?php
         foreach ($data as $cle => $bouteille) 
         {
         ?>
+        
             <div class="bouteille" data-quantite="">
                 <div class="img">
                     <img src="https:<?php echo $bouteille['image'] ?>">
