@@ -272,7 +272,9 @@ window.addEventListener('load', function() {
         })
         .then(response => {
           console.log(response);
-          window.location.href ="index.php?requete=compte";
+          if(response == true){
+            window.location.href ="index.php?requete=compte";
+          }  
         }).catch(error => {
           console.error(error);
         });
