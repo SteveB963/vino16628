@@ -612,7 +612,7 @@ input:focus{
 	position: relative;
 }
 
-.mesFormulaires button{
+.mesFormulaires button, .mesFormulaires input[type='button']{
 	width: 200px;
 	background-color: #730101;
 	color: white;
@@ -620,9 +620,10 @@ input:focus{
 	box-shadow: 2px 2px 5px grey;
 	border-radius: 5px;
 	padding: 5px;
+	margin-bottom: 0px;
 }
 
-.mesFormulaires button:hover{
+.mesFormulaires button:hover, .mesFormulaires input[type='button']:hover{
 	box-shadow: none;
 }
 
@@ -634,6 +635,30 @@ input:focus{
 
 .formChiffre div{
 	width: 45%;
+}
+
+.errorBox{
+	width: 100%;
+	height: 30px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	padding: 5px;
+	margin-bottom: 20px;
+	border:2px solid red;
+	background-color: #ff00004a;
+}
+
+.confirmBox{
+	width: 100%;
+	height: 30px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	padding: 5px;
+	margin-bottom: 20px;
+	border:2px solid green;
+	background-color: #00800042;
 }
 
 @media all and (max-width:450px)
@@ -676,3 +701,37 @@ input:focus{
 }
 
 
+/********
+ * monCompte.php
+ ********/
+
+ .monCompte{
+ 	margin-left: auto;
+ 	margin-right: 0px;
+ }
+
+.monCompte div:first-child div{
+	display: flex;
+	align-items: center;
+}
+
+.monCompte div:first-child p{
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 23px;
+	margin: 0px;
+	display: none;
+}
+
+.monCompte div:first-child i{
+	padding-left: 5px;
+}
+
+.monCompte div:first-child h2{
+	margin-bottom: 0px;
+	padding-right: 5px;
+}
+
+.monCompte div:last-child{
+	margin-top: 40px;
+}

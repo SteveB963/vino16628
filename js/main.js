@@ -12,27 +12,20 @@
 
 window.addEventListener('load', function() {
     const BaseURL = document.baseURI;
-    console.log(BaseURL);
-    console.log("load");
 
     let btnCreer = document.querySelector("[name='creerCellier']");
-    console.log(btnCreer);
     
     if(btnCreer){
-      let cellier = {
-       
-        nom : document.querySelector("[name='nom']"),
-        id_usager : document.querySelector("[name='id_usager']"),
-        
+      let cellier = { 
+        nom : document.querySelector("[name='nom']") 
       };
       btnCreer.addEventListener("click", function(){              
         var param = {            
-          "id_usager":cellier.id_usager.value,
-          "nom":cellier.nom.value,
+          "nom":cellier.nom.value
         };
       
-        let requete = new Request(BaseURL+"index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
-        
+        let requete = new Request("index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
+        console.log(JSON.stringify(param));
         
         fetch(requete)
               .then(response => {
@@ -42,9 +35,11 @@ window.addEventListener('load', function() {
                     throw new Error('Erreur');
                   }
                 })
-                .then(response => {
-                 
-                  console.log(response);
+                .then(data => { 
+                  console.log(data);
+                  if(data == true){
+                     window.location.href = "index.php?requete=afficheListCellier";
+                  }
                  
                 
                 }).catch(error => {
@@ -288,7 +283,102 @@ window.addEventListener('load', function() {
         });
       } 
   }
-    
+  
+  //Inscription - Ajout d'un nouveau compte
+  let compte = {
+    prenom : document.querySelector("[name='prenomInscri']"),
+    nom : document.querySelector("[name='nomInscri']"),
+    courriel : document.querySelector("[name='courrielInscri']"),
+    motDePasse : document.querySelector("[name='motPasseInscri']"),
+  };
 
+  let btnInscription = document.querySelector("[name='ajouterNouveauCompte']");
+  if(btnInscription){
+    btnInscription.addEventListener("click", function(evt){
+      var param = {
+        "prenomInscri": compte.prenom.value,
+        "nomInscri": compte.nom.value,
+        "courrielInscri": compte.courriel.value,
+        "motPasseInscri": compte.motDePasse.value,
+      };
+      let requete = new Request("index.php?requete=creerCompteUsager", {method: 'POST', body: JSON.stringify(param)});
+      fetch(requete)
+        .then(response => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            throw new Error('Erreur');
+          }
+        })
+        .then(data => {
+          console.log(data);
+          if(data == true){
+            window.location.href ="index.php?requete=compte";
+          }
+          else{
+            //Affichage d'un message d'erreur lorsque la 
+            //connexion à échoué.
+            document.querySelector("[name='msgErreur']").classList.add('errorBox');
+            var messageErreur = "Les informations entrées sont incorrectes.";
+            document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+          }
+        }).catch(error => {
+          console.error(error);
+        });
+    });
+  }
+
+
+  //Connexion - Gestion du formulaire de connexion
+  let infoConnection = {
+    courriel : document.querySelector("[name='courrielCo']"),
+    motDePasse : document.querySelector("[name='motPasseCo']"),
+  };
+
+  let btnConnection = document.querySelector("[name='seConnecter']");
+  if(btnConnection){
+    btnConnection.addEventListener("click", function(evt){
+      var param = {
+        "courrielCo": infoConnection.courriel.value,
+        "motPasseCo": infoConnection.motDePasse.value,
+      }
+      let requete = new Request("index.php?requete=login", {method: 'POST', body: JSON.stringify(param)});
+      fetch(requete)
+        .then(response =>{
+          if (response.status === 200) {
+            return response.json();
+          }
+          else{
+            throw new Error('Erreur');
+          }
+        })
+        .then(data => {
+          //Redirection vers la page monCompte lorsque la
+          //connection à réussie.
+          console.log(data);
+          if(data == true){
+            window.location.href ="index.php?requete=compte";
+          }
+          else{
+            //Affichage d'un message d'erreur lorsque la 
+            //connexion à échoué.
+            document.querySelector("[name='msgErreur']").classList.add('errorBox');
+            var messageErreur = "Les informations entrées sont incorrectes.";
+            document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+          }
+          
+        }).catch(error => {
+          console.error(error);
+        });
+    });
+  }
+/*
+  let btnModif = document.querySelector("[name='modifierCompte']");
+  if(btnModif){
+    btnModif.addEventListener("click", function(evt){
+      window.location.href = "index.php?requete=modificationCompte";
+    });
+  }
+*/
 });
 

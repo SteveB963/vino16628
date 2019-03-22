@@ -52,6 +52,24 @@ class Controler
             case 'uploadPage':
                 $this->uploadPage();
                 break;
+            case 'compte':
+                $this->compte();
+                break;
+            case 'login':
+                $this->login();
+                break;
+            case 'deconnexion':
+                $this->deconnexion();
+                break;
+            case 'inscription':
+                $this->inscription();
+                break;
+            case 'creerCompteUsager':
+                $this->creerCompteUsager();
+                break;
+            case 'modificationCompte':
+                $this->modificationCompte();
+                break;
             default:
                 $this->accueil();
                 break;
@@ -68,7 +86,6 @@ class Controler
             include("vues/entete.php");
             include("vues/accueil.php");
             include("vues/pied.php");
-
         }
     
      /**
@@ -88,18 +105,19 @@ class Controler
 		}
 		private function afficheListCellier()
 		{
-            if ($_POST['id_usager']){
-                $id=$_POST['id_usager'];
-                }
-            else 
-                $id=2;
-            include("vues/entete.php");
-			$cel = new Cellier();
-            $data = $cel->getListeCellier($id);
-            var_dump($data);
-            include("vues/listCellier.php");
-            include("vues/pied.php");
-            // header("Refresh:0; url=" . BASEURL . "index.php?requete=afficheListCellier");
+            if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+            {
+                $cel = new Cellier();
+                $data = $cel->getListeCellier($_SESSION["idUtilisateur"]);
+                include("vues/entete.php");
+                include("vues/listCellier.php");
+                include("vues/pied.php");
+            }
+            else{
+                include("vues/entete.php");
+                include("vues/nonConnecte.php");
+                include("vues/pied.php");
+            }
                   
 		}
     
@@ -185,21 +203,28 @@ class Controler
 	
 	private function creerUnCellier()
 	{	
-		
-		$body = json_decode(file_get_contents('php://input'));
-			if(!empty($body)){
+		if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+        {
+    		$body = json_decode(file_get_contents('php://input'));
+    		if(!empty($body)){
                 $cel = new Cellier();
-                				
-				$resultat = $cel->creerUnNouveauCellier($body);				
-                echo json_encode($resultat);
-                header("Refresh:0; url=" . BASEURL . "index.php?requete=afficheListCellier");			
-			}
-			else{
-				include("vues/entete.php");
-				include("vues/creerCellier.php");
-				include("vues/pied.php");
-			}					
-		
+                $data["idUsager"] = $_SESSION["idUtilisateur"];
+                $data["nomCellier"] = $body->nom;
+                    				
+    		    $resultat = $cel->creerUnNouveauCellier($data);				
+                echo json_encode($resultat);			
+    		}
+    		else{
+    			include("vues/entete.php");
+    			include("vues/creerCellier.php");
+    			include("vues/pied.php");
+    		}					
+		}
+        else{
+            include("vues/entete.php");
+            include("vues/nonConnecte.php");
+            include("vues/pied.php");
+        }
 	}
 
 	
@@ -262,6 +287,159 @@ class Controler
 
     }
     */
+
+    /**
+     * Affiche différentes pages concernant le login selon
+     *  si l'utilisateur est connecté ou pas.
+     *
+     */
+    private function compte()
+    {
+        //Si l'utilisateur est connecté
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
+            //Afficher informations de l'utilisateur
+            $monCpt = new Login();
+            $donnees = $monCpt->getCompte($_SESSION["emailUtilisateur"]);
+            include("vues/entete.php");
+            include("vues/monCompte.php");
+            include("vues/pied.php");
+        }
+        else{
+            //Afficher la page de login
+            include("vues/entete.php");
+            include("vues/login.php");
+            include("vues/pied.php");
+        }
+    }
+
+    /**
+     * Vérifie l'authentification de l'utilisateur puis le redirige vers
+     *  la page "monCompte.php" si l'authentification est acceptée. Dans le
+     *  cas inverse, l'utilisateur reste sur la page de login.
+     *
+     */
+    private function login()
+    {
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body)){
+            if($body->courrielCo == "" && $body->motPassCo == ""){
+                echo json_encode(false);
+            }
+            else{
+                $log = new Login();
+                $correcteInfos = $log->authentification($body);
+
+                echo json_encode($correcteInfos);
+
+                //Création de la variable session lorsque la connexion réussie
+                if($correcteInfos == true)
+                {
+                    $infosCompte = $log->getCompte($body->courrielCo);
+                    $_SESSION["idUtilisateur"] = $infosCompte["id_usager"];
+                    $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
+                    $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
+                    $_SESSION["emailUtilisateur"] = $infosCompte["email"];
+                }
+            } 
+        }
+        else
+        {
+            $varreturn = false;
+            echo json_encode($varreturn);
+        }
+        
+    }
+
+    /**
+     * Ferme la session en cours afin de déconnecter l'utilisateur
+     *  puis le redirige vers la page de connexion.
+     *
+     */
+    private function deconnexion()
+    {
+        $_SESSION = array();
+
+        if(isset($_COOKIE[session_name()]))
+        {
+            setcookie(session_name(), '', time() - 3600);
+        }
+
+        session_destroy();
+
+        $msgConfirmation = "Votre session à bien été fermée.";
+        include("vues/entete.php");
+        include("vues/login.php");
+        include("vues/pied.php");
+    }
+
+    /**
+     * Redirige l'utilisateur vers la page d'inscription.
+     *
+     */
+    private function inscription()
+    {
+        //Si l'utilisateur est connecté
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+        {
+            include("vues/entete.php");
+            include("vues/monCompte.php");
+            include("vues/pied.php");
+        }
+        else
+        {
+            include("vues/entete.php");
+            include("vues/inscription.php");
+            include("vues/pied.php");
+        }
+    }
+
+    /**
+     * Ferme la session en cours afin de déconnecter l'utilisateur
+     *  puis le redirige vers la page de connexion.
+     *
+     */
+    private function creerCompteUsager()
+    {
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body)){
+            $cpt = new Login();
+            $ajoutFonctionel = $cpt->nouveauCompte($body);
+            
+            
+            if($ajoutFonctionel == true){
+                
+                $infosCompte = $cpt->getCompte($body->courrielInscri);
+                $_SESSION["idUtilisateur"] = $infosCompte["id_usager"];
+                $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
+                $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
+                $_SESSION["emailUtilisateur"] = $infosCompte["email"];
+                echo json_encode($ajoutFonctionel);
+            }
+            else{
+                echo json_encode(false);
+            }
+        }
+        else
+        {
+            echo json_encode(false);   
+        }
+    }
+
+/*
+    /**
+     * affiche le formulaire de modification et affectues les 
+     *  modifications.
+     *
+    *//*
+    private function modificationCompte()
+    {  
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body)){
+
+        }
+    }
+
+*/
 }
 ?>
 

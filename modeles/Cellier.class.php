@@ -22,8 +22,8 @@ class Cellier extends Modele {
 	public function creerUnNouveauCellier($data)
 	{
 		$requete = "INSERT INTO cellier(id_usager,nom) VALUES (".
-		"'".$data->id_usager."',".
-		"'".$data->nom."')";
+		"'".$data["idUsager"]."',".
+		"'".$data["nomCellier"]."')";
 
         $res = $this->_db->query($requete);
         

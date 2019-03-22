@@ -15,7 +15,7 @@
     
     <div class="divRouge">
         <!--Ajouter lien vers la page d'inscription-->
-        <h2><a href="#">Inscrivez-vous dès aujourd'hui!</a></h2>
+        <h2><a href="index.php?requete=inscription">Inscrivez-vous dès aujourd'hui!</a></h2>
     </div>
 </div>
 
