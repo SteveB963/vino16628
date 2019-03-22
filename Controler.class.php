@@ -39,10 +39,16 @@ class Controler
                 break;
             case 'boireBouteilleCellier':
                 $this->boireBouteilleCellier();
-                break;
+                break;                
             case 'afficheCellier':
                 $this->afficheCellier();
-                break;
+				break;
+			case 'creerUnCellier':
+                $this->creerUnCellier();
+                break;			
+			case 'afficheListCellier':
+                $this->afficheListCellier();
+				break;
             case 'uploadPage':
                 $this->uploadPage();
                 break;
@@ -72,14 +78,71 @@ class Controler
          */
     	private function afficheCellier()
 		{
+            
 			$bte = new Bouteille();
-            $data = $bte->getListeBouteilleCellier();
+            $data = $bte->getListeBouteilleCellier($_GET['id_cellier']);
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
                   
 		}
+		private function afficheListCellier()
+		{
+            if ($_POST['id_usager']){
+                $id=$_POST['id_usager'];
+                }
+            else 
+                $id=2;
+            include("vues/entete.php");
+			$cel = new Cellier();
+            $data = $cel->getListeCellier($id);
+            var_dump($data);
+            include("vues/listCellier.php");
+            include("vues/pied.php");
+            // header("Refresh:0; url=" . BASEURL . "index.php?requete=afficheListCellier");
+                  
+		}
     
+    
+		
+         /**
+         * 
+         *
+         * /////////DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
+         */
+		private function autocompleteBouteille()
+		{
+			$bte = new Bouteille();
+			$body = json_decode(file_get_contents('php://input'));
+            $listeBouteille = $bte->autocomplete($body->nom);
+            
+            echo json_encode($listeBouteille);
+                  
+		}
+    
+        /**
+         * 
+         *
+         * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
+         */
+		private function ajouterNouvelleBouteilleCellier()
+		{
+			$body = json_decode(file_get_contents('php://input'));
+			if(!empty($body)){
+				$bte = new Bouteille();
+				
+				$resultat = $bte->ajouterBouteilleCellier($body);
+				echo json_encode($resultat);
+			}
+			else{
+				include("vues/entete.php");
+				include("vues/ajouter.php");
+				include("vues/pied.php");
+			}
+			
+            
+		}
+		
     
     //affiche le page accueil apres choisir le trier(par select box)
     private function uploadPage()
@@ -119,42 +182,29 @@ class Controler
 
     }
 
-     /**
-     * 
-     *
-     * /////////DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
-     */
-    private function autocompleteBouteille()
-    {
-        $bte = new Bouteille();
-        $body = json_decode(file_get_contents('php://input'));
-        $listeBouteille = $bte->autocomplete($body->nom);
+	
+	private function creerUnCellier()
+	{	
+		
+		$body = json_decode(file_get_contents('php://input'));
+			if(!empty($body)){
+                $cel = new Cellier();
+                				
+				$resultat = $cel->creerUnNouveauCellier($body);				
+                echo json_encode($resultat);
+                header("Refresh:0; url=" . BASEURL . "index.php?requete=afficheListCellier");			
+			}
+			else{
+				include("vues/entete.php");
+				include("vues/creerCellier.php");
+				include("vues/pied.php");
+			}					
+		
+	}
 
-        echo json_encode($listeBouteille);
+	
+	
 
-    }
-
-    /**
-     * 
-     *
-     * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
-     */
-    private function ajouterNouvelleBouteilleCellier()
-    {
-        $body = json_decode(file_get_contents('php://input'));
-        if(!empty($body)){
-            $bte = new Bouteille();
-            $resultat = $bte->ajouterBouteilleCellier($body);
-            echo json_encode($resultat);
-        }
-        else{
-            include("vues/entete.php");
-            include("vues/ajouter.php");
-            include("vues/pied.php");
-        }
-
-
-    }       
 
 
     /**
