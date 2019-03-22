@@ -1,3 +1,4 @@
+<div class="trier"><a href="?requete=creerUnCellier">Creer votre cellier</a></div>
 <div class="search">
     <input id='searchValue' placeholder="Recherche"> 
     <button id='cherche'><i class="fa fa-search"></i></button> 
@@ -5,7 +6,8 @@
 
     </ul>
 </div>
-<div class="trier">
+
+<div class="trier" id="creerCellier">
     Trier le cellier par:
     <select id="trier">
       <option value="">Select</option>
@@ -16,10 +18,12 @@
       <option value="prix">Prix</option>
       <option value="millesime">Millesime</option>
       <option value="code_saq">Code_SAQ</option>
+
     </select>  
 </div>
 
 <div class="cellier content" name='cellier'>
+
 <?php
     if($data){
          ?>

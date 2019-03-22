@@ -14,6 +14,7 @@
     class Controler 
     {
 
+
         /**
          * Traite la requête
          * @return void
@@ -43,6 +44,12 @@
                 case 'afficheCellier':
                     $this->afficheCellier();
                     break;
+                case 'creerUnCellier':
+                    $this->creerUnCellier();
+                    break;			
+                case 'afficheListCellier':
+                    $this->afficheListCellier();
+                    break;
                 case 'uploadPage':
                     $this->uploadPage();
                     break;
@@ -56,6 +63,7 @@
                     $this->accueil();
                     break;
             }
+
         }
 
 
@@ -76,17 +84,33 @@
          *
          * ///////////TEMPORAIRE/////////////
          */
-        private function afficheCellier()
-        {
-            //ajouter le produit de SAQ web site
-            $bte = new Bouteille();
-            $data = $bte->getListeBouteilleCellier();
+
+    	private function afficheCellier()
+		{
+            
+			$bte = new Bouteille();
+            $data = $bte->getListeBouteilleCellier($_GET['id_cellier']);
+			include("vues/entete.php");
+			include("vues/cellier.php");
+			include("vues/pied.php");
+                  
+		}
+		private function afficheListCellier()
+		{
+            if ($_POST['id_usager']){
+                $id=$_POST['id_usager'];
+                }
+            else 
+                $id=2;
             include("vues/entete.php");
-            include("vues/cellier.php");
+			$cel = new Cellier();
+            $data = $cel->getListeCellier($id);
+            //var_dump($data);
+            include("vues/listCellier.php");
             include("vues/pied.php");
-
-        }
-
+            // header("Refresh:0; url=" . BASEURL . "index.php?requete=afficheListCellier");
+                  
+		}
 
          /**
          * Affiche la liste des bouteilles d'un cellier apres le choix de trier
@@ -95,7 +119,7 @@
         {
             $bte = new Bouteille();
             include("vues/entete.php");
-            $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
+            $data = $bte->getListeBouteilleCellier($_GET['id_cellier'],$_GET['trierCellier']); 
             include("vues/cellier.php");
             include("vues/pied.php");
 
@@ -175,23 +199,25 @@
             }
 
 
-        }       
-
-
-        /**
-         * Retirer une bouteille du cellier
-         * ?? ajout d'une note dans historique pour les statistiques
-         *
-         */
-        private function boireBouteilleCellier()
-        {
-            $body = json_decode(file_get_contents('php://input'));
-            $bte = new Bouteille();
-            //retire une bouteille du cellier et récupère la nouvelle quantité
-            $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
-            $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
-            echo json_encode($resultat);
         }
+	private function creerUnCellier()
+	{	
+		
+		$body = json_decode(file_get_contents('php://input'));
+			if(!empty($body)){
+                $cel = new Cellier();				
+				$resultat = $cel->creerUnNouveauCellier($body);				
+                echo json_encode($resultat);
+                header("Refresh:0; url=" . BASEURL . "index.php?requete=afficheListCellier");			
+			}
+			else{
+				include("vues/entete.php");
+				include("vues/creerCellier.php");
+				include("vues/pied.php");
+			}					
+		
+	}
+
 
         /**
          * Ajoute une bouteille du cellier
