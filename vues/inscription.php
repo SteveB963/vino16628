@@ -2,16 +2,6 @@
 	<h2>Inscription</h2>
 	<p>Veuillez remplir le formulaire ci-dessous afin de vous inscrire.</p>
 		<form class="formulaire">
-		<?php
-
-			if(isset($msgConfirmation))
-			{
-				echo "<div class='divConf'>
-							<p>$msgConfirmation</p>
-						</div>";
-			}
-
-		?>
 		<div name="msgErreur"></div>
 		<div>
 			<input type="text" name="prenomInscri" placeholder="Prenom">

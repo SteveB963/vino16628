@@ -12,9 +12,49 @@
 
 window.addEventListener('load', function() {
     const BaseURL = document.baseURI;
-    console.log(BaseURL);
-    //console.log("load"); 
-    //buttonn Boire
+
+    let btnCreer = document.querySelector("[name='creerCellier']");
+    
+    if(btnCreer){
+      let cellier = { 
+        nom : document.querySelector("[name='nom']") 
+      };
+      btnCreer.addEventListener("click", function(){              
+        var param = {            
+          "nom":cellier.nom.value
+        };
+      
+        let requete = new Request("index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
+        console.log(JSON.stringify(param));
+        
+        fetch(requete)
+              .then(response => {
+                  if (response.status === 200) {
+                    return response.json();
+                  } else {
+                    throw new Error('Erreur');
+                  }
+                })
+                .then(data => { 
+                  console.log(data);
+                  if(data == true){
+                     window.location.href = "index.php?requete=afficheListCellier";
+                  }
+                 
+                
+                }).catch(error => {
+                  console.error(error);
+                });
+       
+         
+      
+      });
+    }
+
+
+
+
+
     document.querySelectorAll(".btnBoire").forEach(function(element){
         //console.log(element);
         element.addEventListener("click", function(evt){
@@ -270,11 +310,18 @@ window.addEventListener('load', function() {
             throw new Error('Erreur');
           }
         })
-        .then(response => {
-          console.log(response);
-          if(response == true){
+        .then(data => {
+          console.log(data);
+          if(data == true){
             window.location.href ="index.php?requete=compte";
-          }  
+          }
+          else{
+            //Affichage d'un message d'erreur lorsque la 
+            //connexion à échoué.
+            document.querySelector("[name='msgErreur']").classList.add('errorBox');
+            var messageErreur = "Les informations entrées sont incorrectes.";
+            document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+          }
         }).catch(error => {
           console.error(error);
         });
@@ -305,11 +352,11 @@ window.addEventListener('load', function() {
             throw new Error('Erreur');
           }
         })
-        .then(response => {
+        .then(data => {
           //Redirection vers la page monCompte lorsque la
           //connection à réussie.
-          console.log(response);
-          if(response == true){
+          console.log(data);
+          if(data == true){
             window.location.href ="index.php?requete=compte";
           }
           else{

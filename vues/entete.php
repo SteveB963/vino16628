@@ -59,8 +59,10 @@
 				
 				<li><a href="?requete=accueil">Accueil</a></li>
 				<li><a href="#">Vins</a></li>
-				<li><a href="?requete=afficheCellier">Mes Celliers</a></li>
+
+				<li><a href="?requete=afficheListCellier">Mes Celliers</a></li>
 				<li><a href="?requete=compte">Mon Compte</a></li>
+				
 				<div id="liensSociauxMobile">
 					<a href="#"><i class="fab fa-instagram"></i></a>
 					<a href="#"><i class="fab fa-facebook-square"></i></a>

@@ -11,8 +11,6 @@
  * 
  */
 
-session_start();
-
 class Controler 
 {
 
@@ -41,10 +39,16 @@ class Controler
                 break;
             case 'boireBouteilleCellier':
                 $this->boireBouteilleCellier();
-                break;
+                break;                
             case 'afficheCellier':
                 $this->afficheCellier();
-                break;
+				break;
+			case 'creerUnCellier':
+                $this->creerUnCellier();
+                break;			
+			case 'afficheListCellier':
+                $this->afficheListCellier();
+				break;
             case 'uploadPage':
                 $this->uploadPage();
                 break;
@@ -91,14 +95,72 @@ class Controler
          */
     	private function afficheCellier()
 		{
+            
 			$bte = new Bouteille();
-            $data = $bte->getListeBouteilleCellier();
+            $data = $bte->getListeBouteilleCellier($_GET['id_cellier']);
 			include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
                   
 		}
+		private function afficheListCellier()
+		{
+            if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+            {
+                $cel = new Cellier();
+                $data = $cel->getListeCellier($_SESSION["idUtilisateur"]);
+                include("vues/entete.php");
+                include("vues/listCellier.php");
+                include("vues/pied.php");
+            }
+            else{
+                include("vues/entete.php");
+                include("vues/nonConnecte.php");
+                include("vues/pied.php");
+            }
+                  
+		}
     
+    
+		
+         /**
+         * 
+         *
+         * /////////DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
+         */
+		private function autocompleteBouteille()
+		{
+			$bte = new Bouteille();
+			$body = json_decode(file_get_contents('php://input'));
+            $listeBouteille = $bte->autocomplete($body->nom);
+            
+            echo json_encode($listeBouteille);
+                  
+		}
+    
+        /**
+         * 
+         *
+         * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
+         */
+		private function ajouterNouvelleBouteilleCellier()
+		{
+			$body = json_decode(file_get_contents('php://input'));
+			if(!empty($body)){
+				$bte = new Bouteille();
+				
+				$resultat = $bte->ajouterBouteilleCellier($body);
+				echo json_encode($resultat);
+			}
+			else{
+				include("vues/entete.php");
+				include("vues/ajouter.php");
+				include("vues/pied.php");
+			}
+			
+            
+		}
+		
     
     //affiche le page accueil apres choisir le trier(par select box)
     private function uploadPage()
@@ -138,42 +200,36 @@ class Controler
 
     }
 
-     /**
-     * 
-     *
-     * /////////DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
-     */
-    private function autocompleteBouteille()
-    {
-        $bte = new Bouteille();
-        $body = json_decode(file_get_contents('php://input'));
-        $listeBouteille = $bte->autocomplete($body->nom);
-
-        echo json_encode($listeBouteille);
-
-    }
-
-    /**
-     * 
-     *
-     * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
-     */
-    private function ajouterNouvelleBouteilleCellier()
-    {
-        $body = json_decode(file_get_contents('php://input'));
-        if(!empty($body)){
-            $bte = new Bouteille();
-            $resultat = $bte->ajouterBouteilleCellier($body);
-            echo json_encode($resultat);
-        }
+	
+	private function creerUnCellier()
+	{	
+		if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+        {
+    		$body = json_decode(file_get_contents('php://input'));
+    		if(!empty($body)){
+                $cel = new Cellier();
+                $data["idUsager"] = $_SESSION["idUtilisateur"];
+                $data["nomCellier"] = $body->nom;
+                    				
+    		    $resultat = $cel->creerUnNouveauCellier($data);				
+                echo json_encode($resultat);			
+    		}
+    		else{
+    			include("vues/entete.php");
+    			include("vues/creerCellier.php");
+    			include("vues/pied.php");
+    		}					
+		}
         else{
             include("vues/entete.php");
-            include("vues/ajouter.php");
+            include("vues/nonConnecte.php");
             include("vues/pied.php");
         }
+	}
 
+	
+	
 
-    }       
 
 
     /**
@@ -243,7 +299,7 @@ class Controler
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
             //Afficher informations de l'utilisateur
             $monCpt = new Login();
-            $donnees = $monCpt->getCompte($_SESSION["idUtilisateur"]);
+            $donnees = $monCpt->getCompte($_SESSION["emailUtilisateur"]);
             include("vues/entete.php");
             include("vues/monCompte.php");
             include("vues/pied.php");
@@ -278,7 +334,11 @@ class Controler
                 //Création de la variable session lorsque la connexion réussie
                 if($correcteInfos == true)
                 {
-                    $_SESSION["idUtilisateur"] = $body->courrielCo;
+                    $infosCompte = $log->getCompte($body->courrielCo);
+                    $_SESSION["idUtilisateur"] = $infosCompte["id_usager"];
+                    $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
+                    $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
+                    $_SESSION["emailUtilisateur"] = $infosCompte["email"];
                 }
             } 
         }
@@ -345,14 +405,18 @@ class Controler
             $cpt = new Login();
             $ajoutFonctionel = $cpt->nouveauCompte($body);
             
+            
             if($ajoutFonctionel == true){
-                $return1 = true;
-                echo json_encode($return1);
-                $_SESSION["idUtilisateur"] = $body->courrielInscri;
+                
+                $infosCompte = $cpt->getCompte($body->courrielInscri);
+                $_SESSION["idUtilisateur"] = $infosCompte["id_usager"];
+                $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
+                $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
+                $_SESSION["emailUtilisateur"] = $infosCompte["email"];
+                echo json_encode($ajoutFonctionel);
             }
             else{
-                $return1 = false;
-                echo json_encode($return1);
+                echo json_encode(false);
             }
         }
         else

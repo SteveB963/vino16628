@@ -113,9 +113,9 @@ class Login extends Modele{
 	 */
     public function getCompte($courriel)
 	{
-		$rows = Array();
+		$row = Array();
 		//À ajouter pour filtrer les variables: mysqli_real_escape_string
-		$res = $this->_db->query('SELECT nom, prenom, email FROM ' . self::TABLE . ' WHERE email = "' . $courriel . '"');
+		$res = $this->_db->query('SELECT id_usager, nom, prenom, email FROM ' . self::TABLE . ' WHERE email = "' . $courriel . '"');
 
 		if($res->num_rows)
 		{

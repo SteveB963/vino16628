@@ -1,3 +1,6 @@
+
+<div class="cellier content">
+<p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Creer votre cellier</a></p>
 <p class="trier">
     Trier le cellier par:
     <select id="trier">
@@ -11,7 +14,7 @@
       <option value="code_saq">Code_SAQ</option>
     </select>
 </p>
-<div class="cellier content" name='cellier'>
+
 <?php
     if($data){
         foreach ($data as $cle => $bouteille) {

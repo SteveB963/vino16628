@@ -1,7 +1,5 @@
 <div class="monCompte mesFormulaires content">
-	<?php
 
-	?>
 	<div>
 		<div>
 			<h2>Mon Compte</h2>
@@ -10,20 +8,11 @@
 		<a href="index.php?requete=deconnexion">Déconnexion</a>
 	</div>
 	
-
-	<?php
-
-		if($donnees){
-	?>
-
 	<div>
-		<p><strong>Prenom: </strong><?php echo $donnees["prenom"] ?></p>
-		<p><strong>Nom: </strong><?php echo $donnees["nom"] ?></p>
-		<p><strong>Adresse Courriel: </strong><?php echo $donnees["email"] ?></p>
+		<p><strong>ID: </strong><?php echo $_SESSION["idUtilisateur"] ?></p>
+		<p><strong>Prenom: </strong><?php echo $_SESSION["prenomUtilisateur"] ?></p>
+		<p><strong>Nom: </strong><?php echo $_SESSION["nomUtilisateur"] ?></p>
+		<p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>
 	</div>
 
-	<?php
-		}
-
-	?>
 </div>
