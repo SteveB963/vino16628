@@ -75,10 +75,11 @@ class Bouteille extends Modele {
 	 * @return Array $rows les informations de chaque bouteille dans le cellier7
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeBouteilleCellier($trier='nom') 
+	public function getListeBouteilleCellier($id_cellier) 
 	{
 		$rows = Array();
-        //choisir le type de  trier (type,prix,code, format etc..)
+		//choisir le type de  trier (type,prix,code, format etc..)
+		//test
         $requete ='SELECT 
                         c.*,
                         b.id_bouteille AS id, 
@@ -95,9 +96,9 @@ class Bouteille extends Modele {
                         JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
                         JOIN pays p ON p.id_pays = b.id_pays
                         JOIN bouteille_type t ON t.id_type = b.id_type
-                        WHERE c.id_cellier = 1
+                        WHERE c.id_cellier = ' . $id_cellier . '
                         ORDER BY '.$trier.' ASC';
-                        ; ///REMPLACER 1 PAR L'ID DU CELLIER
+                       
       
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{

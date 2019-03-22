@@ -10,6 +10,45 @@
 
 window.addEventListener('load', function() {
     const BaseURL = document.baseURI;
+
+    //bouton créer un cellier
+    let btnCreer = document.querySelector("[name='creerCellier']");
+    
+    if(btnCreer){
+      let cellier = {
+       
+        nom : document.querySelector("[name='nom']"),
+        id_usager : document.querySelector("[name='id_usager']"),
+        
+      };
+      btnCreer.addEventListener("click", function(){              
+        var param = {            
+          "id_usager":cellier.id_usager.value,
+          "nom":cellier.nom.value,
+        };
+      
+        let requete = new Request(BaseURL+"index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
+        
+        
+        fetch(requete)
+              .then(response => {
+                  if (response.status === 200) {
+                    return response.json();
+                  } else {
+                    throw new Error('Erreur');
+                  }
+                })
+                .then(response => {
+                 
+                  console.log(response);
+                 
+                
+                }).catch(error => {
+                  console.error(error);
+                });
+      });
+    }
+
     
     //buttonn Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){

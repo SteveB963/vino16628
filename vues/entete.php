@@ -49,7 +49,6 @@
 			<input type="checkbox" id="burger">
 			<i class="fas fa-bars"></i>
 			<i class="fas fa-times"></i>
-
 			<nav>
                 <div id="mainNav">
                     <ul>
@@ -58,7 +57,7 @@
                     -->
                     <li><a href="?requete=accueil">Accueil</a></li>
                     <li><a href="#">Vins</a></li>
-                    <li><a href="?requete=listeBouteilleCellier">Mes Celliers</a></li>
+                    <li><a href="?requete=afficheListCellier">Mes Celliers</a></li>
                     <li><a href="#">Mon Compte</a></li>
                     <div id="liensSociauxMobile">
                         <a href="#"><i class="fab fa-instagram"></i></a>
