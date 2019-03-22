@@ -13,79 +13,35 @@
 class Bouteille extends Modele {
 	const TABLE = 'bouteille';
     
-     /**
+    /**
 	 * Récupère tous les informations sur une bouteille
      *
      * @param int $id id de la bouteille à récupèrer les informations
 	 *  
 	 * @return Array $rows informations de tous les pays
+     * //////////////////////////////NOM PAYS ET TYPE POURAIS ÊTRE RETIRER DE LA REQUETE ???//////////////////////////////
 	 */
     public function getBouteille($id)
 	{
-        
-		$rows = Array();
-		$res = $this->_db->query('SELECT 
-                                    b.id_bouteille,
-                                    b.nom,
-                                    b.image,
-                                    b.prix,
-                                    b.format,
-                                    b.millesime,
-                                    b.non_liste,
-                                    b.code_saq,
-                                    b.url_saq,
+		$row = Array();
+		/*$res = $this->_db->query('SELECT 
+                                    b.*,
                                     t.type,
                                     p.pays 
                                     FROM '. self::TABLE . ' b 
-                                    JOIN bouteille_type t ON t.id_type = b.type
-                                    JOIN pays p ON p.id_pays = b.pays 
-                                    WHERE b.id_bouteille = ' . $id);
+                                    JOIN bouteille_type t ON t.id_type = b.id_type
+                                    JOIN pays p ON p.id_pays = b.id_pays 
+                                    WHERE b.id_bouteille = ' . $id);*/
+        $res = $this->_db->query('SELECT 
+                                    * 
+                                    FROM '. self::TABLE . '
+                                    WHERE id_bouteille = ' . $id);
 		if($res->num_rows)
 		{
             $row = $res->fetch_assoc();
 		}
 		
 		return $row;
-	}
-    
-    /**
-	 * récupère tous les pays
-	 *  
-	 * @return Array $rows informations de tous les pays
-	 */
-    public function getPays()
-	{
-		$rows = Array();
-		$res = $this->_db->query('SELECT * FROM pays');
-		if($res->num_rows)
-		{
-            while($row = $res->fetch_assoc())
-			{
-				$rows[] = $row;
-			}
-		}
-		
-		return $rows;
-	}
-    
-    /**
-	 * récupère tous les types de vins
-	 *  
-	 * @return Array $rows informations de tous les types
-	 */
-    public function getType()
-	{
-		$rows = Array();
-		$res = $this->_db->query('SELECT * FROM bouteille_type');
-		if($res->num_rows)
-		{
-            while($row = $res->fetch_assoc())
-			{
-				$rows[] = $row;
-			}
-		}
-		
-		return $rows;
 	}
     
     
@@ -119,30 +75,29 @@ class Bouteille extends Modele {
 	 * @return Array $rows les informations de chaque bouteille dans le cellier7
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeBouteilleCellier($id_cellier) 
+	public function getListeBouteilleCellier($id_cellier, $trier = "nom") 
 	{
-		
 		$rows = Array();
 		//choisir le type de  trier (type,prix,code, format etc..)
 		//test
         $requete ='SELECT 
                         c.*,
-                        b.id_bouteille AS id, 
+                        b.id_bouteille, 
                         b.prix, 
-                        b.nom AS nom, 
-                        b.image AS image, 
-                        b.code_saq AS code_saq, 
+                        b.nom, 
+                        b.image, 
+                        b.code_saq, 
                         b.url_saq, 
-                        p.pays AS pays, 
-                        b.millesime AS millesime ,
+                        p.pays, 
+                        b.millesime,
                         b.format,
-                        t.type AS type 
+                        t.type 
                         FROM cellier_contenu c
-                        JOIN bouteille b ON id = c.id_bouteille 
-                        JOIN pays p ON p.id_pays = b.pays
-                        JOIN bouteille_type t ON t.id_type = b.type
-                        WHERE c.id_cellier = '. $id_cellier;
-                       
+                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
+                        JOIN pays p ON p.id_pays = b.id_pays
+                        JOIN bouteille_type t ON t.id_type = b.id_type
+                        WHERE c.id_cellier = ' . $id_cellier . '
+                        ORDER BY '.$trier.' ASC';
                        
       
 		if(($res = $this->_db->query($requete)) ==	 true)
@@ -200,6 +155,59 @@ class Bouteille extends Modele {
 		}
 		return $rows;
 	}
+    
+    /**
+	 * ajoute une bouteille non liste
+	 * 
+	 * @param Array $data Tableau des données représentants la bouteille.
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function ajouterBouteilleNonListe($data)
+	{
+        $requete = "INSERT INTO bouteille(nom, image, prix, format, id_type, id_pays, millesime, code_saq, url_saq, non_liste) VALUES (" .
+        "'" . $data->nom . "'," .
+        "'" . $data->image . "'," .
+        "'" . floatval($data->prix) . "'," .
+        "'" . intval($data->format) . "'," .
+        "'" . intval($data->id_type) . "'," .
+        "'" . intval($data->id_pays) . "'," .
+        "'" . intval($data->millesime) . "'," .
+        "'" . intval($data->code_saq) . "'," .
+        "'" . $data->url_saq . "'," .
+        "1)";
+
+        $res = $this->_db->query($requete);
+        
+        return $res;
+	}
+    
+    /**
+	 * modifie une bouteille non liste
+	 * 
+	 * @param Array $data Tableau des données représentants la bouteille.
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function modiferBouteilleNonListe($data)
+	{
+		$requete = "UPDATE bouteille SET 
+            nom = '" . $data->nom . "'," .
+            "image = '" . $data->image . "'," .
+            "prix = '" . floatval($data->prix) . "'," .
+            "format = '" . intval($data->format) . "'," .
+            "id_type = '" . intval($data->id_type) . "'," .
+            "id_pays = '" . intval($data->id_pays) . "'," .
+            "millesime = '" . intval($data->millesime) . "'," .
+            "code_saq = '" . intval($data->code_saq) . "'," .
+            "url_saq = '" . $data->url_saq . "'," .
+            "non_liste = 1 
+            WHERE id_bouteille = " . $data -> id_bouteille;
+        
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
 	
 	
 	/**
@@ -251,6 +259,41 @@ class Bouteille extends Modele {
         
 		return $row;
 	}
+    
+    /**
+	 * Remplace l'id d'une bouteille liste par une bouteille non liste
+	 * 
+	 * @param int $idAncien l'id de l'ancienne bouteille à remplacer
+	 * @param int $idAncien l'id de la nouvelle bouteille à remplacer
+	 * 
+	 * @return Boolean Succès ou échec de l'update
+     *
+     * /////////////BESOIN D'UN ID DE CELLIER//////////////////
+	 */
+	public function remplaceBouteilleCellier($idCellier, $idAncienne, $idNouvelle)
+	{
+		$requete = "UPDATE cellier_contenu SET id_bouteille = " . $idNouvelle . " WHERE id_cellier = " . $idCellier . " AND id_bouteille = " . $idAncienne;
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+    
+    /**
+	 * Retourne l'id de la dernière bouteille entré
+	 * 
+	 * @param int $idAncien l'id de l'ancienne bouteille à remplacer
+	 * @param int $idAncien l'id de la nouvelle bouteille à remplacer
+	 * 
+	 * @return Boolean Succès ou échec de l'update
+	 */
+    public function getDernBouteille(){
+        $requete = "SELECT MAX(id_bouteille) as max FROM " . self::TABLE;
+        $res = $this->_db->query($requete);
+        
+        $row = $res->fetch_assoc();
+        
+        return $row['max'];
+    }
     
     
 }

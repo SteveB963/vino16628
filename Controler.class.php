@@ -22,9 +22,6 @@ class Controler
     {
 
         switch ($_GET['requete']) {
-            case 'listeBouteilleCellier':
-                $this->listeBouteilleCellier();
-                break;
             case 'autocompleteBouteille':
                 $this->autocompleteBouteille();
                 break;
@@ -77,128 +74,111 @@ class Controler
     }
 
 
-        /**
-         * affiche le page accueil le trier par nom by default
-         *
-         */
-        private function accueil()
-        {  
-            include("vues/entete.php");
-            include("vues/accueil.php");
-            include("vues/pied.php");
-        }
-    
-     /**
-         * Affiche la liste des bouteilles d'un cellier
-         *
-         * ///////////TEMPORAIRE/////////////
-         */
-    	private function afficheCellier()
-		{
-            
-			$bte = new Bouteille();
-            $data = $bte->getListeBouteilleCellier($_GET['id_cellier']);
-			include("vues/entete.php");
-			include("vues/cellier.php");
-			include("vues/pied.php");
-                  
-		}
-		private function afficheListCellier()
-		{
-            if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
-            {
-                $cel = new Cellier();
-                $data = $cel->getListeCellier($_SESSION["idUtilisateur"]);
+    /**
+     * Affiche la page d'acceil
+     *
+     */
+    private function accueil()
+    {
+        include("vues/entete.php");
+        include("vues/accueil.php");
+        include("vues/pied.php");
+    }
+
+
+    /**
+     * Affiche la liste des bouteilles d'un cellier
+     *
+     * ///////////TEMPORAIRE/////////////
+     */
+    private function afficheCellier()
+    {
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+        {
+            if(isset($_GET['id_cellier'])){
+                if(isset($_GET['trierCellier'])){
+                    $trier = $_GET['trierCellier'];
+                }
+                else{
+                    $trier = "nom";
+                }
+                $bte = new Bouteille();
+                $data = $bte->getListeBouteilleCellier($_GET['id_cellier'], $trier);
                 include("vues/entete.php");
-                include("vues/listCellier.php");
+                include("vues/cellier.php");
                 include("vues/pied.php");
             }
             else{
-                include("vues/entete.php");
-                include("vues/nonConnecte.php");
-                include("vues/pied.php");
+                $this->afficheListCellier();
             }
-                  
-		}
-    
-    
-		
-         /**
-         * 
-         *
-         * /////////DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
-         */
-		private function autocompleteBouteille()
-		{
-			$bte = new Bouteille();
-			$body = json_decode(file_get_contents('php://input'));
-            $listeBouteille = $bte->autocomplete($body->nom);
-            
-            echo json_encode($listeBouteille);
-                  
-		}
-    
-        /**
-         * 
-         *
-         * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
-         */
-		private function ajouterNouvelleBouteilleCellier()
-		{
-			$body = json_decode(file_get_contents('php://input'));
-			if(!empty($body)){
-				$bte = new Bouteille();
-				
-				$resultat = $bte->ajouterBouteilleCellier($body);
-				echo json_encode($resultat);
-			}
-			else{
-				include("vues/entete.php");
-				include("vues/ajouter.php");
-				include("vues/pied.php");
-			}
-			
-            
-		}
-		
-    
-    //affiche le page accueil apres choisir le trier(par select box)
-    private function uploadPage()
-    {
-        $bte = new Bouteille();
-        include("vues/entete.php");
-        $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
-        include("vues/cellier.php");
-        include("vues/pied.php");
+        }
+        else{
+            include("vues/entete.php");
+            include("vues/nonConnecte.php");
+            include("vues/pied.php");
+        }
+        
 
     }
-    /**
-     * Affiche la liste complète de l'inventaire des bouteilles listées
-     *
-     */
-    /////////////AJOUTÉ FUNCTION POUR AFFICHER TOUT LES BOUTEILLES ICI//////////////
 
-
-
-
-
-
-
-    /**
-     * Affiche le liste de bouteille dans un cellier
-     *
-     * @param int $id id du cellier à afficher
-     *
-     * /////////DOIT ÊTRE MODIFIER POUR RÉCUPÉRER UN ID DE CELLIER////////
-     */
-    private function listeBouteilleCellier()
+    private function afficheListCellier()
     {
-        $bte = new Bouteille();
-        $cellier = $bte->getListeBouteilleCellier();
-
-        echo json_encode($cellier);
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+        {
+            $cel = new Cellier();
+            $data = $cel->getListeCellier($_SESSION["idUtilisateur"]);
+            include("vues/entete.php");
+            include("vues/listCellier.php");
+            include("vues/pied.php");
+        }
+        else{
+            include("vues/entete.php");
+            include("vues/nonConnecte.php");
+            include("vues/pied.php");
+        }
 
     }
+
+
+
+     /**
+     * 
+     *
+     * /////////DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
+     */
+    private function autocompleteBouteille()
+    {
+        $bte = new Bouteille();
+        $body = json_decode(file_get_contents('php://input'));
+        $listeBouteille = $bte->autocomplete($body->nom);
+
+        echo json_encode($listeBouteille);
+
+    }
+
+    /**
+     * 
+     *
+     * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
+     */
+    private function ajouterNouvelleBouteilleCellier()
+    {
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body)){
+            $bte = new Bouteille();
+
+            $resultat = $bte->ajouterBouteilleCellier($body);
+            echo json_encode($resultat);
+        }
+        else{
+            include("vues/entete.php");
+            include("vues/ajouter.php");
+            include("vues/pied.php");
+        }
+
+
+    }
+		
 
 	
 	private function creerUnCellier()
@@ -227,10 +207,6 @@ class Controler
         }
 	}
 
-	
-	
-
-
 
     /**
      * Retirer une bouteille du cellier
@@ -240,6 +216,7 @@ class Controler
     private function boireBouteilleCellier()
     {
         $body = json_decode(file_get_contents('php://input'));
+
         $bte = new Bouteille();
         //retire une bouteille du cellier et récupère la nouvelle quantité
         $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
@@ -265,28 +242,114 @@ class Controler
 
     /**
      * redirige vers le formulaire de modification d'une bouteille dans un cellier
-     * ?? traitement du formulaire à venir .....
+     * et traite le formulaire
      *
-     *  ///////////////////////////////NON COMPLETÉ//////////////////////////////////
+     * @return obj $resultat resultat des requetes sql et retourne les erreurs.
      */
-    /*
-    private function modifierBouteilleCellier()
-    {	
-        //$body = json_decode(file_get_contents('php://input'));
+    private function modifierBouteilleCellier(){
+        $body = json_decode(file_get_contents('php://input'));
+        //si on ne reçoit pas de donnée on dirige vers le formulaire
+        if(empty($body)){
+            $bte = new Bouteille();
+            $donnee['bouteille'] = $bte->getBouteille($_GET['id_bouteille']);
+            
+            $donnee['id_cellier'] = $_GET['id_cellier'];
 
+            $pays = new Pays();
+            $donnee['pays'] = $pays->getTousPays();
+
+            $type = new Type();
+            $donnee['type'] = $type->getTousTypes();
+
+            include("vues/entete.php");
+            include("vues/formBout.php");
+            include("vues/pied.php");
+        }
+        else{
+            $resultat = new stdClass();
+            $resultat -> erreur = $body -> verif;
+            $resultat -> succes = false;
+            $erreur = false;
+
+            //récupère les résultat des vérification
+            $verif = (array) $body -> verif;
+            foreach($verif as $err){
+                if($err != ""){
+                    $erreur = true;
+                }
+            }
+
+            //traitement si pas d'érreur
+            if(!$erreur){
+                //récupération des infos de la bouteille avant modif
+                $bte = new Bouteille();
+                $bteAvant = $bte -> getBouteille($body -> bte -> id_bouteille);
+                //tableau contenant les modif.
+                $bteNouvelle = (array) $body -> bte;
+
+                //vérifie si il y a eu des modifications
+                $duplication = true;
+                foreach($bteAvant as $champ => $valeur){
+                    if($bteAvant[$champ] != $bteNouvelle[$champ]){
+                        $duplication = false;
+                    }
+                }
+                //si modification
+                if(!$duplication){
+                    //si bouteille est listé
+                    if($body -> bte -> non_liste == 0){
+                        //ajoute nouvelle bouteille non-liste
+                        $resultat -> succes = $bte -> ajouterBouteilleNonListe($body -> bte);
+
+                        //remplace la bouteille liste par la nouvelle bouteille non liste
+                        if($resultat -> succes == true){
+                            //recupération de l'id du dernier ajout
+                            $dernId = $bte -> getDernBouteille();
+                            $resultat -> idNouvelle = $dernId;
+                            //remplace l'id_bouteille dans le cellier avec la nouvelle id
+                            $resultat -> succes = $bte -> remplaceBouteilleCellier($body -> bte -> id_cellier, $body-> bte -> id_bouteille, $dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
+                            $resultat -> status = "remplaceBouteille";
+
+                            if($resultat -> succes == false){
+                                $resultat  -> echec = "erreur lors du remplacement";
+                            }
+                        }
+                        else{
+                            $resultat  -> echec = "erreur lors de l'insertion";
+                        }
+                    }
+                    //si non listé
+                    else{
+                        //si deja non liste,update de la bouteille.
+                        $resultat -> succes = $bte -> modiferBouteilleNonListe($body -> bte);
+                        if($resultat -> succes == false){
+                                $resultat  -> echec = "erreur lors de la mise à jour";
+                            }
+                    }
+                }
+                //si pas de modification
+                else{
+                    $resultat -> succes = "dup";
+                }
+            }
+
+            echo trim(json_encode($resultat));
+        }
+
+    }
+
+
+    //affiche le page accueil apres choisir le trier(par select box)
+    private function uploadPage()
+    {
         $bte = new Bouteille();
-        $resultat['bouteille'] = $bte->getBouteille($_GET['id']);
-        $resultat['pays'] = $bte->getPays();
-        $resultat['type'] = $bte->getType();
-
-        //echo json_encode($resultat);
-
         include("vues/entete.php");
-        include("vues/formBout.php");
+        $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
+        include("vues/cellier.php");
         include("vues/pied.php");
 
     }
-    */
+
 
     /**
      * Affiche différentes pages concernant le login selon
@@ -321,14 +384,15 @@ class Controler
     private function login()
     {
         $body = json_decode(file_get_contents('php://input'));
+        
         if(!empty($body)){
-            if($body->courrielCo == "" && $body->motPassCo == ""){
+            if($body->courrielCo == "" && $body->motPasseCo == ""){
                 echo json_encode(false);
             }
             else{
                 $log = new Login();
+                
                 $correcteInfos = $log->authentification($body);
-
                 echo json_encode($correcteInfos);
 
                 //Création de la variable session lorsque la connexion réussie
@@ -340,12 +404,13 @@ class Controler
                     $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
                     $_SESSION["emailUtilisateur"] = $infosCompte["email"];
                 }
+        
             } 
+            
         }
         else
         {
-            $varreturn = false;
-            echo json_encode($varreturn);
+            echo json_encode(false);
         }
         
     }
