@@ -260,8 +260,8 @@ CREATE TABLE bouteille (
   millesime int(4) DEFAULT NULL,
   non_liste tinyint(1) DEFAULT '0',
   PRIMARY KEY (id_bouteille),
-  FOREIGN KEY(type) REFERENCES bouteille_type (id_type),
-  FOREIGN KEY(pays) REFERENCES pays (id_pays)
+  FOREIGN KEY(id_type) REFERENCES bouteille_type (id_type),
+  FOREIGN KEY(id_pays) REFERENCES pays (id_pays)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
@@ -299,9 +299,14 @@ CREATE TABLE usager(
 -- Contenu de la table usager
 --
 
+--
+-- password Jean: Admin123
+-- password John: User123
+--
+
 INSERT INTO usager VALUES
-    (1, 'Jean', 'Admin', 'adminvino1@gmail.com', 'Admin123', 1),
-    (2, 'John', 'Usager', 'usagervino2@gmail.com', 'Usager123', 0);
+    (1, 'Jean', 'Admin', 'adminvino1@gmail.com', '$2y$10$pd29mcjMNHZrgjXfn95nIuKRIoJTomEj91gnqs34ab.IOCKYpSbv2', 1), 
+    (2, 'John', 'Usager', 'usagervino2@gmail.com', '$2y$10$fClA9uJwFty.BZGwKL3qOOGw47BihMTWcnYDKP1qZayD37RO32tGa', 0); 
 
 -- --------------------------------------------------------
 

@@ -70,8 +70,9 @@
             </div>
         </form>
         <p class="msg"></p>
-        <input type="hidden" name="id" value="<?php echo $donnee['bouteille']['id_bouteille'] ?>">
+        <input type="hidden" name="id_bouteille" value="<?php echo $donnee['bouteille']['id_bouteille'] ?>">
         <input type="hidden" name="nonliste" value="<?php echo $donnee['bouteille']['non_liste'] ?>">
+        <input type="hidden" name="id_cellier" value="<?php echo $donnee['id_cellier'] ?>">
         <div class="boutonForm">
             <button class="retour" name="retourCellier">Retour</button>
             <button class="soumettre" name="sauver">Modifier la bouteille</button>

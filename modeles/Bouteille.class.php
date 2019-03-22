@@ -75,23 +75,23 @@ class Bouteille extends Modele {
 	 * @return Array $rows les informations de chaque bouteille dans le cellier7
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeBouteilleCellier($id_cellier) 
+	public function getListeBouteilleCellier($id_cellier, $trier = "nom") 
 	{
 		$rows = Array();
 		//choisir le type de  trier (type,prix,code, format etc..)
 		//test
         $requete ='SELECT 
                         c.*,
-                        b.id_bouteille AS id, 
+                        b.id_bouteille, 
                         b.prix, 
-                        b.nom AS nom, 
-                        b.image AS image, 
-                        b.code_saq AS code_saq, 
+                        b.nom, 
+                        b.image, 
+                        b.code_saq, 
                         b.url_saq, 
-                        p.pays AS pays, 
-                        b.millesime AS millesime ,
+                        p.pays, 
+                        b.millesime,
                         b.format,
-                        t.type AS type 
+                        t.type 
                         FROM cellier_contenu c
                         JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
                         JOIN pays p ON p.id_pays = b.id_pays
@@ -270,9 +270,9 @@ class Bouteille extends Modele {
      *
      * /////////////BESOIN D'UN ID DE CELLIER//////////////////
 	 */
-	public function remplaceBouteilleCellier($idAncienne, $idNouvelle)
+	public function remplaceBouteilleCellier($idCellier, $idAncienne, $idNouvelle)
 	{
-		$requete = "UPDATE cellier_contenu SET id_bouteille = " . $idNouvelle . " WHERE id_bouteille = " . $idAncienne;
+		$requete = "UPDATE cellier_contenu SET id_bouteille = " . $idNouvelle . " WHERE id_cellier = " . $idCellier . " AND id_bouteille = " . $idAncienne;
         $res = $this->_db->query($requete);
         
 		return $res;

@@ -1,23 +1,9 @@
 <div class="actionCellier">
-    <button>Ajouter une boueille</button>
+    <!--<button>Ajouter une boueille</button>-->
+    <!--<p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Creer votre cellier</a></p>-->
     <p class="trier">
         Trier le cellier par:
         <select id="trier">
-          <option value="">Select</option>
-          <option value="nom">Nom</option>
-          <option value="pays">Pays</option>
-          <option value="format">Format</option>
-          <option value="type">Type</option>
-          <option value="prix">Prix</option>
-          <option value="millesime">Millesime</option>
-          <option value="code_saq">Code_SAQ</option>
-        </select>
-    </p>
-    <p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Creer votre cellier</a></p>
-    <p class="trier">
-        Trier le cellier par:
-        <select id="trier">
-          <option value="">Select</option>
           <option value="nom">Nom</option>
           <option value="pays">Pays</option>
           <option value="format">Format</option>
@@ -29,12 +15,12 @@
     </p>
 </div>
 
-<div class="cellier content" name='cellier'>
+<div class="cellier content" name='cellier'  data-id="<?php echo $_GET['id_cellier']?>">
 <?php
     if($data){
         foreach ($data as $cle => $bouteille) {
     ?>
-    <div class="bouteille" data-quantite="">
+    <div class="bouteille">
         <div class="img">
             <img class="imgvin" src="<?php echo $bouteille['image'] ?>">
         </div>
@@ -47,7 +33,7 @@
                     <p></p>
                 </div>
             </div>
-            <div class="options" data-id="<?php echo $bouteille['id'] ?>">
+            <div class="options" data-id="<?php echo $bouteille['id_bouteille'] ?>">
                 <button class='btnModifier'>Modifier</button>
                 <button class='btnAjouter'>Ajouter</button>
                 <button class='btnBouteille'>Bouteille</button>
