@@ -216,22 +216,24 @@ class Bouteille extends Modele {
 		
 		$rows = Array();
 		$cherche = $this->_db->real_escape_string($cherche);
-		$cherche = preg_replace("/\*/","%" , $cherche);
-		$requete ='SELECT nom as result FROM bouteille where LOWER(nom) like LOWER("%'. $cherche .'%")
+        //replace le space avec%
+		$cherche = preg_replace("/\s/","%" , $cherche);
+		
+        $requete ='SELECT nom as resultat FROM bouteille where LOWER(nom) like LOWER("%'. $cherche .'%")
         UNION All
-        SELECT distinct pays.pays as result FROM bouteille JOIN pays ON bouteille.pays=pays.id_pays where LOWER(pays.pays) like LOWER("%'. $cherche.'%")
+        SELECT distinct pays.pays as resultat FROM bouteille JOIN pays ON bouteille.pays=pays.id_pays where LOWER(pays.pays) like LOWER("%'. $cherche.'%")
         UNION All
-        SELECT  prix as result FROM bouteille where LOWER(prix) like LOWER("%'. $cherche.'%")
+        SELECT  prix as resultat FROM bouteille where LOWER(prix) like LOWER("%'. $cherche.'%")
         UNION All
-        SELECT  type as result FROM bouteille_type where LOWER(type) like LOWER("%'. $cherche.'%")
+        SELECT  type as resultat FROM bouteille_type where LOWER(type) like LOWER("%'. $cherche.'%")
         UNION All
-        SELECT  format as result FROM bouteille where LOWER(format) like LOWER("%'. $cherche.'%")
+        SELECT  format as resultat FROM bouteille where LOWER(format) like LOWER("%'. $cherche.'%")
         UNION All
-        SELECT millesime as result FROM bouteille where LOWER(millesime) like LOWER("%'. $cherche.'%")
+        SELECT millesime as resultat FROM bouteille where LOWER(millesime) like LOWER("%'. $cherche.'%")
         UNION All
-        SELECT code_saq as result FROM bouteille where LOWER(code_saq) like LOWER("%'.$cherche.'%")
+        SELECT code_saq as resultat FROM bouteille where LOWER(code_saq) like LOWER("%'.$cherche.'%")
         LIMIT 0,'. $nb_resultat;
-        //var_dump($requete);
+        
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)

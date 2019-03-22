@@ -40,6 +40,7 @@ window.addEventListener('load', function() {
         })
 
     });
+    
     //buttonn ajouter
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
@@ -66,6 +67,7 @@ window.addEventListener('load', function() {
         })
 
     });
+    
     //buttonn Trier par le selct box value
     let btnTrier = document.getElementById('trier');
     if(btnTrier){
@@ -76,9 +78,9 @@ window.addEventListener('load', function() {
         });
     }  
 
+    
     //autocomplete de rechercher champ
-
-     let inputCherche = document.getElementById('searchValue');
+    let inputCherche = document.getElementById('searchValue');
     //console.log(inputNomBouteille);
     let listeCherche = document.querySelector('.listeChercheAutoComplete');
     if(inputCherche){
@@ -97,9 +99,9 @@ window.addEventListener('load', function() {
                   }
                 })
                 .then(response => {
-                  //console.log(response);
+                //affiche l'autocomlplete resultat en liste
                   response.forEach(function(element){
-                    listeCherche.innerHTML += "<li class='listCherche' id='"+element.result +"'>"+element.result+"</a></li>";
+                    listeCherche.innerHTML += "<li class='listCherche' id='"+element.resultat +"'>"+element.resultat+"</a></li>";
                   })
                 }).catch(error => {
                   console.error(error);
@@ -107,6 +109,8 @@ window.addEventListener('load', function() {
             }
         });
     }
+   
+    //prendre le valeur du liste de recherche
     if( listeCherche){
         listeCherche.addEventListener("click", function(evt){
             console.dir(evt.target)
@@ -119,10 +123,9 @@ window.addEventListener('load', function() {
     }
   
    
-    //button chercher le valeur dans mon cellier
-   
+    //button chercher  dans mon cellier
     let btnChercher = document.getElementById('cherche');
-    //console.log(btnChercher);
+    
     //quand on click en button chercher 
     if(btnChercher){
        btnChercher.addEventListener('click', function(){
@@ -138,7 +141,8 @@ window.addEventListener('load', function() {
             }
         });
     }
-   //quand entrer le valeur de champ cherche vous pouvez click enter en clavier
+    
+   // vous pouvez clicker en button enter en clavier
    let inpChercher=document.getElementById('searchValue');
     if(inpChercher){
         inpChercher.addEventListener('keyup', function(){

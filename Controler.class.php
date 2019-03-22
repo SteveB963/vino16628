@@ -88,7 +88,9 @@
         }
 
 
-        //affiche le page cellier apres choisir le type de trier(par select box)
+         /**
+         * Affiche la liste des bouteilles d'un cellier apres le choix de trier
+         */
         private function uploadPage()
         {
             $bte = new Bouteille();
@@ -98,7 +100,10 @@
             include("vues/pied.php");
 
         }
-        //autocomplte de rechercher le valeur 
+        
+        /**
+         * Affiche le recherche champ
+         */
          private function autocompleteCherche()
         {
             $body = json_decode(file_get_contents('php://input'));
@@ -106,7 +111,10 @@
             $list = $bte->autocompleteCherche($body->cherche);
             echo json_encode($list);
         }
-        //affiche le page cellier avec le resultat de recherche
+        
+        /**
+         * Affiche le resultat de recherche en page d'un cellier 
+         */
         private function chercheValue()
         {
             $bte = new Bouteille();
@@ -116,16 +124,7 @@
             include("vues/pied.php");
 
         }
-        /**
-         * Affiche la liste complète de l'inventaire des bouteilles listées
-         *
-         */
-        /////////////AJOUTÉ FUNCTION POUR AFFICHER TOUT LES BOUTEILLES ICI//////////////
-
-
-
-
-
+    
 
 
         /**
