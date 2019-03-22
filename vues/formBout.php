@@ -69,9 +69,14 @@
                 <p class="erreurUrlsaq"></p>
             </div>
         </form>
+        <p class="msg"></p>
         <input type="hidden" name="id" value="<?php echo $donnee['bouteille']['id_bouteille'] ?>">
         <input type="hidden" name="nonliste" value="<?php echo $donnee['bouteille']['non_liste'] ?>">
-        <button name="sauver">Modifier la bouteille</button>
-        <p class="msg"></p>
+        <div class="boutonForm">
+            <button class="retour" name="retourCellier">Retour</button>
+            <button class="soumettre" name="sauver">Modifier la bouteille</button>
+        </div>
+        
+        
     </div>
 </div>

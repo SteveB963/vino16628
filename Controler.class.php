@@ -92,6 +92,28 @@ class Controler
 		{
 			$bte = new Bouteille();
             $data = $bte->getListeBouteilleCellier();
+            
+            function verifieImage($url)
+            {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL,$url);
+                // don't download content
+                curl_setopt($ch, CURLOPT_NOBODY, 1);
+                curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+                $result = curl_exec($ch);
+                curl_close($ch);
+                if($result !== FALSE)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
             include("vues/entete.php");
 			include("vues/cellier.php");
 			include("vues/pied.php");
@@ -178,7 +200,7 @@ class Controler
          */
         private function modifierBouteilleCellier(){
             $body = json_decode(file_get_contents('php://input'));
-	
+	        //si on ne reçoit pas de donnée on dirige vers le formulaire
             if(empty($body)){
                 $bte = new Bouteille();
                 $donnee['bouteille'] = $bte->getBouteille($_GET['id']);
@@ -193,22 +215,21 @@ class Controler
                 include("vues/formBout.php");
                 include("vues/pied.php");
             }
-            
             else{
                 $resultat = new stdClass();
                 $resultat -> erreur = $body -> verif;
                 $resultat -> succes = false;
                 $erreur = false;
                 
+                //récupère les résultat des vérification
                 $verif = (array) $body -> verif;
-                
                 foreach($verif as $err){
                     if($err != ""){
                         $erreur = true;
                     }
                 }
                 
-                
+                //traitement si pas d'érreur
                 if(!$erreur){
                     //récupération des infos de la bouteille avant modif
                     $bte = new Bouteille();
@@ -278,6 +299,8 @@ class Controler
             include("vues/pied.php");
 
         }
+    
+        
 
 }
 ?>

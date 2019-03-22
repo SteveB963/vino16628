@@ -56,8 +56,6 @@
                     <!--
                         <li><a href="?requete=accueil">Mon cellier</a></li>
                     -->
-                        <li><a href="?requete=ajouterNouvelleBouteilleCellier">Ajouter une bouteille au cellier</a></li>
-
                     <li><a href="?requete=accueil">Accueil</a></li>
                     <li><a href="#">Vins</a></li>
                     <li><a href="?requete=listeBouteilleCellier">Mes Celliers</a></li>

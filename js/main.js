@@ -73,11 +73,19 @@ window.addEventListener('load', function() {
 
     });
     
-    //vérifie les champs et sauvegrade les modifications effectués
+    //bouton modifier bouteille dans un cellier
+    var retourCellier = document.querySelector("[name='retourCellier']");
+    if(retourCellier){
+        retourCellier.addEventListener("click", function(evt){
+            window.location.href = BaseURL + "index.php?requete=listeBouteilleCellier"; 
+        });
+    }
+    
+    //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
     var sauver = document.querySelector("[name='sauver']");
     if(sauver){
         sauver.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id; 
+            //récupère les informations de la bouteille dans les inputs
             let bouteille = {
                 id_bouteille : document.querySelector("[name='id']").value,
                 nom : document.querySelector("[name='nom']").value,
@@ -92,6 +100,7 @@ window.addEventListener('load', function() {
                 non_liste : document.querySelector("[name='nonliste']").value
             };
             
+            //vérifi si les champs sont remplis
             let verif = {
                 nom : verifChamp(bouteille.nom,"text"),
                 image : verifChamp(bouteille.image,"text"),
@@ -102,21 +111,21 @@ window.addEventListener('load', function() {
                 url_saq : verifChamp(bouteille.url_saq,"text")
             };
             
-            //document.querySelector(".erreurNom").innerHTML = "khdsgfhjs";
+            
             let body = { 
                 bte :  bouteille,
                 verif : verif
             }
             
-            bouteille = JSON.stringify(body);
+            body = JSON.stringify(body);
             
-            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', headers: {"Content-Type": "application/json"}, body: bouteille });
+            //envoie de la requete avec les informations du formulaire et les erreurs de champs
+            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', headers: {"Content-Type": "application/json"}, body: body });
 
             fetch(requete)
             .then(response => response.json())
             .then(data =>{
-                console.log(data);
-                
+                //retourne les erreurs au champs approprié
                 document.querySelector(".erreurNom").innerHTML = data.erreur.nom;
                 document.querySelector(".erreurImage").innerHTML = data.erreur.image;
                 document.querySelector(".erreurPrix").innerHTML = data.erreur.prix;
@@ -125,31 +134,42 @@ window.addEventListener('load', function() {
                 document.querySelector(".erreurCodesaq").innerHTML = data.erreur.code_saq;
                 document.querySelector(".erreurUrlsaq").innerHTML = data.erreur.url_saq;
                 
+                //éhec sql affiche l'erreur sql
                 if(data.echec){
                     document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i>" + data.echec;
                 }
                 else{
+                    //si l'operation est un succès
                     if(data.succes == true){
+                        //affiche le message
                         document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
                         document.querySelector(".msg").firstElementChild.classList.add("succes");
+                        
+                        //si ajout et remplacement d'id est effectuer, l'id dans le form est mit à jour ainsi que lui dans l'url
                         if(data.status == "remplaceBouteille"){
                             document.querySelector("[name='id']").setAttribute("value", data.idNouvelle);
                             document.querySelector("[name='nonliste']").setAttribute("value", 1);
                             history.pushState("modification", "Vino", BaseURL + "index.php?requete=modifierBouteilleCellier&id=" + data.idNouvelle);
                         }
+                        setTimeout(function(){ 
+                            document.querySelector(".msg").innerHTML = "";
+                        }, 2000);
                     }
+                    //si pas eu de modification
                     else if(data.succes == "dup"){
+                        document.querySelector(".msg").classList.remove("attention");
                         document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
+                        setTimeout(function(){ 
+                            document.querySelector(".msg").innerHTML = "";
+                        }, 2000);
                     }
+                    //si erreur dans les champs
                     else{
                         document.querySelector(".msg").classList.add("attention");
                         document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
                     }
-                    /*
-                    setTimeout(function(){ 
-                        document.querySelector(".msg").innerHTML = "";
-                    }, 2000);
-                    */
+                    
+                    
                 }
             }).catch(error => {
                 console.error(error);
@@ -213,7 +233,7 @@ window.addEventListener('load', function() {
         notes : document.querySelector("[name='notes']"),
       };
 
-
+        
       liste.addEventListener("click", function(evt){
         console.dir(evt.target)
         if(evt.target.tagName == "LI"){
@@ -226,6 +246,7 @@ window.addEventListener('load', function() {
         }
       });
 
+        //bouton formulaire d'ajout de bouteille
       let btnAjouter = document.querySelector("[name='ajouterBouteilleCellier']");
       if(btnAjouter){
         btnAjouter.addEventListener("click", function(evt){
@@ -259,16 +280,27 @@ window.addEventListener('load', function() {
     }
     
     
-    
+    /**
+     * vérifie si un champ est remplis, de la bonne longeur et valide
+     *
+     * @pram str champ valeur d'un champ
+     * @pram str type type de champ à vérifier
+     * @pram int long optionnel longeur minimum requise pour le champ
+     *
+     * @return str resultat message d'erreur ou vide si le champ est valide
+     */
     function verifChamp(champ,type,long = 0){  
         var resultat = "";
         let regex = "";
+        //vérifie si le champ est rempli et retire les tags html
         if(champ.trim() != "" && champ.replace(/<(?:.|\n)*?>/gm, '') != ""){
+            //vérifie la longueur d'un champ
             if(long != 0 && champ.length < long){
                 resultat = "Entré trop courte, " + long + " caratères min."
             }
             else{
                 switch(type){
+                    //si le champ est du text
                     case 'text' :
                         regex = new RegExp(/^.+$/);
                         resultat = regex.test(champ);
@@ -279,6 +311,7 @@ window.addEventListener('load', function() {
                             resultat = "";
                         }
                         break;
+                    //si le champ est un prix
                     case 'prix' :
                         regex = new RegExp(/^\d{1,6}(.\d{1,2})?$/);
                         resultat = regex.test(champ);
@@ -289,8 +322,10 @@ window.addEventListener('load', function() {
                             resultat = "";
                         }
                         break;
+                    //si le champ est une date
                     case 'date' :
                         break;
+                    //si le champ est numérique
                     case 'num' :
                         regex = new RegExp(/^\d+$/);
                         resultat = regex.test(champ);
@@ -310,6 +345,16 @@ window.addEventListener('load', function() {
         
         return resultat;
     }
+    
+    //si la source d'une image d'une bouteille de vin ne charge pas
+    //l'image par défault sera affiché
+    let images = document.querySelectorAll(".imgvin");
+    images.forEach(function(element){
+        if(element.width == 15){
+            element.setAttribute("src", "./images/vindefault.jpg")
+        }
+    });
+    
     
 });
 

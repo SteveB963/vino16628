@@ -63,7 +63,6 @@ footer
 	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-items: center;
-    z-index:1;
     position:sticky;
         top:0px;
         left:0px;
@@ -203,9 +202,13 @@ footer
  		opacity: 1;
  	}
 
- 	#burger:checked ~ #mainNav{
+ 	#burger:checked ~ nav > #mainNav{
  		display: block !important;
  	}
+     
+    nav{
+        height:0px !important;
+    }
 
  	#mainNav{
  		display: none !important;
@@ -260,7 +263,6 @@ nav{
 
 #mainNav{
 	background-color: #222224;
-    z-index:2;
 }
 
 #mainNav li a{
@@ -295,7 +297,7 @@ nav{
 		position: fixed;
 		top: 0;
 		width: 100%;
-		z-index: 2;
+		z-index: 1;
 	}
 
 	.sticky + .content{
@@ -433,10 +435,18 @@ nav{
  * Cellier.php
  ********/
 
+.actionCellier{
+    margin:auto;
+    width:80%;
+    display:flex;
+    flex-flow:row;
+    justify-content:space-between;
+}
+
  .cellier{
  	display: flex;
- 	flex-direction: row;
- 	flex-wrap: wrap;
+ 	flex-direction:column;
+    align-items:center;
  	width: 80%;
 	margin-left: auto;
 	margin-right: auto;
@@ -446,74 +456,57 @@ nav{
 	padding-top: 20px;
  }
 
-/* Ajustement du nombre de bouteille afficher selon les 
-	résolutions d'écran */
- @media all and (max-width:1182px)
- {
- 	.bouteille{
- 		width: 33%;
- 	}
- }
-
- @media all and (max-width:991px)
- {
- 	.bouteille{
- 		width: 50%;
- 	}
- }
-
- @media all and (max-width:599px)
- {
- 	.bouteille{
- 		width: 100%;
- 	}
- }
-
-@media all and (min-width:1182px)
- {
- 	 .bouteille{
-	 	width: 25%;
-	 }
- }
-
  .bouteille{
- 	min-width: 233px;
+    width:100%;
+    display:flex;
+    flex-flow:row;
+    justify-content:space-between;
  	padding-top: 10px;
  	padding-bottom: 10px;
+    margin:10px;
+    background-color: white;
  }
 
- .img, .description, .options{
- 	width: 85%;
- 	margin-left: auto;
- 	margin-right: auto;
- 	background-color: white;
+.bouteille > div:nth-child(2){
+    width:70%;
+    display:flex;
+    flex-flow:row;
+    justify-content: space-between;
+}
+
+ .img, .information, .options{
  	padding: 10px;
  }
 
  .img img{
  	width: 100%;
+    background-image:url("../images/vindefault.jpg");
+
  }
 
- .description{
+.nom{
+    font-size:14pt;
+    font-family: 'Libre Baskerville', serif;
+}
+
+ .information{
  	display: flex;
  	flex-flow: column nowrap;
  	align-content: space-between; 
  	/*height: 210px;*/
  }
 
- .description .nom{
- 	height: 45px;
+ .nom{
  	font-weight: bold;
- 	text-align: center;
  	margin: 0;
  	padding-bottom: 15px;
  	padding-top: 15px;
  	padding-left: 0px;
  	color: #730101;
- 	font-family: 'Libre Baskerville', serif;
+ 	
  }
 
- .description p{
+ .information p{
  	margin-bottom: 5px;
  	margin-top: 5px;
  	padding-left: 10px;
@@ -521,6 +514,7 @@ nav{
 
  .options{
  	display: flex;
+    flex-flow:column;
  	justify-content: space-around;
  	padding: 10px;
  }
@@ -531,7 +525,7 @@ nav{
 
 
 /********
- * Ajouter.php
+ * formulaire
  ********/
 
 .mesFormulaires{
@@ -576,6 +570,12 @@ nav{
 	background-color: transparent;
 	border: none;
 	border-bottom: 2px solid black;
+}
+
+.msg{
+    width:60%;
+    margin:5px auto;
+    height:15px;
 }
 
 /*erreur des champs du formulaire*/
@@ -635,10 +635,8 @@ input:focus, select:focus{
 	position: relative;
 }
 
-.mesFormulaires button{
+ button{
 	width: 200px;
-	background-color: #730101;
-	color: white;
 	border: none;
 	box-shadow: 2px 2px 5px grey;
 	border-radius: 5px;
@@ -646,8 +644,23 @@ input:focus, select:focus{
     margin-top:10px;
 }
 
+.soumettre{
+    background-color: #730101;
+	color: white;
+}
+
+.retour{
+    background-color: lightgray;
+}
+
 .mesFormulaires button:hover{
 	box-shadow: none;
+}
+
+.boutonForm{
+    display:flex;
+    flex-flow:row wrap-reverse;
+    justify-content:space-between;
 }
 
 .attention{
@@ -668,6 +681,54 @@ input:focus, select:focus{
 	width: 45%;
 }
 
+/* Ajustement du nombre de bouteille afficher selon les 
+	résolutions d'écran */
+/*
+ @media all and (max-width:1182px)
+ {
+ 	.bouteille{
+ 		width: 33%;
+ 	}
+ }
+*/
+ @media all and (max-width:770px)
+ {
+     .bouteille > div:nth-child(2){
+         flex-flow:column;
+     }
+     .options{
+         flex-flow:row;
+     }
+ }
+
+ @media all and (max-width:635px)
+ {
+     .bouteille{
+ 		max-width:300px;
+        flex-flow:column;
+ 	}
+     
+     .description{
+         display:none;
+     }
+     
+     .options{
+         display:none;
+     }
+     
+     .bouteille > div:nth-child(2){
+         width:100%;
+     }
+ }
+/*
+ @media all and (min-width:1182px)
+ {
+ 	 .bouteille{
+	 	width: 25%;
+	 }
+ }
+*/
+/*
 @media all and (max-width:450px)
 {
 	.mesFormulaires{
@@ -676,11 +737,11 @@ input:focus, select:focus{
 		padding:20px !important;
 		box-sizing: border-box;
 	}
-	.formulaire{
+	.formulaire, .msg{
 		width: 90%;
 	}
 }
-
+*/
 
 /********
  * trier
