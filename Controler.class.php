@@ -46,9 +46,6 @@ class Controler
 			case 'afficheListCellier':
                 $this->afficheListCellier();
 				break;
-            case 'uploadPage':
-                $this->uploadPage();
-                break;
             case 'compte':
                 $this->compte();
                 break;
@@ -120,7 +117,10 @@ class Controler
         
 
     }
-
+ /**
+     * Affiche la liste des celliers d'un usager
+     *
+     */
     private function afficheListCellier()
     {
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
@@ -179,7 +179,9 @@ class Controler
 
     }
 		
-
+ /**
+     * Créer un nouveau cellier d'un usager
+     */
 	
 	private function creerUnCellier()
 	{	

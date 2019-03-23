@@ -22,9 +22,9 @@ foreach ($data as $cle => $cellier) {
 
 }
 
-?><!--
+?>
  <p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Créer votre cellier</a></p>	
-    -->
+
 </div>
 
 
