@@ -524,6 +524,10 @@ nav{
  	min-width: 67px;
  }
 
+.hideBouteille{
+    display:none;
+}
+
 
 /********
  * formulaire

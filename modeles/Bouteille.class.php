@@ -68,39 +68,29 @@ class Bouteille extends Modele {
 	}
 	
     /**
-	 * récupère tous les bouteilles d'un cellier
+	 * récupère un exemplaire de chaque bouteilles dans un cellier
 	 * 
-	 * @param int $id id du cellier !!!À VENIR
+	 * @param int $id_cellier id du cellier
+     * @param string $trier (optionel) nom du champ par le quel on veut trier
      * 
-	 * @return Array $rows les informations de chaque bouteille dans le cellier7
-     * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
+	 * @return Array $rows les informations de chaque bouteille dans le cellier
 	 */
-	public function getListeBouteilleCellier($id_cellier, $trier = "nom") 
+	public function getInfoBouteilleCellier($id_cellier, $trier = "nom") 
 	{
 		$rows = Array();
-		//choisir le type de  trier (type,prix,code, format etc..)
-		//test
-        $requete ='SELECT 
-                        c.*,
-                        b.id_bouteille, 
-                        b.prix, 
-                        b.nom, 
-                        b.image, 
-                        b.code_saq, 
-                        b.url_saq, 
-                        p.pays, 
-                        b.millesime,
-                        b.format,
-                        t.type 
-                        FROM cellier_contenu c
-                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
+        $requete = 'SELECT DISTINCT 
+                        (SELECT COUNT(*) FROM cellier_contenu WHERE id_bouteille = b.id_bouteille) as quantite,
+                        b.*, 
+                        p.pays,
+                        t.type
+                        FROM cellier_contenu c 
+                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille
                         JOIN pays p ON p.id_pays = b.id_pays
                         JOIN bouteille_type t ON t.id_type = b.id_type
                         WHERE c.id_cellier = ' . $id_cellier . '
-                        ORDER BY '.$trier.' ASC';
-                       
+                        ORDER BY ' . $trier . ' ASC';
       
-		if(($res = $this->_db->query($requete)) ==	 true)
+		if(($res = $this->_db->query($requete)) == true)
 		{
 			if($res->num_rows)
 			{
@@ -116,6 +106,7 @@ class Bouteille extends Modele {
 		}
 		return $rows;
 	}
+    
 	
 	/**
 	 * Cette méthode permet de retourner les résultats de recherche pour la fonction d'autocomplete de l'ajout des bouteilles dans le cellier

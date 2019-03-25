@@ -37,8 +37,8 @@ class Controler
             case 'boireBouteilleCellier':
                 $this->boireBouteilleCellier();
                 break;                
-            case 'afficheCellier':
-                $this->afficheCellier();
+            case 'afficheContenuCellier':
+                $this->afficheContenuCellier();
 				break;
 			case 'creerUnCellier':
                 $this->creerUnCellier();
@@ -89,9 +89,9 @@ class Controler
     /**
      * Affiche la liste des bouteilles d'un cellier
      *
-     * ///////////TEMPORAIRE/////////////
+     * 
      */
-    private function afficheCellier()
+    private function afficheContenuCellier()
     {
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
@@ -103,9 +103,11 @@ class Controler
                     $trier = "nom";
                 }
                 $bte = new Bouteille();
-                $data = $bte->getListeBouteilleCellier($_GET['id_cellier'], $trier);
+                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier);
+                $cellier = new Cellier();
+                $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
                 include("vues/entete.php");
-                include("vues/cellier.php");
+                include("vues/contenuCellier.php");
                 include("vues/pied.php");
             }
             else{
@@ -337,19 +339,6 @@ class Controler
         }
 
     }
-
-
-    //affiche le page accueil apres choisir le trier(par select box)
-    private function uploadPage()
-    {
-        $bte = new Bouteille();
-        include("vues/entete.php");
-        $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
-        include("vues/cellier.php");
-        include("vues/pied.php");
-
-    }
-
 
     /**
      * Affiche différentes pages concernant le login selon

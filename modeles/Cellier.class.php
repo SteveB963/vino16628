@@ -61,6 +61,41 @@ class Cellier extends Modele {
 			}
 		return $rows;
 	}
+    
+    
+    /**
+	 * récupère le contenu d'un cellier
+	 * 
+	 * @param int $id_cellier id du cellier
+     * 
+	 * @return Array $rows 
+	 */
+	public function getContenuCellier($id_cellier) 
+	{
+		$rows = Array();
+        $requete ='SELECT 
+                        * 
+                        FROM cellier_contenu 
+                        WHERE id_cellier = ' . $id_cellier . ' 
+                        ORDER BY date_ajout ASC';
+    
+      
+		if(($res = $this->_db->query($requete)) == true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de donnée", 1);
+		}
+		return $rows;
+	}
 
 
 

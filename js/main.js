@@ -53,7 +53,7 @@ window.addEventListener('load', function() {
         element.addEventListener("click", function(evt){
             let id = evt.target.parentElement.dataset.id;
             let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
-            let quantite = document.querySelector("[data-quantite='" + id + "']")
+            //let quantite = document.querySelector("[data-quantite='" + id + "']")
             
             fetch(requete)
             .then(response => {
@@ -69,6 +69,7 @@ window.addEventListener('load', function() {
               }).catch(error => {
                 console.error(error);
               });
+              
         })
 
     });
@@ -99,6 +100,14 @@ window.addEventListener('load', function() {
         })
 
     });
+    
+    document.querySelectorAll(".btnBouteille").forEach(function(element){
+        element.addEventListener("click", function(evt){
+            let id_bouteille = evt.target.parentElement.dataset.id;
+            document.querySelector(".bouteille" + id_bouteille).classList.toggle("hideBouteille");
+        })
+
+    });
    
     //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
@@ -116,7 +125,7 @@ window.addEventListener('load', function() {
     if(retourCellier){
         let id_cellier = document.querySelector("[name='id_cellier']").value;
         retourCellier.addEventListener("click", function(evt){
-            window.location.href = BaseURL + "index.php?requete=afficheCellier&id_cellier=" +   id_cellier; 
+            window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" +   id_cellier; 
         });
     }
     
@@ -225,7 +234,7 @@ window.addEventListener('load', function() {
             var trier=document.getElementById('trier').value;
             var id_cellier = document.querySelector("[name='cellier']").getAttribute("data-id");
             console.log(id_cellier);
-            window.location.href = "index.php?requete=afficheCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
+            window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
         });
     } 
 
