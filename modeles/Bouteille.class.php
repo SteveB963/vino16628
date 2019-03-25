@@ -13,79 +13,35 @@
 class Bouteille extends Modele {
 	const TABLE = 'bouteille';
     
-     /**
+    /**
 	 * Récupère tous les informations sur une bouteille
      *
      * @param int $id id de la bouteille à récupèrer les informations
 	 *  
 	 * @return Array $rows informations de tous les pays
+     * //////////////////////////////NOM PAYS ET TYPE POURAIS ÊTRE RETIRER DE LA REQUETE ???//////////////////////////////
 	 */
     public function getBouteille($id)
 	{
-        
-		$rows = Array();
-		$res = $this->_db->query('SELECT 
-                                    b.id_bouteille,
-                                    b.nom,
-                                    b.image,
-                                    b.prix,
-                                    b.format,
-                                    b.millesime,
-                                    b.non_liste,
-                                    b.code_saq,
-                                    b.url_saq,
+		$row = Array();
+		/*$res = $this->_db->query('SELECT 
+                                    b.*,
                                     t.type,
                                     p.pays 
                                     FROM '. self::TABLE . ' b 
-                                    JOIN bouteille_type t ON t.id_type = b.type
-                                    JOIN pays p ON p.id_pays = b.pays 
-                                    WHERE b.id_bouteille = ' . $id);
+                                    JOIN bouteille_type t ON t.id_type = b.id_type
+                                    JOIN pays p ON p.id_pays = b.id_pays 
+                                    WHERE b.id_bouteille = ' . $id);*/
+        $res = $this->_db->query('SELECT 
+                                    * 
+                                    FROM '. self::TABLE . '
+                                    WHERE id_bouteille = ' . $id);
 		if($res->num_rows)
 		{
             $row = $res->fetch_assoc();
 		}
 		
 		return $row;
-	}
-    
-    /**
-	 * récupère tous les pays
-	 *  
-	 * @return Array $rows informations de tous les pays
-	 */
-    public function getPays()
-	{
-		$rows = Array();
-		$res = $this->_db->query('SELECT * FROM pays');
-		if($res->num_rows)
-		{
-            while($row = $res->fetch_assoc())
-			{
-				$rows[] = $row;
-			}
-		}
-		
-		return $rows;
-	}
-    
-    /**
-	 * récupère tous les types de vins
-	 *  
-	 * @return Array $rows informations de tous les types
-	 */
-    public function getType()
-	{
-		$rows = Array();
-		$res = $this->_db->query('SELECT * FROM bouteille_type');
-		if($res->num_rows)
-		{
-            while($row = $res->fetch_assoc())
-			{
-				$rows[] = $row;
-			}
-		}
-		
-		return $rows;
 	}
     
     
@@ -119,40 +75,59 @@ class Bouteille extends Modele {
 	 * @return Array $rows les informations de chaque bouteille dans le cellier7
      * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
-	public function getListeBouteilleCellier($id_cellier,$trier='nom') 
+
+	public function getListeBouteilleCellier($id_cellier, $trier ='nom',$cherche=0) 
 	{
-		
 		$rows = Array();
 		//choisir le type de  trier (type,prix,code, format etc..)
 		//test
-        $requete ="SELECT 
+       
+         $requete ='SELECT distinct
                         c.*,
-                        b.id_bouteille AS id, 
+                        b.id_bouteille, 
                         b.prix, 
-                        b.nom AS nom, 
-                        b.image AS image, 
-                        b.code_saq AS code_saq, 
+                        b.nom, 
+                        b.image, 
+                        b.code_saq, 
                         b.url_saq, 
-                        p.pays AS pays, 
-                        b.millesime AS millesime ,
+                        p.pays, 
+                        b.millesime,
                         b.format,
-                        t.type AS type 
+                        t.type 
                         FROM cellier_contenu c
-                        JOIN bouteille b ON id = c.id_bouteille 
-                        JOIN pays p ON p.id_pays = b.pays
-                        JOIN bouteille_type t ON t.id_type = b.type
-                        WHERE c.id_cellier = '. $id_cellier.'
-                        ORDER BY '.$trier.' ASC";
-                       
-                       
+                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
+                        JOIN pays p ON p.id_pays = b.id_pays
+                        JOIN bouteille_type t ON t.id_type = b.id_type';
+        
+        //ajouter le requette de recherche quand le valeur de recherche est pas vide 
+        if(!empty($cherche)){
+             $cherche = $this->_db->real_escape_string($cherche);
+            //replace le space avec%
+            $cherche = preg_replace("/\s/","%" , $cherche);
+            $requete .=' WHERE (b.nom like LOWER("%'. $cherche .'%")
+                        OR b.nom like LOWER("%'. $cherche .'%")
+                        OR b.prix like LOWER("%'. $cherche .'%")
+                        OR b.code_saq like LOWER("%'. $cherche .'%")
+                        OR p.pays like LOWER("%'. $cherche .'%")
+                        OR b.millesime like LOWER("%'. $cherche .'%")
+                        OR b.format like LOWER("%'. $cherche .'%")
+                        OR t.type like LOWER("%'. $cherche .'%")
+                        OR c.quantite like LOWER("%'. $cherche .'%"))';
+        }
+        $requete .= ' AND c.id_cellier = ' . $id_cellier . '
+                                ORDER BY '.$trier;
+           //var_dump($requete)  ;          
       
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
 			{
+                 
 				while($row = $res->fetch_assoc())
 				{
 					$rows[] = $row;
+                
+                   
 				}
 			}
 		}
@@ -160,6 +135,7 @@ class Bouteille extends Modele {
 		{
 			throw new Exception("Erreur de requête sur la base de donnée", 1);
 		}
+        
 		return $rows;
 	}
 	/**
@@ -189,6 +165,7 @@ class Bouteille extends Modele {
 				while($row = $res->fetch_assoc())
 				{
 					$rows[] = $row;
+                    
 					
 				}
 			}
@@ -199,6 +176,59 @@ class Bouteille extends Modele {
 			 
 		}
 		return $rows;
+	}
+    
+    /**
+	 * ajoute une bouteille non liste
+	 * 
+	 * @param Array $data Tableau des données représentants la bouteille.
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function ajouterBouteilleNonListe($data)
+	{
+        $requete = "INSERT INTO bouteille(nom, image, prix, format, id_type, id_pays, millesime, code_saq, url_saq, non_liste) VALUES (" .
+        "'" . $data->nom . "'," .
+        "'" . $data->image . "'," .
+        "'" . floatval($data->prix) . "'," .
+        "'" . intval($data->format) . "'," .
+        "'" . intval($data->id_type) . "'," .
+        "'" . intval($data->id_pays) . "'," .
+        "'" . intval($data->millesime) . "'," .
+        "'" . intval($data->code_saq) . "'," .
+        "'" . $data->url_saq . "'," .
+        "1)";
+
+        $res = $this->_db->query($requete);
+        
+        return $res;
+	}
+    
+    /**
+	 * modifie une bouteille non liste
+	 * 
+	 * @param Array $data Tableau des données représentants la bouteille.
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function modiferBouteilleNonListe($data)
+	{
+		$requete = "UPDATE bouteille SET 
+            nom = '" . $data->nom . "'," .
+            "image = '" . $data->image . "'," .
+            "prix = '" . floatval($data->prix) . "'," .
+            "format = '" . intval($data->format) . "'," .
+            "id_type = '" . intval($data->id_type) . "'," .
+            "id_pays = '" . intval($data->id_pays) . "'," .
+            "millesime = '" . intval($data->millesime) . "'," .
+            "code_saq = '" . intval($data->code_saq) . "'," .
+            "url_saq = '" . $data->url_saq . "'," .
+            "non_liste = 1 
+            WHERE id_bouteille = " . $data -> id_bouteille;
+        
+        $res = $this->_db->query($requete);
+        
+		return $res;
 	}
 	
 	/**
@@ -213,7 +243,7 @@ class Bouteille extends Modele {
      *  
 	 */
        
-	public function autocompleteCherche($cherche, $nb_resultat=10)
+	public function autocompleteCherche($cherche, $id_cellier=1)
 	{
 		
 		$rows = Array();
@@ -221,21 +251,110 @@ class Bouteille extends Modele {
         //replace le space avec%
 		$cherche = preg_replace("/\s/","%" , $cherche);
 		
-        $requete ='SELECT nom as resultat FROM bouteille where LOWER(nom) like LOWER("%'. $cherche .'%")
-        UNION All
-        SELECT distinct pays.pays as resultat FROM bouteille JOIN pays ON bouteille.pays=pays.id_pays where LOWER(pays.pays) like LOWER("%'. $cherche.'%")
-        UNION All
-        SELECT  prix as resultat FROM bouteille where LOWER(prix) like LOWER("%'. $cherche.'%")
-        UNION All
-        SELECT  type as resultat FROM bouteille_type where LOWER(type) like LOWER("%'. $cherche.'%")
-        UNION All
-        SELECT  format as resultat FROM bouteille where LOWER(format) like LOWER("%'. $cherche.'%")
-        UNION All
-        SELECT millesime as resultat FROM bouteille where LOWER(millesime) like LOWER("%'. $cherche.'%")
-        UNION All
-        SELECT code_saq as resultat FROM bouteille where LOWER(code_saq) like LOWER("%'.$cherche.'%")
-        LIMIT 0,'. $nb_resultat;
+        /*$requete ='SELECT distinct b.nom as resultat FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.nom) like LOWER("%'. $cherche .'%") AND c.id_cellier=1
+        UNION
+        SELECT distinct p.pays as resultat FROM bouteille b JOIN pays p ON b.id_pays=p.id_pays JOIN cellier_contenu cc ON cc.id_bouteille=b.id_bouteille where LOWER(p.pays) like LOWER("%'. $cherche.'%") AND cc.id_cellier=1
+        UNION 
+        SELECT distinct b.prix as resultat FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.prix) like LOWER("%'. $cherche .'%") AND c.id_cellier=1
+        UNION
+        SELECT distinct b.format as resultat FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.format) like LOWER("%'. $cherche .'%") AND c.id_cellier=1
+        UNION
+        SELECT distinct b.millesime as resultat FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.millesime) like LOWER("%'. $cherche .'%") AND c.id_cellier=1
+        UNION
+        SELECT distinct b.code_saq as resultat FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.code_saq) like LOWER("%'. $cherche .'%") AND c.id_cellier=1
+        LIMIT 0,'. $nb_resultat;*/
+
+        //cherche le valeur en nom
+        $requete ='SELECT distinct b.nom as nom  FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.nom) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;	
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de données", 1);
+			 
+		}
         
+        //cherche le valeur en pays
+        $requete ='SELECT distinct p.pays as pays FROM bouteille b JOIN pays p ON b.id_pays=p.id_pays JOIN cellier_contenu cc ON cc.id_bouteille=b.id_bouteille where LOWER(p.pays) like LOWER("%'. $cherche.'%") AND cc.id_cellier='. $id_cellier;
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;	
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de données", 1);
+			 
+		}
+        
+        //cherche le valeur en prix
+        $requete ='SELECT distinct b.prix as prix FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.prix) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;	
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de données", 1);
+			 
+		}
+        
+        //cherche le valeur en code_saq
+        $requete ='SELECT distinct b.code_saq as code_saq FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.code_saq) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;	
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de données", 1);
+			 
+		}
+        
+        //cherche le valeur en millesime
+        $requete ='SELECT distinct b.millesime as millesime FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.millesime) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;	
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de données", 1);
+			 
+		}
+        //cherche le valeur en formt
+        $requete ='SELECT distinct b.format as format FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.format) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -304,29 +423,29 @@ class Bouteille extends Modele {
         
 		return $row;
 	}
+
     // requette pour cherche le valeur en cellier
-    public function ChercheEnCellier($cherche) 
+    public function ChercheEnCellier($id_cellier,$cherche) 
 	{
 		
 		$rows = Array();
         //filtre le data par value de champ recherche
-        $requete ='SELECT
+        $requete ='SELECT 
                         c.*,
-                        b.id_bouteille AS id, 
+                        b.id_bouteille, 
                         b.prix, 
-                        b.nom AS nom, 
-                        b.image AS image, 
-                        b.code_saq AS code_saq, 
+                        b.nom, 
+                        b.image, 
+                        b.code_saq, 
                         b.url_saq, 
-                        p.pays AS pays, 
-                        b.millesime AS millesime ,
+                        p.pays, 
+                        b.millesime,
                         b.format,
-                        t.type AS type 
+                        t.type 
                         FROM cellier_contenu c
-                        JOIN bouteille b ON id = c.id_bouteille 
-                        JOIN pays p ON p.id_pays = b.pays
-                        JOIN bouteille_type t ON t.id_type = b.type
-                        WHERE c.id_cellier = 1
+                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
+                        JOIN pays p ON p.id_pays = b.id_pays
+                        JOIN bouteille_type t ON t.id_type = b.id_type
                         AND (b.nom like LOWER("%'. $cherche .'%")
                         OR b.nom like LOWER("%'. $cherche .'%")
                         OR b.prix like LOWER("%'. $cherche .'%")
@@ -336,8 +455,9 @@ class Bouteille extends Modele {
                         OR b.format like LOWER("%'. $cherche .'%")
                         OR t.type like LOWER("%'. $cherche .'%")
                         OR c.quantite like LOWER("%'. $cherche .'%"))
-                    '; 
-        //var_dump($requete);
+                        WHERE c.id_cellier = ' . $id_cellier 
+                    ; 
+        var_dump($requete);
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -352,6 +472,44 @@ class Bouteille extends Modele {
 		return $rows;
 	}
 	
+
+    
+    /**
+	 * Remplace l'id d'une bouteille liste par une bouteille non liste
+	 * 
+	 * @param int $idAncien l'id de l'ancienne bouteille à remplacer
+	 * @param int $idAncien l'id de la nouvelle bouteille à remplacer
+	 * 
+	 * @return Boolean Succès ou échec de l'update
+     *
+     * /////////////BESOIN D'UN ID DE CELLIER//////////////////
+	 */
+	public function remplaceBouteilleCellier($idCellier, $idAncienne, $idNouvelle)
+	{
+		$requete = "UPDATE cellier_contenu SET id_bouteille = " . $idNouvelle . " WHERE id_cellier = " . $idCellier . " AND id_bouteille = " . $idAncienne;
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+    
+    /**
+	 * Retourne l'id de la dernière bouteille entré
+	 * 
+	 * @param int $idAncien l'id de l'ancienne bouteille à remplacer
+	 * @param int $idAncien l'id de la nouvelle bouteille à remplacer
+	 * 
+	 * @return Boolean Succès ou échec de l'update
+	 */
+    public function getDernBouteille(){
+        $requete = "SELECT MAX(id_bouteille) as max FROM " . self::TABLE;
+        $res = $this->_db->query($requete);
+        
+        $row = $res->fetch_assoc();
+        
+        return $row['max'];
+    }
+    
+
     
 }
 

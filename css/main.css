@@ -62,7 +62,10 @@ footer
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
-	align-items: center;	
+	align-items: center;
+    position:sticky;
+        top:0px;
+        left:0px;
 }
 
 #entete1 div{
@@ -199,9 +202,13 @@ footer
  		opacity: 1;
  	}
 
- 	#burger:checked ~ #mainNav{
+ 	#burger:checked ~ nav > #mainNav{
  		display: block !important;
  	}
+     
+    nav{
+        height:0px !important;
+    }
 
  	#mainNav{
  		display: none !important;
@@ -250,9 +257,13 @@ footer
  }
 
 /* Menu */
+nav{
+    height:50px;
+}
 
 #mainNav{
 	background-color: #222224;
+    z-index:2;
 }
 
 #mainNav li a{
@@ -425,10 +436,18 @@ footer
  * Cellier.php
  ********/
 
+.actionCellier{
+    margin:auto;
+    width:80%;
+    display:flex;
+    flex-flow:row;
+    justify-content:space-between;
+}
+
  .cellier{
  	display: flex;
- 	flex-direction: row;
- 	flex-wrap: wrap;
+ 	flex-direction:column;
+    align-items:center;
  	width: 80%;
 	margin-left: auto;
 	margin-right: auto;
@@ -438,74 +457,57 @@ footer
 	padding-top: 20px;
  }
 
-/* Ajustement du nombre de bouteille afficher selon les 
-	résolutions d'écran */
- @media all and (max-width:1182px)
- {
- 	.bouteille{
- 		width: 33%;
- 	}
- }
-
- @media all and (max-width:991px)
- {
- 	.bouteille{
- 		width: 50%;
- 	}
- }
-
- @media all and (max-width:599px)
- {
- 	.bouteille{
- 		width: 100%;
- 	}
- }
-
-@media all and (min-width:1182px)
- {
- 	 .bouteille{
-	 	width: 25%;
-	 }
- }
-
  .bouteille{
- 	min-width: 233px;
+    width:100%;
+    display:flex;
+    flex-flow:row;
+    justify-content:space-between;
  	padding-top: 10px;
  	padding-bottom: 10px;
+    margin:10px;
+    background-color: white;
  }
 
- .img, .description, .options{
- 	width: 85%;
- 	margin-left: auto;
- 	margin-right: auto;
- 	background-color: white;
+.bouteille > div:nth-child(2){
+    width:70%;
+    display:flex;
+    flex-flow:row;
+    justify-content: space-between;
+}
+
+ .img, .information, .options{
  	padding: 10px;
  }
 
  .img img{
  	width: 100%;
+    background-image:url("../images/vindefault.jpg");
+
  }
 
- .description{
+.nom{
+    font-size:14pt;
+    font-family: 'Libre Baskerville', serif;
+}
+
+ .information{
  	display: flex;
  	flex-flow: column nowrap;
  	align-content: space-between; 
  	/*height: 210px;*/
  }
 
- .description .nom{
- 	height: 45px;
+ .nom{
  	font-weight: bold;
- 	text-align: center;
  	margin: 0;
  	padding-bottom: 15px;
  	padding-top: 15px;
  	padding-left: 0px;
  	color: #730101;
- 	font-family: 'Libre Baskerville', serif;
+ 	
  }
 
- .description p{
+ .information p{
  	margin-bottom: 5px;
  	margin-top: 5px;
  	padding-left: 10px;
@@ -513,6 +515,7 @@ footer
 
  .options{
  	display: flex;
+    flex-flow:column;
  	justify-content: space-around;
  	padding: 10px;
  }
@@ -592,7 +595,7 @@ footer
 
 
 /********
- * Ajouter.php
+ * formulaire
  ********/
 
 .mesFormulaires{
@@ -614,7 +617,7 @@ footer
 	padding-bottom: 1px;
 }
 
-.formulaire div input{
+.formulaire div input, .formulaire div select{
 	width: 100%;
 }
 
@@ -628,11 +631,27 @@ footer
 	padding-left: 20px;
 }
 
-.mesFormulaires input, textarea{
+.formulaire > div{
+    margin-bottom: 40px;
+}
+
+/*champs du formulaire*/
+.mesFormulaires input, textarea, .mesFormulaires select{
 	background-color: transparent;
 	border: none;
 	border-bottom: 2px solid black;
-	margin-bottom: 40px;
+}
+
+.msg{
+    width:60%;
+    margin:5px auto;
+    height:15px;
+}
+
+/*erreur des champs du formulaire*/
+.formulaire > div > p{
+    margin:2px 0 0;
+    color:red;
 }
 
 .recherche{
@@ -661,19 +680,24 @@ footer
 	color: white;
 }
 
-.mesFormulaires .hide{
+.mesFormulaires label[for]{
 	position: absolute;
 	top: -20px;
 	left: 0;
-	opacity: 0;
 	transition: 1s;
 }
 
+/*cache le label lorsque le champ est vide*/
+.hide{
+    opacity:0;
+}
+
+/*affiche le label lorsque l'input lier n'est pas vide*/
 .mesFormulaires input:focus + .hide{
 	opacity: 1;
 }
 
-input:focus{
+input:focus, select:focus{
 	outline: none;
 }
 
@@ -681,18 +705,42 @@ input:focus{
 	position: relative;
 }
 
-.mesFormulaires button{
+
+button, .mesFormulaires input[type='button']{
 	width: 200px;
-	background-color: #730101;
-	color: white;
 	border: none;
 	box-shadow: 2px 2px 5px grey;
 	border-radius: 5px;
 	padding: 5px;
+    margin-top:10px;
+	margin-bottom: 0px;
 }
 
-.mesFormulaires button:hover{
+.soumettre{
+    background-color: #730101;
+	color: white;
+}
+
+.retour{
+    background-color: lightgray;
+}
+
+.mesFormulaires button:hover, .mesFormulaires input[type='button']:hover{
 	box-shadow: none;
+}
+
+.boutonForm{
+    display:flex;
+    flex-flow:row wrap-reverse;
+    justify-content:space-between;
+}
+
+.attention{
+    color:red;
+}
+
+.succes{
+    color:green;
 }
 
 .formChiffre{
@@ -705,6 +753,82 @@ input:focus{
 	width: 45%;
 }
 
+/* Ajustement du nombre de bouteille afficher selon les 
+	résolutions d'écran */
+/*
+ @media all and (max-width:1182px)
+ {
+ 	.bouteille{
+ 		width: 33%;
+ 	}
+ }
+*/
+ @media all and (max-width:770px)
+ {
+     .bouteille > div:nth-child(2){
+         flex-flow:column;
+     }
+     .options{
+         flex-flow:row;
+     }
+ }
+
+ @media all and (max-width:635px)
+ {
+     .bouteille{
+ 		max-width:300px;
+        flex-flow:column;
+ 	}
+     
+     .description{
+         display:none;
+     }
+     
+     .options{
+         display:none;
+     }
+     
+     .bouteille > div:nth-child(2){
+         width:100%;
+     }
+ }
+/*
+ @media all and (min-width:1182px)
+ {
+ 	 .bouteille{
+	 	width: 25%;
+	 }
+ }
+*/
+
+.errorBox{
+	width: 100%;
+	height: 30px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	padding: 5px;
+	margin-bottom: 20px;
+	border:2px solid red;
+	background-color: #ff00004a;
+}
+
+.confirmBox{
+	width: 100%;
+	height: 30px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	padding: 5px;
+	margin-bottom: 20px;
+	border:2px solid green;
+	background-color: #00800042;
+}
+
+.confirmBox > p{
+    color:black !important;
+}
+/*
 @media all and (max-width:450px)
 {
 	.mesFormulaires{
@@ -713,10 +837,11 @@ input:focus{
 		padding:20px !important;
 		box-sizing: border-box;
 	}
-	.formulaire{
+	.formulaire, .msg{
 		width: 90%;
 	}
 }
+
 .listeAutoComplete{
     width:200px;
     list-style: none;
@@ -725,11 +850,77 @@ input:focus{
     display:block;
     background-color: white;
 }
+*/
 
 
 
 
+.trier{
+	margin-top: 10px;
+	margin-bottom: 10px;
+    border: 1px solid black;
+    padding:1%;
+    text-align: center;
+	background-color: white;
+
+}
+/*
+@media all and (min-width:451px)
+{
+	.trier{
+	width: 250px;
+	
+}
+*/
+
+/********
+ * monCompte.php
+ ********/
 
 
+ .monCompte{
+ 	
+ }
 
+.monCompte div:first-child div{
+	display: flex;
+	align-items: center;
+}
 
+.monCompte div:first-child p{
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 23px;
+	margin: 0px;
+	display: none;
+}
+
+.monCompte div:first-child i{
+	padding-left: 5px;
+}
+
+.monCompte div:first-child h2{
+	margin-bottom: 0px;
+	padding-right: 5px;
+}
+
+.monCompte div:last-child{
+	margin-top: 40px;
+}
+    
+
+    
+/********
+ * listCellier.php
+ ********/
+    .listCellier{
+        display:flex;
+        flex-flow:column;
+        align-items:center;
+    }
+.listCellier > div{
+    width:80%;
+    margin:10px;
+    padding:10px;
+    background-color:white;
+}

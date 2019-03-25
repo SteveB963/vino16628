@@ -1,66 +1,66 @@
-<div class="trier"><a href="?requete=creerUnCellier">Creer votre cellier</a></div>
-<div class="search">
-    <input id='searchValue' placeholder="Recherche"> 
-    <button id='cherche'><i class="fa fa-search"></i></button> 
-    <ul class="listeChercheAutoComplete">
-
-    </ul>
-</div>
-
-<div class="trier" id="creerCellier">
-    Trier le cellier par:
-    <select id="trier">
-      <option value="">Select</option>
-      <option value="nom">Nom</option>
-      <option value="pays">Pays</option>
-      <option value="format">Format</option>
-      <option value="type">Type</option>
-      <option value="prix">Prix</option>
-      <option value="millesime">Millesime</option>
-      <option value="code_saq">Code_SAQ</option>
-
-    </select>  
-</div>
-
-<div class="cellier content" name='cellier'>
-
 <?php
     if($data){
-         ?>
+        ?>
+        <div class="cellier content" name='cellier'  data-id="<?php echo $_GET['id_cellier']?>">
+    <div class="search">
+        <input id='searchValue' placeholder="Recherche"> 
+        <button id='cherche'><i class="fa fa-search"></i></button> 
+        <ul class="listeChercheAutoComplete">
+            <ul class="listeNom">
+            </ul>
+            <ul class="listePrix">
+            </ul>
+            <ul class="listePays">
+            </ul>
+            <ul class="listeFormat">
+            </ul>
+            <ul class="listeMillesime">
+            </ul>
+            <ul class="listeCode">
+            </ul>
+        </ul>
+    </div>
+
+    <div class="trier">
+        Trier le cellier par:
+        <select id="trier">
+          <option value="nom" <?php echo $trier== 'nom' ? 'selected' : ''?>>Nom</option>
+          <option value="pays" <?php echo $trier == 'pays' ? 'selected' : ''?>>Pays</option>
+          <option value="format" <?php echo $trier== 'format' ? 'selected' : ''?>>Format</option>
+          <option value="type" <?php echo $trier == 'type' ? 'selected' : ''?>>Type</option>
+          <option value="prix" <?php echo $trier == 'prix' ? 'selected' : ''?>>Prix</option>
+          <option value="millesime" <?php echo $trier == 'millesime' ? 'selected' : ''?>>Millesime</option>
+          <option value="code_saq" <?php echo $trier == 'code_saq' ? 'selected' : ''?>>Code_SAQ</option>
+        </select>
+        
+    </div>
         <div class="count">
             <h4> Resultat-<?php echo sizeof($data)?> Bouteilles</h4>
         </div>
         <?php
-        foreach ($data as $cle => $bouteille) 
-        {
-        ?>
-        
-            <div class="bouteille" data-quantite="">
-                <div class="img">
-                    <img src="https:<?php echo $bouteille['image'] ?>">
-                </div>
+        foreach ($data as $cle => $bouteille) {
+    ?>
+    <div class="bouteille">
+        <div class="img">
+            <img class="imgvin" src="<?php echo $bouteille['image'] ?>">
+        </div>
+        <div>
+            <div class="information">
+                <p class="nom"><?php echo $bouteille['nom'] ?></p>
                 <div class="description">
-                    <p class="nom"><?php echo $bouteille['nom'] ?></p>
-                    <p class="quantite" data-quantite="<?php echo $bouteille['id'] ?>"> Quantité : <?php echo $bouteille['quantite'] ?></p>
-                    <p class="pays">Pays : <?php echo $bouteille['pays'] ?></p>
-                    <p class="millesime">millesime : <?php echo $bouteille['millesime'] ?></p>
-                    <p class="type">Type : <?php echo $bouteille['type'] ?></p>
-                    <p class="prix">Prix: <?php echo $bouteille['prix'] ?> $</p>
-                    <p class="format">Format: <?php echo $bouteille['format'] ?> ml</p>
-                    <p class="code_SAQ">Code_SAQ: <?php echo $bouteille['code_saq'] ?></p>
-                    <p><a href="<?php echo $bouteille['url_saq'] ?>">Voir SAQ</a></p>
-
-                </div>
-                <div class="options" data-id="<?php echo $bouteille['id'] ?>">
-                    <button class='btnModifier'>Modifier</button>
-                    <button class='btnAjouter'>Ajouter</button>
-                    <button class='btnBoire'>Boire</button>
-
+                    <p class="type"><?php echo $bouteille['type'] ?>, <?php echo $bouteille['pays'] ?>, <?php echo $bouteille['format'] ?> ml, millesime : <?php echo $bouteille['millesime'] ?></p>
+                    <p class="millesime"><?php echo $bouteille['prix'] ?> $, Code_SAQ: <?php echo $bouteille['code_saq'] ?>,<p class="quantite" data-quantite="<?php echo $bouteille['id'] ?>"> Quantité : <?php echo $bouteille['quantite'] ?></p>,<p> <a href="<?php echo $bouteille['url_saq'] ?>">Page SAQ</a></p>
                 </div>
             </div>
-            <?php
+            <div class="options" data-id="<?php echo $bouteille['id_bouteille'] ?>">
+                <button class='btnModifier'>Modifier</button>
+                <button class='btnAjouter'>Ajouter</button>
+                <button class='btnBouteille'>Bouteille</button>
+            </div>
+        </div>
+    </div>
+<?php
     }
-
     }
     else{
         ?>

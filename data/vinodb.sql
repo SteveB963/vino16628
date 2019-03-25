@@ -252,16 +252,16 @@ CREATE TABLE bouteille (
   nom varchar(200) NOT NULL,
   image varchar(200) DEFAULT 'image/default.jpg',/*à changer par le vrai lien de l'image par défault*/
   code_saq int(8) DEFAULT NULL,
-  pays int(11) NOT NULL,
+  id_pays int(11) NOT NULL,
   prix decimal(8,2) NOT NULL,
   url_saq varchar(200) DEFAULT NULL,
   format int(5) NOT NULL,
-  type int(11) NOT NULL,
+  id_type int(11) NOT NULL,
   millesime int(4) DEFAULT NULL,
   non_liste tinyint(1) DEFAULT '0',
   PRIMARY KEY (id_bouteille),
-  FOREIGN KEY(type) REFERENCES bouteille_type (id_type),
-  FOREIGN KEY(pays) REFERENCES pays (id_pays)
+  FOREIGN KEY(id_type) REFERENCES bouteille_type (id_type),
+  FOREIGN KEY(id_pays) REFERENCES pays (id_pays)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
@@ -299,9 +299,14 @@ CREATE TABLE usager(
 -- Contenu de la table usager
 --
 
+--
+-- password Jean: Admin123
+-- password John: Usager123
+--
+
 INSERT INTO usager VALUES
-    (1, 'Jean', 'Admin', 'adminvino1@gmail.com', 'Admin123', 1),
-    (2, 'John', 'Usager', 'usagervino2@gmail.com', 'Usager123', 0);
+    (1, 'Jean', 'Admin', 'adminvino1@gmail.com', '$2y$10$pd29mcjMNHZrgjXfn95nIuKRIoJTomEj91gnqs34ab.IOCKYpSbv2', 1), 
+    (2, 'John', 'Usager', 'usagervino2@gmail.com', '$2y$10$fClA9uJwFty.BZGwKL3qOOGw47BihMTWcnYDKP1qZayD37RO32tGa', 0); 
 
 -- --------------------------------------------------------
 

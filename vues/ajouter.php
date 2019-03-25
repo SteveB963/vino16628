@@ -10,7 +10,9 @@
 
         </ul>
             <form class="formulaire">
-                <label id="labelNom">Nom : </label><span data-id="" class="nom_bouteille"></span>
+                <div>
+                    <label id="labelNom">Nom : </label><input data-id="" class="nom_bouteille" disabled>
+                </div>
                 <div>
                     <input type="text" name="millesime" placeholder="Millesime"><label class="hide" for="millesime">Millesime : </label>
                 </div>

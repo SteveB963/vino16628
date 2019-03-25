@@ -1,47 +1,83 @@
-<div class="ajouter content">
+<div class="mesFormulaires content">
     <h2>Modification d'une bouteille au cellier</h2>
-    <div class="nouvelleBouteille" vertical layout>
-        <form class="formAjout">
-            <label id="labelNom">Nom : </label><input data-id="<?php echo $resultat['bouteille']['id_bouteille'] ?>" name="nom" value="<?php echo $resultat['bouteille']['nom'] ?>">
-            <label class="hide">Image : </label><input name="image" value="<?php echo $resultat['bouteille']['image'] ?>">
-            <label class="hide">Prix : </label><input name="prix" value="<?php echo $resultat['bouteille']['prix'] ?>">
-            <label class="hide">Format : </label><input name="format" value="<?php echo $resultat['bouteille']['format'] ?>">
-            <label>Type : </label><select name="type">
-                <?php
-                    foreach($resultat['type'] as $type){
-                        if($resultat['bouteille']['type'] == $type['type']){
-                        ?>
-                            <option value="<?= $type['id_type'] ?>" selected><?= $type['type'] ?></option>
-                        <?php
+    <div >
+        <form class="formulaire">
+            <div>
+                <input type="text" name="nom" value="<?php echo $donnee['bouteille']['nom'] ?>" placeholder="Nom :"><label for="nom">Nom : </label>
+                <p class="erreurNom"><?php  ?></p>
+            </div>
+            <div>
+                <input type="text" name="image" value="<?php echo $donnee['bouteille']['image'] ?>" placeholder="Image :"><label for="image">Image : </label>
+                <p class="erreurImage"></p>
+            </div>
+            <div>
+                <input type="text" name="prix" value="<?php echo $donnee['bouteille']['prix'] ?>" maxlength="9" placeholder="Prix :"><label for="prix">Prix : </label>
+                <p class="erreurPrix"></p>
+            </div>
+            <div>
+                <input type="text" name="format" value="<?php echo $donnee['bouteille']['format'] ?>" maxlength="7" placeholder="Format : (ml)"><label for="format">Format : </label>
+                <p class="erreurFormat"></p>
+            </div>
+            <div>
+                <label for="type">Type : </label>
+                <select name="type">
+                    <?php
+                        foreach($donnee['type'] as $type){
+                            if($donnee['bouteille']['id_type'] == $type['id_type']){
+                            ?>
+                                <option value="<?= $type['id_type'] ?>" selected><?= $type['type'] ?></option>
+                            <?php
+                            }
+                            else{
+                            ?>
+                                <option value="<?= $type['id_type'] ?>"><?= $type['type'] ?></option>
+                            <?php
+                            }
                         }
-                        else{
-                        ?>
-                            <option value="<?= $type['id_type'] ?>"><?= $type['type'] ?></option>
-                        <?php
+                    ?>
+                </select>
+            </div>
+            <div>
+                <label for="pays">Pays : </label>
+                <select name="pays">
+                    <?php
+                        foreach($donnee['pays'] as $pays){
+                            if($donnee['bouteille']['id_pays'] == $pays['id_pays']){
+                            ?>
+                                <option value="<?= $pays['id_pays'] ?>" selected><?= $pays['pays'] ?></option>
+                            <?php
+                            }
+                            else{
+                            ?>
+                                <option value="<?= $pays['pays'] ?>"><?= $pays['pays'] ?></option>
+                            <?php
+                            }
                         }
-                    }
-                ?>
-            </select>
-            <label>Pays : </label><select name="pays">
-                <?php
-                    foreach($resultat['pays'] as $pays){
-                        if($resultat['bouteille']['pays'] == $pays['pays']){
-                        ?>
-                            <option value="<?= $pays['id_pays'] ?>" selected><?= $pays['pays'] ?></option>
-                        <?php
-                        }
-                        else{
-                        ?>
-                            <option value="<?= $pays['pays'] ?>"><?= $pays['pays'] ?></option>
-                        <?php
-                        }
-                    }
-                ?>
-            </select>
-            <label class="hide">Millésime : </label><input name="millesime" value="<?php echo $resultat['bouteille']['millesime'] ?>">
-            <label class="hide">Code SAQ : </label><input name="codesaq" value="<?php echo $resultat['bouteille']['code_saq'] ?>">
-            <label class="hide">URL SAQ : </label><input name="urlsaq" value="<?php echo $resultat['bouteille']['url_saq'] ?>">
+                    ?>
+                </select>
+            </div>
+            <div>
+                <input type="text" name="millesime" value="<?php echo $donnee['bouteille']['millesime'] ?>" maxlength="4" placeholder="Millésime :"><label for="millesime">Millésime : </label>
+                <p class="erreurMillesime"></p>
+            </div>
+            <div>
+                <input type="text" name="codesaq" value="<?php echo $donnee['bouteille']['code_saq'] ?>" maxlength="8" placeholder="Code SAQ :"><label for="codesaq">Code SAQ : </label>
+                <p class="erreurCodesaq"></p>
+            </div>
+            <div>
+                <input type="text" name="urlsaq" value="<?php echo $donnee['bouteille']['url_saq'] ?>" placeholder="URL SAQ :"><label for="urlsaq">URL SAQ : </label>
+                <p class="erreurUrlsaq"></p>
+            </div>
         </form>
-        <button name="modifierBouteilleCellier">Modifier la bouteille</button>
+        <p class="msg"></p>
+        <input type="hidden" name="id_bouteille" value="<?php echo $donnee['bouteille']['id_bouteille'] ?>">
+        <input type="hidden" name="nonliste" value="<?php echo $donnee['bouteille']['non_liste'] ?>">
+        <input type="hidden" name="id_cellier" value="<?php echo $donnee['id_cellier'] ?>">
+        <div class="boutonForm">
+            <button class="retour" name="retourCellier">Retour</button>
+            <button class="soumettre" name="sauver">Modifier la bouteille</button>
+        </div>
+        
+        
     </div>
 </div>
