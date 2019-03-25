@@ -96,6 +96,41 @@ class Cellier extends Modele {
 		}
 		return $rows;
 	}
+    
+    /**
+	 * ajoute une bouteille dans le cellier
+	 * 
+	 * @param int $id ranger dans le contenu cellier a supprimer
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function supprimerBouteille($id)
+	{
+		$requete = 'DELETE FROM cellier_contenu WHERE id = ' . $id;
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+    
+    /**
+	 * Supprime une bouteille dans le cellier
+	 * 
+	 * @param int $id ranger dans le contenu cellier a supprimer
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function supprimerBouteille($data)
+	{
+		$requete = 'INSERT INTO cellier_contenu (id_cellier, id_bouteille, date_ajout, garde_jusqua) VALUE
+            (' . $data -> id_cellier . ',
+            ' . $data -> id_bouteille . ',
+            ' . $data -> date_ajout . ',
+            ' . $data -> garde_jusqua . ')';
+        
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
 
 
 

@@ -25,17 +25,17 @@ class Controler
             case 'autocompleteBouteille':
                 $this->autocompleteBouteille();
                 break;
-            case 'ajouterNouvelleBouteilleCellier':
-                $this->ajouterNouvelleBouteilleCellier();
+            case 'ajouterNouvelleBouteille':
+                $this->ajouterNouvelleBouteille();
                 break;
-            case 'ajouterBouteilleCellier':
-                $this->ajouterBouteilleCellier();
+            case 'ajouterBouteille':
+                $this->ajouterBouteille();
                 break;
             case 'modifierBouteilleCellier':
                 $this->modifierBouteilleCellier();
                 break;
-            case 'boireBouteilleCellier':
-                $this->boireBouteilleCellier();
+            case 'boireBouteille':
+                $this->boireBouteille();
                 break;                
             case 'afficheContenuCellier':
                 $this->afficheContenuCellier();
@@ -163,13 +163,13 @@ class Controler
      *
      * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
      */
-    private function ajouterNouvelleBouteilleCellier()
+    private function ajouterNouvelleBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
         if(!empty($body)){
             $bte = new Bouteille();
 
-            $resultat = $bte->ajouterBouteilleCellier($body);
+            $resultat = $bte->ajouterNouvelleBouteille($body);
             echo json_encode($resultat);
         }
         else{
@@ -215,14 +215,13 @@ class Controler
      * ?? ajout d'une note dans historique pour les statistiques
      *
      */
-    private function boireBouteilleCellier()
+    private function boireBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
 
-        $bte = new Bouteille();
+        $cellier = new Cellier();
         //retire une bouteille du cellier et récupère la nouvelle quantité
-        $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
-        $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
+        $resultat = $cellier -> supprimerBouteille($body -> id);
         echo json_encode($resultat);
     }
 
@@ -231,7 +230,7 @@ class Controler
      * ?? ajout d'une note dans historique pour les statistiques
      *
      */
-    private function ajouterBouteilleCellier()
+    private function ajouterBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
 

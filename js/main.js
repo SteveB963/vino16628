@@ -51,8 +51,10 @@ window.addEventListener('load', function() {
     //buttonn Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
+            
+            let id = evt.target.parentNode.parentElement.dataset.id;
+            console.log(id);
+            let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
             //let quantite = document.querySelector("[data-quantite='" + id + "']")
             
             fetch(requete)
@@ -63,9 +65,19 @@ window.addEventListener('load', function() {
                   throw new Error('Erreur');
                 }
               })
-              .then(response => {
-                console.debug(response);
-                quantite.innerHTML = 'Quantité : '+ response.quantite;
+              .then(data => {
+                    console.log(data);
+                    if(data == true){
+                        nbRange = evt.target.parentNode.parentNode.parentNode.childElementCount;
+                        if(nbRange == 2){
+                            let bouteille = evt.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                            bouteille.parentNode.removeChild(bouteille);
+                        }
+                        else{
+                            let bouteille = document.querySelector("[data-id='" + id + "']");
+                            bouteille.parentNode.removeChild(bouteille);
+                        }
+                    }
               }).catch(error => {
                 console.error(error);
               });
@@ -78,8 +90,8 @@ window.addEventListener('load', function() {
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
             //console.log("click ajouter");
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request("index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
+            let id = evt.target.parentElement.dataset.bouteille;
+            let requete = new Request("index.php?requete=ajouterBouteille", {method: 'POST', body: '{"id": ' + id + '}'});
             //console.log(requete);
             let quantite = document.querySelector("[data-quantite='" + id + "']")
             //console.log(quantite);  
@@ -103,8 +115,8 @@ window.addEventListener('load', function() {
     
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id_bouteille = evt.target.parentElement.dataset.id;
-            document.querySelector(".bouteille" + id_bouteille).classList.toggle("hideBouteille");
+            let id_bouteille = evt.target.parentElement.dataset.bouteille;
+            document.getElementById(id_bouteille).classList.toggle("hideBouteille");
         })
 
     });
@@ -112,8 +124,8 @@ window.addEventListener('load', function() {
     //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id_bouteille = evt.target.parentElement.dataset.id;
-            let id_cellier = document.querySelector("[name='cellier']").getAttribute("data-id")
+            let id_bouteille = evt.target.parentElement.dataset.bouteille;
+            let id_cellier = evt.target.parentNode.parentNode.parentNode.parentElement.dataset.cellier;
             window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier&id_bouteille=" + id_bouteille + "&id_cellier=" + id_cellier; 
     
         })
@@ -296,8 +308,8 @@ window.addEventListener('load', function() {
         }
       });
 
-        //bouton formulaire d'ajout de bouteille
-      let btnAjouter = document.querySelector("[name='ajouterBouteilleCellier']");
+        //bouton formulaire d'ajout d'une nouvelle bouteille
+      let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
       if(btnAjouter){
         btnAjouter.addEventListener("click", function(evt){
           var param = {
@@ -309,7 +321,7 @@ window.addEventListener('load', function() {
             "quantite":bouteille.quantite.value,
             "millesime":bouteille.millesime.value,
           };
-          let requete = new Request("index.php?requete=ajouterNouvelleBouteilleCellier", {method: 'POST', body: JSON.stringify(param)});
+          let requete = new Request("index.php?requete=ajouterNouvelleBouteille", {method: 'POST', body: JSON.stringify(param)});
             fetch(requete)
                 .then(response => {
                     if (response.status === 200) {

@@ -15,38 +15,39 @@
     </p>
 </div>
 
-<div class="cellier content" name='cellier'  data-id="<?php echo $_GET['id_cellier']?>">
+<div class="cellier content" data-cellier="<?php echo $_GET['id_cellier']?>">
 <?php
     if($data){
         foreach ($data['info'] as $cle => $infoBout) {
     ?>
-    <div class="bouteille">
-        <div class="img">
-            <img class="imgvin" src="<?php echo $infoBout['image'] ?>">
-        </div>
-        <div>
-            <div class="information">
-                <p class="nom"><?php echo $infoBout['nom'] ?></p>
-                <div class="description">
-                    <p class="type"><?php echo $infoBout['type'] ?>, <?php echo $infoBout['pays'] ?>, <?php echo $infoBout['format'] ?> ml, millesime : <?php echo $infoBout['millesime'] ?></p>
-                    <p class="millesime"><?php echo $infoBout['prix'] ?> $, Code_SAQ: <?php echo $infoBout['code_saq'] ?>, <a href="<?php echo $infoBout['url_saq'] ?>">Page SAQ</a></p>
-                    <p></p>
+    <div><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
+        <div class="bouteille">
+            <div class="img">
+                <img class="imgvin" src="<?php echo $infoBout['image'] ?>">
+            </div>
+            <div>
+                <div class="information">
+                    <p class="nom"><?php echo $infoBout['nom'] ?></p>
+                    <div class="description">
+                        <p class="type"><?php echo $infoBout['type'] ?>, <?php echo $infoBout['pays'] ?>, <?php echo $infoBout['format'] ?> ml, millesime : <?php echo $infoBout['millesime'] ?></p>
+                        <p class="millesime"><?php echo $infoBout['prix'] ?> $, Code_SAQ: <?php echo $infoBout['code_saq'] ?>, <a href="<?php echo $infoBout['url_saq'] ?>">Page SAQ</a></p>
+                        <p></p>
+                    </div>
+                </div>
+                <div class="options" data-bouteille="<?php echo $infoBout['id_bouteille'] ?>">
+                    <button class='btnModifier'>Modifier</button>
+                    <button class='btnAjouter'>Ajouter</button>
+                    <button class='btnBouteille'>Bouteille<?php
+                        if($infoBout['quantite'] > 1){
+                            echo "s";
+                        }
+                        echo "(" . $infoBout['quantite']; ?>)
+                    </button>
                 </div>
             </div>
-            <div class="options" data-id="<?php echo $infoBout['id_bouteille'] ?>">
-                <button class='btnModifier'>Modifier</button>
-                <button class='btnAjouter'>Ajouter</button>
-                <button class='btnBouteille'>Bouteille<?php
-                    if($infoBout['quantite'] > 1){
-                        echo "s";
-                    }
-                    echo "(" . $infoBout['quantite']; ?>)
-                </button>
-            </div>
+
         </div>
-        
-    </div>
-    <div class="listeBouteille hideBouteille bouteille<?php echo $infoBout['id_bouteille'] ?>">
+        <div class="listeBouteille hideBouteille" id="<?php echo $infoBout['id_bouteille'] ?>">
             <table>
                 <tr>
                     <th>Date d'ajout</th>
@@ -67,10 +68,11 @@
                             <?php
                         }
                     }
-            
+
                 ?>    
             </table>
         </div>
+    </div>
 <?php
 }
 

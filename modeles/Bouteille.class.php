@@ -209,7 +209,7 @@ class Bouteille extends Modele {
 	 * @return Boolean Succès ou échec de l'ajout.
      *  ///////////////////PAS ÉTÉ TESTÉ ENCORE////////////////////////////
 	 */
-	public function ajouterBouteilleCellier($data)
+	public function ajouterNouvelleBouteille($data)
 	{
 		$requete = "INSERT INTO vino__cellier(id_bouteille,date_achat,garde_jusqua,notes,prix,quantite,millesime) VALUES (".
 		"'".$data->id_bouteille."',".
@@ -223,32 +223,6 @@ class Bouteille extends Modele {
         $res = $this->_db->query($requete);
         
 		return $res;
-	}
-	
-	
-	/**
-	 * Cette méthode change la quantité d'une bouteille en particulier dans le cellier
-	 * 
-	 * @param int $id id de la bouteille
-	 * @param int $nombre Nombre de bouteille a ajouter ou retirer
-	 * 
-	 * @return Boolean Succès ou échec de l'ajout.
-	 */
-	public function modifierQuantiteBouteilleCellier($id, $nombre)
-	{
-		$requete = "UPDATE cellier_contenu SET quantite = GREATEST(quantite + ". $nombre. ", 0) WHERE id = ". $id;
-        $res = $this->_db->query($requete);
-        
-		return $res;
-	}
-    
-    public function obtenirQuantiteBouteilleCellier($id)
-	{				
-		$requete1 = "SELECT quantite from cellier_contenu WHERE id = ". $id;
-		$res = $this->_db->query($requete1);
-		$row = $res->fetch_assoc();
-        
-		return $row;
 	}
     
     /**
