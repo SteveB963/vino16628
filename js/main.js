@@ -107,11 +107,6 @@ window.addEventListener('load', function() {
         btnTrier.addEventListener('change', function(evt){
             var trier=btnTrier.options[btnTrier.selectedIndex].value;
             //btnTrier.selectedIndex = 0;
-            console.log(btnTrier.options.length);
-            console.log(btnTrier.selectedIndex);
-            var selectedText = btnTrier.options[btnTrier.selectedIndex].innerHTML;
-            var selectedValue = btnTrier.value;
-            //alert("Selected Text: " + selectedText + " Value: " + selectedValue)
             var id_cellier = document.querySelector("[name='cellier']").getAttribute("data-id");
             window.location.href = "index.php?requete=afficheCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
         });
