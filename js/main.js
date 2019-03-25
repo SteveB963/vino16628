@@ -406,6 +406,8 @@ window.addEventListener('load', function() {
 
   let btnInscription = document.querySelector("[name='ajouterNouveauCompte']");
   if(btnInscription){
+    //Envoie des données du formulaire vers le controleur lors d'un clique 
+    //sur le bouton d'inscription
     btnInscription.addEventListener("click", function(evt){
       var param = {
         "prenomInscri": compte.prenom.value,
@@ -413,25 +415,32 @@ window.addEventListener('load', function() {
         "courrielInscri": compte.courriel.value,
         "motPasseInscri": compte.motDePasse.value,
       };
+      //Envoie au controleur
       let requete = new Request("index.php?requete=creerCompteUsager", {method: 'POST', body: JSON.stringify(param)});
+
       fetch(requete)
         .then(response => {
+          //Si la requete à fonctionné
           if (response.status === 200) {
+            //Traitement de la réponse du controleur
             return response.json();
           } else {
+            //Sinon, affiche une erreur
             throw new Error('Erreur');
           }
         })
         .then(data => {
           console.log(data);
+          //Si la réponse émise par le controleur est égale à true
           if(data == true){
+            //Redirection vers la page monCompte
             window.location.href ="index.php?requete=compte";
           }
           else{
             //Affichage d'un message d'erreur lorsque la 
             //connexion à échoué.
             document.querySelector("[name='msgErreur']").classList.add('errorBox');
-            var messageErreur = "Les informations entrées sont incorrectes.";
+            var messageErreur = "<i class='fas fa-exclamation-triangle'></i> Les informations entrées sont incorrectes.";
             document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
           }
         }).catch(error => {
@@ -449,18 +458,25 @@ window.addEventListener('load', function() {
 
   let btnConnection = document.querySelector("[name='seConnecter']");
   if(btnConnection){
+    //Envoie des données du formulaire vers le controleur lors d'un clique 
+    //sur le bouton de connexion
     btnConnection.addEventListener("click", function(evt){
       var param = {
         "courrielCo": infoConnection.courriel.value,
         "motPasseCo": infoConnection.motDePasse.value,
       }
+      //Envoie au controleur
       let requete = new Request("index.php?requete=login", {method: 'POST', body: JSON.stringify(param)});
+
       fetch(requete)
         .then(response =>{
+          //Si la requete à fonctionné
           if (response.status === 200) {
+            //Traitement de la réponse du controleur
             return response.json();
           }
           else{
+            //Sinon, affiche une erreur
             throw new Error('Erreur');
           }
         })
@@ -475,7 +491,7 @@ window.addEventListener('load', function() {
             //Affichage d'un message d'erreur lorsque la 
             //connexion à échoué.
             document.querySelector("[name='msgErreur']").classList.add('errorBox');
-            var messageErreur = "Les informations entrées sont incorrectes.";
+            var messageErreur = "<i class='fas fa-exclamation-triangle'></i> Les informations entrées sont incorrectes.";
             document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
           }
           
@@ -484,14 +500,71 @@ window.addEventListener('load', function() {
         });
     });
   }
-/*
+
+  //btnModif - redirection vers le formulaire de modification du compte
   let btnModif = document.querySelector("[name='modifierCompte']");
   if(btnModif){
     btnModif.addEventListener("click", function(evt){
       window.location.href = "index.php?requete=modificationCompte";
     });
   }
-*/
 
-}       );
+  //btnSauvCompte - Envoie les informations entrées dans le formulaire
+  //au controleur afin de permettre leur sauvegarde dans la bd
+  let btnSauvCompte = document.querySelector("[name='sauvegardeModifCompte']");
+  if(btnSauvCompte){
+    //Envoie des données du formulaire vers le controleur lors d'un clique 
+    //sur le bouton de sauvegarde des modifications
+    btnSauvCompte.addEventListener("click", function(evt){
+      var param = {
+        prenomInscri : document.querySelector("[name='prenomInscri']").value,
+        nomInscri : document.querySelector("[name='nomInscri']").value,
+        courrielInscri : document.querySelector("[name='courrielInscri']").value,
+        //id : document.querySelector("[name='idCompte']").value
+      }
+      let requete = new Request("index.php?requete=modificationCompte", {method: 'POST', body: JSON.stringify(param)});
+
+      fetch(requete)
+        .then(response =>{
+          //Si la requete à fonctionné
+          if (response.status === 200) {
+            //Traitement de la réponse du controleur
+            return response.json();
+          }
+          else{
+            //Sinon, affiche une erreur
+            throw new Error('Erreur');
+          }
+        })
+        .then(data => {
+          //Redirection vers la page monCompte lorsque la
+          //modification à réussie.
+          console.log(data);
+          if(data == "fonctionnel"){
+            window.location.href ="index.php?requete=compte&modif=true";
+          }
+          else{
+            if(data == "mail"){
+              //Affichage d'un message d'erreur lorsque la 
+              //modification à échoué.
+              document.querySelector("[name='msgErreur']").classList.add('errorBox');
+              var messageErreur = "<i class='fas fa-exclamation-triangle'></i> Le courriel entré est déjà utilisé par un autre utilisateur.";
+              document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+            }
+            else{
+              //Affichage d'un message d'erreur lorsque la 
+              //modification à échoué.
+              document.querySelector("[name='msgErreur']").classList.add('errorBox');
+              var messageErreur = "<i class='fas fa-exclamation-triangle'></i> Modification impossible. Veuillez vous assurez que tout les champs sont bien remplis.";
+              document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+            }
+          }
+          
+        }).catch(error => {
+          console.error(error);
+        });
+    });
+  }
+
+});
 
