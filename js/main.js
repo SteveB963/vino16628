@@ -119,6 +119,7 @@ window.addEventListener('load', function() {
     let listeNom = document.querySelector('.listeNom');
     let listePrix = document.querySelector('.listePrix');
     let listePays = document.querySelector('.listePays');
+    let listeType = document.querySelector('.listeType');
     let listeMillesime = document.querySelector('.listeMillesime');
     let listeFormat = document.querySelector('.listeFormat');
     let listeCode = document.querySelector('.listeCode');
@@ -128,16 +129,18 @@ window.addEventListener('load', function() {
         let cherche= inputCherche.value;
         listeCherche.innerHTML = "";
         
-        //separer le type de resultat de rechearch(nom,tpe, prix...etc)
+        //separer le type de resultat de rechearch(nom,type, prix...etc)
         listeNom.innerHTML ="<h4>Nom:</h4>";
         listeNom.style.visibility="hidden";
-        listePrix.innerHTML ="<h4>prix:</h4>";
+        listePrix.innerHTML ="<h4>Prix:</h4>";
         listePrix.style.visibility="hidden";
-        listePays.innerHTML ="<h4>pays:</h4>";
+        listePays.innerHTML ="<h4>Pays:</h4>";
         listePays.style.visibility="hidden";
+        listeType.innerHTML ="<h4>Type:</h4>";
+        listeType.style.visibility="hidden";
         listeMillesime.innerHTML ="<h4>Millesime:</h4>";
         listeMillesime.style.visibility="hidden";
-        listeFormat.innerHTML ="<h4>format:</h4>";
+        listeFormat.innerHTML ="<h4>Format:</h4>";
         listeFormat.style.visibility="hidden";
         listeCode.innerHTML ="<h4>Code:</h4>";
         listeCode.style.visibility="hidden";
@@ -170,6 +173,10 @@ window.addEventListener('load', function() {
                         listePays.style.visibility="visible";
                         listePays.innerHTML += "<li class='listCherche' id='"+element.pays+"'>"+element.pays+"</li>";
                     }
+                    if(element.type){
+                        listeType.style.visibility="visible";
+                        listeType.innerHTML += "<li class='listCherche' id='"+element.type+"'>"+element.type+"</li>";
+                    }
                     if(element.format){
                         listeFormat.style.visibility="visible";
                         listeFormat.innerHTML += "<li class='listCherche' id='"+element.format+"'>"+element.format+"</li>";
@@ -192,6 +199,9 @@ window.addEventListener('load', function() {
                 }
                 if (listePays.children.length > 1) { 
                     listeCherche.innerHTML +=listePays.innerHTML ;
+                }
+                if (listeType.children.length > 1) { 
+                    listeCherche.innerHTML +=listeType.innerHTML ;
                 }
                 if (listeFormat.children.length > 1) { 
                     listeCherche.innerHTML +=listeFormat.innerHTML ;

@@ -12,6 +12,8 @@
             </ul>
             <ul class="listePays">
             </ul>
+            <ul class="listeType">
+            </ul>
             <ul class="listeFormat">
             </ul>
             <ul class="listeMillesime">
@@ -24,13 +26,13 @@
     <div class="trier">
         Trier le cellier par:
         <select id="trier">
-          <option value="nom" <?php echo $trier== 'nom' ? 'selected' : ''?>>Nom</option>
-          <option value="pays" <?php echo $trier == 'pays' ? 'selected' : ''?>>Pays</option>
-          <option value="format" <?php echo $trier== 'format' ? 'selected' : ''?>>Format</option>
-          <option value="type" <?php echo $trier == 'type' ? 'selected' : ''?>>Type</option>
-          <option value="prix" <?php echo $trier == 'prix' ? 'selected' : ''?>>Prix</option>
-          <option value="millesime" <?php echo $trier == 'millesime' ? 'selected' : ''?>>Millesime</option>
-          <option value="code_saq" <?php echo $trier == 'code_saq' ? 'selected' : ''?>>Code_SAQ</option>
+            <option value="nom" <?php echo $trier== 'nom' ? 'selected' : ''?>>Nom</option>
+            <option value="prix" <?php echo $trier == 'prix' ? 'selected' : ''?>>Prix</option>
+            <option value="pays" <?php echo $trier == 'pays' ? 'selected' : ''?>>Pays</option>
+            <option value="type" <?php echo $trier == 'type' ? 'selected' : ''?>>Type</option>
+            <option value="format" <?php echo $trier== 'format' ? 'selected' : ''?>>Format</option>
+            <option value="millesime" <?php echo $trier == 'millesime' ? 'selected' : ''?>>Millesime</option>
+            <option value="code_saq" <?php echo $trier == 'code_saq' ? 'selected' : ''?>>Code_SAQ</option>
         </select>
         
     </div>

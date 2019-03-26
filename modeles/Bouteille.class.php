@@ -318,8 +318,25 @@ class Bouteille extends Modele {
 			 
 		}
         
-        //cherche le valeur en code_saq
-        $requete ='SELECT distinct b.code_saq as code_saq FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.code_saq) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
+        //cherche le valeur en Type
+        $requete ='SELECT distinct t.type as type FROM bouteille b JOIN bouteille_type t ON b.id_type=t.id_type JOIN cellier_contenu cc ON cc.id_bouteille=b.id_bouteille where LOWER(t.type) like LOWER("%'. $cherche.'%") AND cc.id_cellier='. $id_cellier;
+		if(($res = $this->_db->query($requete)) ==	 true)
+		{
+			if($res->num_rows)
+			{
+				while($row = $res->fetch_assoc())
+				{
+					$rows[] = $row;	
+				}
+			}
+		}
+		else 
+		{
+			throw new Exception("Erreur de requête sur la base de données", 1);
+			 
+		}
+        //cherche le valeur en format
+        $requete ='SELECT distinct b.format as format FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.format) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -353,8 +370,9 @@ class Bouteille extends Modele {
 			throw new Exception("Erreur de requête sur la base de données", 1);
 			 
 		}
-        //cherche le valeur en formt
-        $requete ='SELECT distinct b.format as format FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.format) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
+        
+        //cherche le valeur en code_saq
+        $requete ='SELECT distinct b.code_saq as code_saq FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.code_saq) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
