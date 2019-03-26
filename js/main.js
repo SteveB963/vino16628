@@ -9,6 +9,7 @@
  */
 
 window.addEventListener('load', function() {
+    
     const BaseURL = document.baseURI;
 
     //bouton créer un cellier
@@ -49,14 +50,16 @@ window.addEventListener('load', function() {
 
     
     //buttonn Boire
+    
     document.querySelectorAll(".btnBoire").forEach(function(element){
+        actionBtnBoire(element);
+    });
+    function actionBtnBoire(element){
         element.addEventListener("click", function(evt){
-            
+            let divBouteille = evt.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
             let id = evt.target.parentNode.parentElement.dataset.id;
-            console.log(id);
             let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
-            //let quantite = document.querySelector("[data-quantite='" + id + "']")
-            
+
             fetch(requete)
             .then(response => {
                 if(response.status === 200) {
@@ -66,35 +69,40 @@ window.addEventListener('load', function() {
                 }
               })
               .then(data => {
-                    console.log(data);
                     if(data == true){
-                        nbRange = evt.target.parentNode.parentNode.parentNode.childElementCount;
+                        let nbRange = evt.target.parentNode.parentNode.parentNode.childElementCount;
                         if(nbRange == 2){
-                            let bouteille = evt.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-                            bouteille.parentNode.removeChild(bouteille);
+                            divBouteille.parentNode.removeChild(divBouteille);
                         }
                         else{
                             let bouteille = document.querySelector("[data-id='" + id + "']");
                             bouteille.parentNode.removeChild(bouteille);
+                            
+                            let btnBouteille = divBouteille.querySelector(".btnBouteille");
+                            quantite = btnBouteille.textContent.match(/\d+/);
+                            btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) - 1) + ")";
                         }
                     }
               }).catch(error => {
                 console.error(error);
               });
-              
-        })
-
-    });
+        });
+    }
 
     //bouton ajouter, ajoute un bouteille dans le cellier
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
-            //console.log("click ajouter");
-            let id = evt.target.parentElement.dataset.bouteille;
-            let requete = new Request("index.php?requete=ajouterBouteille", {method: 'POST', body: '{"id": ' + id + '}'});
-            //console.log(requete);
-            let quantite = document.querySelector("[data-quantite='" + id + "']")
-            //console.log(quantite);  
+
+            let id_bouteille = evt.target.parentElement.dataset.bouteille;
+            let id_cellier = document.querySelector(".cellier").dataset.cellier;
+            
+            let param = {
+                id_bouteille : id_bouteille,
+                id_cellier : id_cellier
+            };
+            
+            let requete = new Request("index.php?requete=ajouterBouteille", {method: 'POST', body: JSON.stringify(param)});
+            
             fetch(requete)
             .then(response => {
                 if (response.status === 200) {
@@ -102,21 +110,32 @@ window.addEventListener('load', function() {
                 } else {
                   throw new Error('Erreur');
                 }
-              })
-              .then(response => {
-                console.debug(response);
-                quantite.innerHTML = 'Quantité : '+ response.quantite;
-              }).catch(error => {
+            })
+            .then(data => {
+                let table = document.querySelector("[data-id='" + id_bouteille + "']").parentNode;
+                let row = document.createElement("tr");
+                table.appendChild(row);
+                table.lastChild.setAttribute("data-id", data['ajout'].id);
+                table.lastChild.innerHTML = "<td>" + data['ajout'].date_ajout + "</td>"+
+                                "<td>" + data['ajout'].garde_jusqua + "</td>"+
+                                "<td><button class='btnBoire'>Boire</button></td>"+
+                                "<td><button>Modifier</button></td>";
+                actionBtnBoire(table.lastChild.children[2]);
+                let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
+                quantite = btnBouteille.textContent.match(/\d+/);
+                btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) + 1) + ")";
+            }).catch(error => {
                 console.error(error);
-              });
+            });
+              
         })
 
     });
     
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id_bouteille = evt.target.parentElement.dataset.bouteille;
-            document.getElementById(id_bouteille).classList.toggle("hideBouteille");
+            let id_bouteille = evt.target.parentElement.dataset.bouteille;  
+            document.getElementById("bouteille" + id_bouteille).children[1].classList.toggle("hideBouteille");
         })
 
     });
@@ -125,7 +144,7 @@ window.addEventListener('load', function() {
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id_bouteille = evt.target.parentElement.dataset.bouteille;
-            let id_cellier = evt.target.parentNode.parentNode.parentNode.parentElement.dataset.cellier;
+            let id_cellier = document.querySelector(".cellier").dataset.cellier;
             window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier&id_bouteille=" + id_bouteille + "&id_cellier=" + id_cellier; 
     
         })

@@ -20,7 +20,7 @@
     if($data){
         foreach ($data['info'] as $cle => $infoBout) {
     ?>
-    <div><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
+    <div id="bouteille<?php echo $infoBout['id_bouteille'] ?>"><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
         <div class="bouteille">
             <div class="img">
                 <img class="imgvin" src="<?php echo $infoBout['image'] ?>">
@@ -47,7 +47,7 @@
             </div>
 
         </div>
-        <div class="listeBouteille hideBouteille" id="<?php echo $infoBout['id_bouteille'] ?>">
+        <div class="listeBouteille hideBouteille">
             <table>
                 <tr>
                     <th>Date d'ajout</th>

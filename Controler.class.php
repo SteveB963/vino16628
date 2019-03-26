@@ -233,11 +233,16 @@ class Controler
     private function ajouterBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
-
-        $bte = new Bouteille();
-        //ajoute une bouteille au cellier et récupère la nouvelle quantité
-        $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, 1);
-        $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
+        
+        $body -> date_ajout = date('Y-m-d');
+        $garde_jusqua = new DateTime($body -> date_ajout);
+        $garde_jusqua = $garde_jusqua -> add(new DateInterval('P1Y'));
+        $body -> garde_jusqua = $garde_jusqua -> format('Y-m-d');
+        
+        $cellier = new Cellier();
+        $resultat['succes'] = $cellier -> ajouterBouteille($body);
+        $resultat['ajout'] = $cellier -> getDernAjout();
+        
         echo json_encode($resultat);
     }
 
