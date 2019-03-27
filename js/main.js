@@ -191,25 +191,26 @@ window.addEventListener('load', function() {
                     }
                 })
                 //verifier le length de chaque liste 
-                if (listeNom.children.length > 1) { 
+                
+                if (listeNom.style.visibility!="hidden") { 
                     listeCherche.innerHTML +=listeNom.innerHTML; 
                 }
-                if (listePrix.children.length > 1) { 
+                if (listePrix.style.visibility!="hidden") { 
                     listeCherche.innerHTML +=listePrix.innerHTML ;
                 }
-                if (listePays.children.length > 1) { 
+                if (listePays.style.visibility!="hidden") { 
                     listeCherche.innerHTML +=listePays.innerHTML ;
                 }
-                if (listeType.children.length > 1) { 
+                if (listeType.style.visibility!="hidden") { 
                     listeCherche.innerHTML +=listeType.innerHTML ;
                 }
-                if (listeFormat.children.length > 1) { 
+                if (listeFormat.style.visibility!="hidden") { 
                     listeCherche.innerHTML +=listeFormat.innerHTML ;
                 }
-                if (listeMillesime.children.length > 1) { 
-                    listeCherche.innerHTML +=listeMillesime.innerHTML ;
+                if (listeMillesime.style.visibility!="hidden") { 
+                    listeCherche.innerHTML += listeMillesime.innerHTML ;
                 }
-                if (listeCode.children.length > 1) { 
+                if (listeCode.style.visibility!="hidden") { 
                     listeCherche.innerHTML +=listeCode.innerHTML ;
                 }
                   

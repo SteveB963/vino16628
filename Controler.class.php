@@ -114,7 +114,7 @@
                 include("vues/entete.php");
                 include("vues/cellier.php");
                 include("vues/pied.php");
-               var_dump($_SESSION["id_cellier"]);   
+               //var_dump($_SESSION["id_cellier"]);   
             }
             
             else{
