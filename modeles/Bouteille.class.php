@@ -372,7 +372,7 @@ class Bouteille extends Modele {
 		}
         
         //cherche le valeur en code_saq
-        $requete ='SELECT distinct b.code_saq as code_saq FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.code_saq) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
+        $requete ='SELECT distinct b.code_saq as code FROM cellier_contenu cc JOIN cellier c ON c.id_cellier=cc.id_cellier JOIN bouteille b ON cc.id_bouteille=b.id_bouteille where LOWER(b.code_saq) like LOWER("%'. $cherche .'%") AND c.id_cellier='. $id_cellier;
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
