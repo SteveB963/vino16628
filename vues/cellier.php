@@ -1,7 +1,5 @@
-<?php
-    if($data){
-        ?>
-        <div class="cellier content" name='cellier'  data-id="<?php echo $_GET['id_cellier']?>">
+
+    <div class="cellier content" name='cellier'  data-id="<?php echo $_GET['id_cellier']?>">
     <div class="search">
         <input id='searchValue' placeholder="Recherche"> 
         <button id='cherche'><i class="fa fa-search"></i></button> 
@@ -36,6 +34,10 @@
         </select>
         
     </div>
+    <?php
+    if($data){
+        ?>
+
         <div class="count">
             <h4> Resultat-<?php echo sizeof($data)?> Bouteilles</h4>
         </div>
