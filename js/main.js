@@ -129,20 +129,20 @@ window.addEventListener('load', function() {
         let cherche= inputCherche.value;
         listeCherche.innerHTML = "";
         
-        //separer le type de resultat de rechearch(nom,type, prix...etc)
-        listeNom.innerHTML ="<h4>Nom:</h4>";
+        //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
+        listeNom.innerHTML ="<li>Nom:</li>";
         listeNom.style.visibility="hidden";
-        listePrix.innerHTML ="<h4>Prix:</h4>";
+        listePrix.innerHTML ="<li>Prix:</li>";
         listePrix.style.visibility="hidden";
-        listePays.innerHTML ="<h4>Pays:</h4>";
+        listePays.innerHTML ="<li>Pays:</li>";
         listePays.style.visibility="hidden";
-        listeType.innerHTML ="<h4>Type:</h4>";
+        listeType.innerHTML ="<li>Type:</li>";
         listeType.style.visibility="hidden";
-        listeMillesime.innerHTML ="<h4>Millesime:</h4>";
+        listeMillesime.innerHTML ="<li>Millesime:<li>";
         listeMillesime.style.visibility="hidden";
-        listeFormat.innerHTML ="<h4>Format:</h4>";
+        listeFormat.innerHTML ="<li>Format:</li>";
         listeFormat.style.visibility="hidden";
-        listeCode.innerHTML ="<h4>Code:</h4>";
+        listeCode.innerHTML ="<li>Code:</li>";
         listeCode.style.visibility="hidden";
         //console.log(cherche);
         var id_cellier = document.querySelector("[name='cellier']").getAttribute("data-id");
