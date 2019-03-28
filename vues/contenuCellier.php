@@ -1,5 +1,5 @@
 <div class="actionCellier">
-    <!--<button>Ajouter une boueille</button>-->
+    <button name="nouvelleBouteille">Ajouter une boueille</button>
     <!--<p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Creer votre cellier</a></p>-->
     <p class="trier">
         Trier le cellier par:

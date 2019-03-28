@@ -122,6 +122,7 @@ class Controler
         
 
     }
+    
 
     private function afficheListCellier()
     {
@@ -150,8 +151,9 @@ class Controler
      */
     private function autocompleteBouteille()
     {
-        $bte = new Bouteille();
         $body = json_decode(file_get_contents('php://input'));
+        
+        $bte = new Bouteille();
         $listeBouteille = $bte->autocomplete($body->nom);
 
         echo json_encode($listeBouteille);
@@ -166,15 +168,16 @@ class Controler
     private function ajouterNouvelleBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
+        
         if(!empty($body)){
-            $bte = new Bouteille();
+            $cellier = new Cellier();
 
-            $resultat = $bte->ajouterNouvelleBouteille($body);
+            $resultat = $cellier->ajouterBouteille($body);
             echo json_encode($resultat);
         }
         else{
             include("vues/entete.php");
-            include("vues/ajouter.php");
+            include("vues/formAjoutBout.php");
             include("vues/pied.php");
         }
 

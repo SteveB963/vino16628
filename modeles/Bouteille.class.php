@@ -127,7 +127,7 @@ class Bouteille extends Modele {
 		$nom = $this->_db->real_escape_string($nom);
 		$nom = preg_replace("/\*/","%" , $nom);
 		 
-		$requete ='SELECT id, nom FROM vino__bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
+		$requete ='SELECT id_bouteille, nom FROM bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -211,14 +211,11 @@ class Bouteille extends Modele {
 	 */
 	public function ajouterNouvelleBouteille($data)
 	{
-		$requete = "INSERT INTO vino__cellier(id_bouteille,date_achat,garde_jusqua,notes,prix,quantite,millesime) VALUES (".
+		$requete = "INSERT INTO cellier_contenu(id_bouteille,id_cellier,date_ajout,garde_jusqua) VALUES (".
 		"'".$data->id_bouteille."',".
-		"'".$data->date_achat."',".
-		"'".$data->garde_jusqua."',".
-		"'".$data->notes."',".
-		"'".$data->prix."',".
-		"'".$data->quantite."',".
-		"'".$data->millesime."')";
+		"'".$data->id_cellier."',".
+		"'".$data->date_ajout."',".
+		"'".$data->garde_jusqua."'";
 
         $res = $this->_db->query($requete);
         
