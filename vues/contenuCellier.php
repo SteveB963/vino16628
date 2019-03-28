@@ -36,7 +36,7 @@
                 </div>
                 <div class="options" data-bouteille="<?php echo $infoBout['id_bouteille'] ?>">
                     <button class='btnModifier'>Modifier</button>
-                    <button class='btnAjouter'>Ajouter</button>
+                    <button class='btnAjouter'><img class="icone" src="./images/icones/bouteille-plus.svg"></button>
                     <button class='btnBouteille'>Bouteille<?php
                         if($infoBout['quantite'] > 1){
                             echo "s";
@@ -62,7 +62,7 @@
                             <tr data-id="<?php echo $bouteille['id'] ?>">
                                 <td><?php echo $bouteille['date_ajout'] ?></td>
                                 <td><?php echo $bouteille['garde_jusqua'] ?></td>
-                                <td><button class="btnBoire">Boire</button></td>
+                                <td><button class="btnBoire"><img class="icone" src="./images/icones/bouteille-moins.svg"></button></td>
                                 <td><button>Modifier</button></td>
                             </tr>
                             <?php

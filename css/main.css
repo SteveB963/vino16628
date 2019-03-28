@@ -674,6 +674,10 @@ button, .mesFormulaires input[type='button']{
     color:red;
 }
 
+.icone{
+    height:30px;
+}
+
 .succes{
     color:green;
 }

@@ -55,8 +55,8 @@ window.addEventListener('load', function() {
     });
     function actionBtnBoire(element){
         element.addEventListener("click", function(evt){
-            let divBouteille = evt.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-            let id = evt.target.parentNode.parentElement.dataset.id;
+            let divBouteille = evt.currentTarget.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+            let id = evt.currentTarget.parentNode.parentElement.dataset.id;
             let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
 
             fetch(requete)
@@ -92,7 +92,7 @@ window.addEventListener('load', function() {
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
 
-            let id_bouteille = evt.target.parentElement.dataset.bouteille;
+            let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
             let id_cellier = document.querySelector(".cellier").dataset.cellier;
             
             let param = {
@@ -111,14 +111,13 @@ window.addEventListener('load', function() {
                 }
             })
             .then(data => {
-                console.log(data);
                 let table = document.getElementById("bouteille" + id_bouteille).getElementsByTagName("table")[0];
                 let row = document.createElement("tr");
                 table.appendChild(row);
                 table.lastChild.setAttribute("data-id", data['ajout'].id);
                 table.lastChild.innerHTML = "<td>" + data['ajout'].date_ajout + "</td>"+
                                 "<td>" + data['ajout'].garde_jusqua + "</td>"+
-                                "<td><button class='btnBoire'>Boire</button></td>"+
+                                "<td><button class='btnBoire'><img class='icone' src='./images/icones/bouteille-moins.svg'></button></td>"+
                                 "<td><button>Modifier</button></td>";
                 actionBtnBoire(table.lastChild.children[2]);
                 let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
