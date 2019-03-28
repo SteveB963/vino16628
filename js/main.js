@@ -9,6 +9,7 @@
  */
 
 window.addEventListener('load', function() {
+    
     const BaseURL = document.baseURI;
 
     //bouton créer un cellier
@@ -50,11 +51,14 @@ window.addEventListener('load', function() {
     
     //buttonn Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
+        actionBtnBoire(element);
+    });
+    function actionBtnBoire(element){
         element.addEventListener("click", function(evt){
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request("index.php?requete=boireBouteilleCellier", {method: 'POST', body: '{"id": '+id+'}'});
-            let quantite = document.querySelector("[data-quantite='" + id + "']")
-            
+            let divBouteille = evt.currentTarget.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+            let id = evt.currentTarget.parentNode.parentElement.dataset.id;
+            let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
+
             fetch(requete)
             .then(response => {
                 if(response.status === 200) {
@@ -63,25 +67,41 @@ window.addEventListener('load', function() {
                   throw new Error('Erreur');
                 }
               })
-              .then(response => {
-                console.debug(response);
-                quantite.innerHTML = 'Quantité : '+ response.quantite;
+              .then(data => {
+                    if(data == true){
+                        let nbRange = evt.target.parentNode.parentNode.parentNode.childElementCount;
+                        if(nbRange <= 2){
+                            divBouteille.parentNode.removeChild(divBouteille);
+                        }
+                        else{
+                            let bouteille = document.querySelector("[data-id='" + id + "']");
+                            bouteille.parentNode.removeChild(bouteille);
+                            
+                            let btnBouteille = divBouteille.querySelector(".btnBouteille");
+                            quantite = btnBouteille.textContent.match(/\d+/);
+                            btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) - 1) + ")";
+                        }
+                    }
               }).catch(error => {
                 console.error(error);
               });
-        })
-
-    });
+        });
+    }
 
     //bouton ajouter, ajoute un bouteille dans le cellier
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
-            //console.log("click ajouter");
-            let id = evt.target.parentElement.dataset.id;
-            let requete = new Request("index.php?requete=ajouterBouteilleCellier", {method: 'POST', body: '{"id": ' + id + '}'});
-            //console.log(requete);
-            let quantite = document.querySelector("[data-quantite='" + id + "']")
-            //console.log(quantite);  
+
+            let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
+            let id_cellier = document.querySelector(".cellier").dataset.cellier;
+            
+            let param = {
+                id_bouteille : id_bouteille,
+                id_cellier : id_cellier
+            };
+            
+            let requete = new Request("index.php?requete=ajouterBouteille", {method: 'POST', body: JSON.stringify(param)});
+            
             fetch(requete)
             .then(response => {
                 if (response.status === 200) {
@@ -89,13 +109,32 @@ window.addEventListener('load', function() {
                 } else {
                   throw new Error('Erreur');
                 }
-              })
-              .then(response => {
-                console.debug(response);
-                quantite.innerHTML = 'Quantité : '+ response.quantite;
-              }).catch(error => {
+            })
+            .then(data => {
+                let table = document.getElementById("bouteille" + id_bouteille).getElementsByTagName("table")[0];
+                let row = document.createElement("tr");
+                table.appendChild(row);
+                table.lastChild.setAttribute("data-id", data['ajout'].id);
+                table.lastChild.innerHTML = "<td>" + data['ajout'].date_ajout + "</td>"+
+                                "<td>" + data['ajout'].garde_jusqua + "</td>"+
+                                "<td><button class='btnBoire'><img class='icone' src='./images/icones/bouteille-moins.svg'></button></td>"+
+                                "<td><button>Modifier</button></td>";
+                actionBtnBoire(table.lastChild.children[2]);
+                let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
+                quantite = btnBouteille.textContent.match(/\d+/);
+                btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) + 1) + ")";
+            }).catch(error => {
                 console.error(error);
-              });
+            });
+              
+        })
+
+    });
+    
+    document.querySelectorAll(".btnBouteille").forEach(function(element){
+        element.addEventListener("click", function(evt){
+            let id_bouteille = evt.target.parentElement.dataset.bouteille;  
+            document.getElementById("bouteille" + id_bouteille).children[1].classList.toggle("hideBouteille");
         })
 
     });
@@ -103,8 +142,8 @@ window.addEventListener('load', function() {
     //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id_bouteille = evt.target.parentElement.dataset.id;
-            let id_cellier = document.querySelector("[name='cellier']").getAttribute("data-id")
+            let id_bouteille = evt.target.parentElement.dataset.bouteille;
+            let id_cellier = document.querySelector(".cellier").dataset.cellier;
             window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier&id_bouteille=" + id_bouteille + "&id_cellier=" + id_cellier; 
     
         })
@@ -116,7 +155,7 @@ window.addEventListener('load', function() {
     if(retourCellier){
         let id_cellier = document.querySelector("[name='id_cellier']").value;
         retourCellier.addEventListener("click", function(evt){
-            window.location.href = BaseURL + "index.php?requete=afficheCellier&id_cellier=" +   id_cellier; 
+            window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" +   id_cellier; 
         });
     }
     
@@ -223,20 +262,27 @@ window.addEventListener('load', function() {
     if(btnTrier){
         btnTrier.addEventListener("change", function(evt){
             var trier=document.getElementById('trier').value;
-            var id_cellier = document.querySelector("[name='cellier']").getAttribute("data-id");
+            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
             console.log(id_cellier);
-            window.location.href = "index.php?requete=afficheCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
+            window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
         });
     } 
+    
+    //bouton dirige vers le formulaire d'ajout d'un bouteille
+    var btnNouvelleBouteille = document.querySelector("[name='nouvelleBouteille']");
+    if(btnNouvelleBouteille){
+        btnNouvelleBouteille.addEventListener("click", function(evt){
+            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+            window.location.href = BaseURL + "index.php?requete=ajouterNouvelleBouteille&id_cellier=" + id_cellier; 
+        });
+    }
 
     
-    //autocomplete et ajout d'une bouteille
+    //autocomplete dans formulaire d'ajout d'un nouvelle bouteille
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
-    //console.log(inputNomBouteille);
     let liste = document.querySelector('.listeAutoComplete');
     if(inputNomBouteille){
       inputNomBouteille.addEventListener("keyup", function(evt){
-        console.log(evt);
         let nom = inputNomBouteille.value;
         liste.innerHTML = "";
         if(nom){
@@ -249,12 +295,9 @@ window.addEventListener('load', function() {
                     throw new Error('Erreur');
                   }
                 })
-                .then(response => {
-                  console.log(response);
-                  
-                 
+                .then(response => {                 
                   response.forEach(function(element){
-                    liste.innerHTML += "<li data-id='"+element.id +"'>"+element.nom+"</li>";
+                    liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
                   })
                 }).catch(error => {
                   console.error(error);
@@ -264,22 +307,19 @@ window.addEventListener('load', function() {
         
       });
 
+      //champ du formulaire d'ajout
       let bouteille = {
         nom : document.querySelector(".nom_bouteille"),
-        millesime : document.querySelector("[name='millesime']"),
-        quantite : document.querySelector("[name='quantite']"),
-        date_achat : document.querySelector("[name='date_achat']"),
-        prix : document.querySelector("[name='prix']"),
+        date_ajout : document.querySelector("[name='date_ajout']"),
         garde_jusqua : document.querySelector("[name='garde_jusqua']"),
-        notes : document.querySelector("[name='notes']"),
+        id_cellier : document.querySelector("[name='cellier']")
       };
 
-        
+      //sélection d'un nom de bouteille dans le résultat de l'autocomplete
       liste.addEventListener("click", function(evt){
-        console.dir(evt.target)
         if(evt.target.tagName == "LI"){
           bouteille.nom.dataset.id = evt.target.dataset.id;
-          bouteille.nom.innerHTML = evt.target.innerHTML;
+          bouteille.nom.setAttribute("value", evt.target.innerHTML);
           
           liste.innerHTML = "";
           inputNomBouteille.value = "";
@@ -287,36 +327,56 @@ window.addEventListener('load', function() {
         }
       });
 
-        //bouton formulaire d'ajout de bouteille
-      let btnAjouter = document.querySelector("[name='ajouterBouteilleCellier']");
+      //formulaire d'ajout, bouton ajouter et traitement du formulaire
+      let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
       if(btnAjouter){
-        btnAjouter.addEventListener("click", function(evt){
-          var param = {
-            "id_bouteille":bouteille.nom.dataset.id,
-            "date_achat":bouteille.date_achat.value,
-            "garde_jusqua":bouteille.garde_jusqua.value,
-            "notes":bouteille.date_achat.value,
-            "prix":bouteille.prix.value,
-            "quantite":bouteille.quantite.value,
-            "millesime":bouteille.millesime.value,
-          };
-          let requete = new Request("index.php?requete=ajouterNouvelleBouteilleCellier", {method: 'POST', body: JSON.stringify(param)});
-            fetch(requete)
-                .then(response => {
-                    if (response.status === 200) {
-                      return response.json();
-                    } else {
-                      throw new Error('Erreur');
+            btnAjouter.addEventListener("click", function(evt){
+                var param = {
+                    id_bouteille : bouteille.nom.dataset.id,
+                    id_cellier : bouteille.id_cellier.value,
+                    date_ajout : bouteille.date_ajout.value,
+                    garde_jusqua : bouteille.garde_jusqua.value
+                };
+                
+                var verif = {
+                    nom : verifChamp(bouteille.nom.value,"text"),
+                    date_ajout : verifChamp(param.date_ajout,"date"),
+                    garde_jusqua : verifChamp(param.garde_jusqua,"date")
+                }
+                
+                if(verif.nom != ""){
+                    verif.nom = "Utiliser la recherche pour sélectionner un nom";
+                }
+                document.querySelector(".erreurNom").innerHTML = verif.nom;
+                document.querySelector(".erreurDate").innerHTML = verif.date_ajout;
+                document.querySelector(".erreurGarde").innerHTML = verif.garde_jusqua;
+                
+                if(verif.nom == "" && verif.date_ajout == "" && verif.garde_jusqua == ""){
+                    let date_ajout = new Date(param.date_ajout);
+                    let garde_jusqua = new Date(param.garde_jusqua);
+                    
+                    if(date_ajout < garde_jusqua){
+                        let requete = new Request("index.php?requete=ajouterNouvelleBouteille", {method: 'POST', body: JSON.stringify(param)});
+                        fetch(requete)
+                        .then(response => {
+                            if (response.status === 200) {
+                                return response.json();
+                            } else {
+                                throw new Error('Erreur');
+                            }
+                        })
+                        .then(data => {
+                            window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" + param.id_cellier; 
+                        }).catch(error => {
+                           console.error(error);
+                        });
                     }
-                  })
-                  .then(response => {
-                    console.log(response);
-                  
-                  }).catch(error => {
-                   console.error(error);
-                  });
-        
-        });
+                    else{
+                        document.querySelector(".erreurGarde").innerHTML = "La date \"Garder jusqu'à\" doit être plus grande que la date d'ajout";
+                    } 
+                }
+
+            });
       } 
     }
     
@@ -365,6 +425,14 @@ window.addEventListener('load', function() {
                         break;
                     //si le champ est une date
                     case 'date' :
+                        regex = new RegExp(/^\d{4}-\d{2}-\d{2}$/);
+                        resultat = regex.test(champ);
+                        if(!resultat){
+                            resultat = "La date que vous avez entré est invalide";
+                        }
+                        else{
+                            resultat = "";
+                        }
                         break;
                     //si le champ est numérique
                     case 'num' :

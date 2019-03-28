@@ -24,20 +24,20 @@ window.addEventListener("load", function(){
     }
     
     //Permet d'afficher ou cacher le label d'un input selon si il est vide ou rempli
-    let input = document.querySelectorAll("[type='text']").forEach(function(element){
-        element.addEventListener('focusout', function(){
-            if(element.value != ""){
-                let label = document.querySelector("[for=" + element.getAttribute("name") + "]");
-                label.classList.remove('hide');
-            }
-            else{
-                let label = document.querySelector("[for=" + element.getAttribute("name") + "]");
-                label.classList.add('hide');
-            }
-            
+    let input = document.querySelector(".formulaire");
+    if(input){
+        input.querySelectorAll("[type='text']").forEach(function(element){
+            element.addEventListener('focusout', function(){
+                if(element.value != ""){
+                    let label = document.querySelector("[for=" + element.getAttribute("name") + "]");
+                    label.classList.remove('hide');
+                }
+                else{
+                    let label = document.querySelector("[for=" + element.getAttribute("name") + "]");
+                    label.classList.add('hide');
+                }
+            });
         });
-        
-        
-    });
+    }
 
 });

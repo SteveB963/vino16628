@@ -25,20 +25,20 @@ class Controler
             case 'autocompleteBouteille':
                 $this->autocompleteBouteille();
                 break;
-            case 'ajouterNouvelleBouteilleCellier':
-                $this->ajouterNouvelleBouteilleCellier();
+            case 'ajouterNouvelleBouteille':
+                $this->ajouterNouvelleBouteille();
                 break;
-            case 'ajouterBouteilleCellier':
-                $this->ajouterBouteilleCellier();
+            case 'ajouterBouteille':
+                $this->ajouterBouteille();
                 break;
             case 'modifierBouteilleCellier':
                 $this->modifierBouteilleCellier();
                 break;
-            case 'boireBouteilleCellier':
-                $this->boireBouteilleCellier();
+            case 'boireBouteille':
+                $this->boireBouteille();
                 break;                
-            case 'afficheCellier':
-                $this->afficheCellier();
+            case 'afficheContenuCellier':
+                $this->afficheContenuCellier();
 				break;
 			case 'creerUnCellier':
                 $this->creerUnCellier();
@@ -90,7 +90,7 @@ class Controler
      * Affiche la liste des bouteilles d'un cellier
      *
      */
-    private function afficheCellier()
+    private function afficheContenuCellier()
     {
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
@@ -102,9 +102,11 @@ class Controler
                     $trier = "nom";
                 }
                 $bte = new Bouteille();
-                $data = $bte->getListeBouteilleCellier($_GET['id_cellier'], $trier);
+                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier);
+                $cellier = new Cellier();
+                $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
                 include("vues/entete.php");
-                include("vues/cellier.php");
+                include("vues/contenuCellier.php");
                 include("vues/pied.php");
             }
             else{
@@ -119,6 +121,7 @@ class Controler
         
 
     }
+    
 
     private function afficheListCellier()
     {
@@ -147,8 +150,9 @@ class Controler
      */
     private function autocompleteBouteille()
     {
-        $bte = new Bouteille();
         $body = json_decode(file_get_contents('php://input'));
+        
+        $bte = new Bouteille();
         $listeBouteille = $bte->autocomplete($body->nom);
 
         echo json_encode($listeBouteille);
@@ -160,18 +164,19 @@ class Controler
      *
      * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
      */
-    private function ajouterNouvelleBouteilleCellier()
+    private function ajouterNouvelleBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
+        
         if(!empty($body)){
-            $bte = new Bouteille();
+            $cellier = new Cellier();
 
-            $resultat = $bte->ajouterBouteilleCellier($body);
+            $resultat = $cellier->ajouterBouteille($body);
             echo json_encode($resultat);
         }
         else{
             include("vues/entete.php");
-            include("vues/ajouter.php");
+            include("vues/formAjoutBout.php");
             include("vues/pied.php");
         }
 
@@ -212,14 +217,13 @@ class Controler
      * ?? ajout d'une note dans historique pour les statistiques
      *
      */
-    private function boireBouteilleCellier()
+    private function boireBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
 
-        $bte = new Bouteille();
+        $cellier = new Cellier();
         //retire une bouteille du cellier et récupère la nouvelle quantité
-        $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
-        $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
+        $resultat = $cellier -> supprimerBouteille($body -> id);
         echo json_encode($resultat);
     }
 
@@ -228,14 +232,19 @@ class Controler
      * ?? ajout d'une note dans historique pour les statistiques
      *
      */
-    private function ajouterBouteilleCellier()
+    private function ajouterBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
-
-        $bte = new Bouteille();
-        //ajoute une bouteille au cellier et récupère la nouvelle quantité
-        $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, 1);
-        $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
+        
+        $body -> date_ajout = date('Y-m-d');
+        $garde_jusqua = new DateTime($body -> date_ajout);
+        $garde_jusqua = $garde_jusqua -> add(new DateInterval('P1Y'));
+        $body -> garde_jusqua = $garde_jusqua -> format('Y-m-d');
+        
+        $cellier = new Cellier();
+        $resultat['succes'] = $cellier -> ajouterBouteille($body);
+        $resultat['ajout'] = $cellier -> getDernAjout();
+        
         echo json_encode($resultat);
     }
 
@@ -336,19 +345,6 @@ class Controler
         }
 
     }
-
-
-    //affiche le page accueil apres choisir le trier(par select box)
-    private function uploadPage()
-    {
-        $bte = new Bouteille();
-        include("vues/entete.php");
-        $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
-        include("vues/cellier.php");
-        include("vues/pied.php");
-
-    }
-
 
     /**
      * Affiche différentes pages concernant le login selon

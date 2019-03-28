@@ -524,6 +524,10 @@ nav{
  	min-width: 67px;
  }
 
+.hideBouteille{
+    display:none;
+}
+
 
 /********
  * formulaire
@@ -668,6 +672,10 @@ button, .mesFormulaires input[type='button']{
 
 .attention{
     color:red;
+}
+
+.icone{
+    height:30px;
 }
 
 .succes{

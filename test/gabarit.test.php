@@ -32,12 +32,12 @@
 			$listeBouteille = $bout -> getListeBouteille();
 			echo Utilitaires::afficheTable($listeBouteille);
 			?>
-			<h2>getListeBouteilleCellier</h2>
+			<h2>getInfoBouteilleCellier</h2>
 			<?php
 
 			$bout = new Bouteille();
 			try{
-				$listeBouteilleCellier = $bout -> getListeBouteilleCellier();
+				$listeBouteilleCellier = $bout -> getInfoBouteilleCellier();
 				echo Utilitaires::afficheTable($listeBouteilleCellier);	
 			}
 			catch(Exception $e)
@@ -82,13 +82,13 @@
 			
 			
 			
-			<h2>Bouteille::getListeBouteilleCellier()</h2>
+			<h2>Bouteille::getInfoBouteilleCellier()</h2>
 			<h3></h3>
 			<?php
 
 			$bout = new Bouteille();
 			try{
-				$listeBouteilleCellier = $bout -> getListeBouteilleCellier();
+				$listeBouteilleCellier = $bout -> getInfoBouteilleCellier();
 				echo Utilitaires::afficheTable($listeBouteilleCellier);	
 			}
 			catch(Exception $e)

@@ -68,39 +68,29 @@ class Bouteille extends Modele {
 	}
 	
     /**
-	 * récupère tous les bouteilles d'un cellier
+	 * récupère un exemplaire de chaque bouteilles dans un cellier
 	 * 
-	 * @param int $id id du cellier !!!À VENIR
+	 * @param int $id_cellier id du cellier
+     * @param string $trier (optionel) nom du champ par le quel on veut trier
      * 
-	 * @return Array $rows les informations de chaque bouteille dans le cellier7
-     * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
+	 * @return Array $rows les informations de chaque bouteille dans le cellier
 	 */
-	public function getListeBouteilleCellier($id_cellier, $trier = "nom") 
+	public function getInfoBouteilleCellier($id_cellier, $trier = "nom") 
 	{
 		$rows = Array();
-		//choisir le type de  trier (type,prix,code, format etc..)
-		//test
-        $requete ='SELECT 
-                        c.*,
-                        b.id_bouteille, 
-                        b.prix, 
-                        b.nom, 
-                        b.image, 
-                        b.code_saq, 
-                        b.url_saq, 
-                        p.pays, 
-                        b.millesime,
-                        b.format,
-                        t.type 
-                        FROM cellier_contenu c
-                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille 
+        $requete = 'SELECT DISTINCT 
+                        (SELECT COUNT(*) FROM cellier_contenu WHERE id_bouteille = b.id_bouteille) as quantite,
+                        b.*, 
+                        p.pays,
+                        t.type
+                        FROM cellier_contenu c 
+                        JOIN bouteille b ON b.id_bouteille = c.id_bouteille
                         JOIN pays p ON p.id_pays = b.id_pays
                         JOIN bouteille_type t ON t.id_type = b.id_type
                         WHERE c.id_cellier = ' . $id_cellier . '
-                        ORDER BY '.$trier.' ASC';
-                       
+                        ORDER BY ' . $trier . ' ASC';
       
-		if(($res = $this->_db->query($requete)) ==	 true)
+		if(($res = $this->_db->query($requete)) == true)
 		{
 			if($res->num_rows)
 			{
@@ -116,6 +106,7 @@ class Bouteille extends Modele {
 		}
 		return $rows;
 	}
+    
 	
 	/**
 	 * Cette méthode permet de retourner les résultats de recherche pour la fonction d'autocomplete de l'ajout des bouteilles dans le cellier
@@ -136,7 +127,7 @@ class Bouteille extends Modele {
 		$nom = $this->_db->real_escape_string($nom);
 		$nom = preg_replace("/\*/","%" , $nom);
 		 
-		$requete ='SELECT id, nom FROM vino__bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
+		$requete ='SELECT id_bouteille, nom FROM bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -218,46 +209,17 @@ class Bouteille extends Modele {
 	 * @return Boolean Succès ou échec de l'ajout.
      *  ///////////////////PAS ÉTÉ TESTÉ ENCORE////////////////////////////
 	 */
-	public function ajouterBouteilleCellier($data)
+	public function ajouterNouvelleBouteille($data)
 	{
-		$requete = "INSERT INTO vino__cellier(id_bouteille,date_achat,garde_jusqua,notes,prix,quantite,millesime) VALUES (".
+		$requete = "INSERT INTO cellier_contenu(id_bouteille,id_cellier,date_ajout,garde_jusqua) VALUES (".
 		"'".$data->id_bouteille."',".
-		"'".$data->date_achat."',".
-		"'".$data->garde_jusqua."',".
-		"'".$data->notes."',".
-		"'".$data->prix."',".
-		"'".$data->quantite."',".
-		"'".$data->millesime."')";
+		"'".$data->id_cellier."',".
+		"'".$data->date_ajout."',".
+		"'".$data->garde_jusqua."'";
 
         $res = $this->_db->query($requete);
         
 		return $res;
-	}
-	
-	
-	/**
-	 * Cette méthode change la quantité d'une bouteille en particulier dans le cellier
-	 * 
-	 * @param int $id id de la bouteille
-	 * @param int $nombre Nombre de bouteille a ajouter ou retirer
-	 * 
-	 * @return Boolean Succès ou échec de l'ajout.
-	 */
-	public function modifierQuantiteBouteilleCellier($id, $nombre)
-	{
-		$requete = "UPDATE cellier_contenu SET quantite = GREATEST(quantite + ". $nombre. ", 0) WHERE id = ". $id;
-        $res = $this->_db->query($requete);
-        
-		return $res;
-	}
-    
-    public function obtenirQuantiteBouteilleCellier($id)
-	{				
-		$requete1 = "SELECT quantite from cellier_contenu WHERE id = ". $id;
-		$res = $this->_db->query($requete1);
-		$row = $res->fetch_assoc();
-        
-		return $row;
 	}
     
     /**
