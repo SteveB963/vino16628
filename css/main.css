@@ -757,9 +757,14 @@ button, .mesFormulaires input[type='button']{
 	background-color: #00800042;
 }
 
-.confirmBox > p{
+.formulaire > .confirmBox > p{
     color:black !important;
 }
+
+.formulaire > .errorBox > p{
+    color:black;
+}
+
 /*
 @media all and (max-width:450px)
 {

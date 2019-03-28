@@ -535,26 +535,33 @@ class Controler
             }
             //Sinon, les valeurs entrées ne sont pas vide
             else{
-                //Création du compte
-                $cpt = new Login();
-                $modifFonctionel = $cpt->sauvegardeCompte($body, $_SESSION["idUtilisateur"]);
-            
-                //Si la création du compte à fonctionné
-                if($modifFonctionel == true){
-                    //Initialisation de la variable $_SESSION 
-                    $infosCompte = $cpt->getCompte($body->courrielInscri);
-                    $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
-                    $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
-                    $_SESSION["emailUtilisateur"] = $infosCompte["email"];
-                    //Retourne true
-                    $msgRetour = "fonctionnel";
+                if($body->courrielInscri == $_SESSION["emailUtilisateur"] && $body->nomInscri == $_SESSION["nomUtilisateur"] && $body->prenomInscri == $_SESSION["prenomUtilisateur"]){
+                    //Si la création à échoué, retourne false
+                    $msgRetour = "sansModif";
                     echo json_encode($msgRetour);
                 }
                 else{
-                    //Si la création à échoué, retourne false
-                    $msgRetour = "mail";
-                    echo json_encode($msgRetour);
-                }
+                    //Création du compte
+                    $cpt = new Login();
+                    $modifFonctionel = $cpt->sauvegardeCompte($body, $_SESSION["idUtilisateur"]);
+                
+                    //Si la création du compte à fonctionné
+                    if($modifFonctionel == true){
+                        //Initialisation de la variable $_SESSION 
+                        $infosCompte = $cpt->getCompte($body->courrielInscri);
+                        $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
+                        $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
+                        $_SESSION["emailUtilisateur"] = $infosCompte["email"];
+                        //Retourne true
+                        $msgRetour = "fonctionnel";
+                        echo json_encode($msgRetour);
+                    }
+                    else{
+                        //Si la création à échoué, retourne false
+                        $msgRetour = "mail";
+                        echo json_encode($msgRetour);
+                    }
+                }    
             }
         }
         else{

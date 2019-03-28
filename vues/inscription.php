@@ -18,14 +18,17 @@
 		<div>
 			<input type="text" name="prenomInscri" placeholder="Prenom" value="<?php if(isset($_SESSION['prenomUtilisateur'])){echo $_SESSION['prenomUtilisateur'];}?>">
 			<label for="prenomInscri" class="hide">Prenom:</label>
+			<p class="erreurPrenomUsager"></p>
 		</div>
 		<div>
 			<input type="text" name="nomInscri" placeholder="Nom" value="<?php if(isset($_SESSION['nomUtilisateur'])){echo $_SESSION['nomUtilisateur'];}?>">
 			<label for="nomInscri" class="hide">Nom:</label>
+			<p class="erreurNomUsager"></p>
 		</div>
 		<div>
 			<input type="email" name="courrielInscri" placeholder="Courriel" value="<?php if(isset($_SESSION['emailUtilisateur'])){echo $_SESSION['emailUtilisateur'];}?>">
 			<label for="courrielInscri" class="hide">Courriel:</label>
+			<p class="erreurCourrielUsager"></p>
 		</div>
 <?php
 	if($page == "inscription"){
@@ -33,6 +36,7 @@
 		<div>
 			<input type="password" name="motPasseInscri" placeholder="Mot de passe">
 			<label for="motPasseInscri" class="hide">Mot de passe:</label>
+			<p class="erreurMotPasse"></p>
 		</div>
 		<input type="button" name="ajouterNouveauCompte" value="S'inscrire!">
 <?php
