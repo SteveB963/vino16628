@@ -48,24 +48,20 @@ class Login extends Modele{
 
 	/**
 	 * Ajout - Création d'un nouveau compte usager
+	 * Modification - Modification d'un compte déjà existant
      *
-     * @param string $prenomInscri Le prenom d'utilisateur entré dans le formulaire
-     *		  string $nomInscri Le nom d'utilisateur entré dans le formulaire
-     *		  string $courrielInscri Le courriel d'utilisateur entré dans le 
-     *		  		 formulaire
-     *		  string $motDePasse Le mot de passe entré dans le formulaire
+     * @param array $data Tableau regroupant tout les informations
+     *						entrées dans le formulaire d'inscription.
      *
-     * @return boolean true si la création du compte est possible
-     *		   boolean false si la création du compte est impossible
+     * @return boolean true si la création/modification du compte est possible
+     *		   boolean false si la création/modification du compte est impossible
 	 *  
 	 */
-    public function nouveauCompte($data)
+    public function sauvegardeCompte($data, $id = "")
 	{
 		$rows = Array();
 		$allMails = $this->_db->query('SELECT email FROM ' . self::TABLE);
 		$mailExistant = false;
-
-		//echo($data->prenomInscri);
 
 		//Vérifier si le email entrer pour la création du nouveau
 		//compte est déjà existant
@@ -74,7 +70,7 @@ class Login extends Modele{
 
             while($row = $allMails->fetch_assoc())
             {
-            	if($data->courrielInscri == $row["email"]){
+            	if(strtolower($data->courrielInscri) == $row["email"]){
             		$mailExistant = true;
             		break;
             	}else{
@@ -85,22 +81,52 @@ class Login extends Modele{
 
 		if($mailExistant == false)
 		{
-			$motPasseEncrypte = password_hash($data->motPasseInscri, PASSWORD_DEFAULT);
-			//À ajouter pour filtrer les variables: mysqli_real_escape_string
-			$res = $this->_db->query('INSERT INTO usager (nom, prenom, email, motpasse) VALUES ( "' . $data->nomInscri . '",' 
-						. '"' . $data->prenomInscri . '",'
-						. '"' . $data->courrielInscri . '",'
-						. '"' . $motPasseEncrypte . '")');
-			//INSERT INTO usager (nom, prenom, email, motpasse) VALUES ("test", "ajout", "test@gmail.com", "passetest")	
-
-			return $res;
+			//Si l'id est inexistant, créer un nouveau compte
+			if($id == ""){
+				$motPasseEncrypte = password_hash($data->motPasseInscri, PASSWORD_DEFAULT);
+				//À ajouter pour filtrer les variables: mysqli_real_escape_string
+				$res = $this->_db->query('INSERT INTO usager (nom, prenom, email, motpasse) VALUES ( "' . strtolower($data->nomInscri) . '",' 
+							. '"' . strtolower($data->prenomInscri) . '",'
+							. '"' . strtolower($data->courrielInscri) . '",'
+							. '"' . $motPasseEncrypte . '")');
+				return $res;
+			}
+			//Si l'id est existant, modifier les informations du compte
+			else{
+				$res = $this->_db->query('UPDATE ' . self::TABLE . ' SET nom = "' . strtolower($data->nomInscri) . '", prenom = "' . strtolower($data->prenomInscri) . '", email = "' . strtolower($data->courrielInscri) . '" WHERE id_usager = ' . $id);
+				return $res;
+			}
+			
 		}
+		//Si l'email existe déja
 		else
 		{
-			return false;
+			//et si l'id est existant
+			if($id != ""){
+				$mailPrecedant = $this->_db->query('SELECT email FROM ' . self::TABLE . ' WHERE id_usager = ' . $id);
+
+				if($mailPrecedant->num_rows)
+				{
+		            $mailPrec = $mailPrecedant->fetch_assoc();
+				}
+
+				//Vérifier si le email existant est celui de l'utilisateur cherchant à modifier son compte
+				//Si oui, permettre la modification
+				if($mailPrec["email"] == strtolower($data->courrielInscri)){
+					$res = $this->_db->query('UPDATE ' . self::TABLE . ' SET nom = "' . strtolower($data->nomInscri) . '", prenom = "' . strtolower($data->prenomInscri) . '" WHERE id_usager = ' . $id);
+					return $res;
+				}
+				else{
+					return false;
+				}	
+			}
+			else{
+				return false;
+			}
 		}
 		
 	}
+
 
 	/**
 	 * Récupère les informations relatif au compte de l'utilisateur connecté
@@ -115,7 +141,7 @@ class Login extends Modele{
 	{
 		$row = Array();
 		//À ajouter pour filtrer les variables: mysqli_real_escape_string
-		$res = $this->_db->query('SELECT id_usager, nom, prenom, email FROM ' . self::TABLE . ' WHERE email = "' . $courriel . '"');
+		$res = $this->_db->query('SELECT id_usager, nom, prenom, email FROM ' . self::TABLE . ' WHERE email = "' . strtolower($courriel) . '"');
 
 		if($res->num_rows)
 		{
@@ -124,6 +150,29 @@ class Login extends Modele{
 		
 		return $row;
 	}
+
+/*
+	protected function verificationCourriel($courriel){
+		$allMails = $this->_db->query('SELECT email FROM ' . self::TABLE);
+
+		//Vérifier si le email entrer pour la création du nouveau
+		//compte est déjà existant
+		if($allMails->num_rows)
+		{
+
+            while($row = $allMails->fetch_assoc())
+            {
+            	if($data->courrielInscri == $row["email"]){
+            		return true;
+            	}
+            }
+
+            return false;
+		}
+
+		return false;
+	}
+*/
 }
 
 

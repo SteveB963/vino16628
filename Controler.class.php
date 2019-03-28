@@ -89,7 +89,6 @@ class Controler
     /**
      * Affiche la liste des bouteilles d'un cellier
      *
-     * ///////////TEMPORAIRE/////////////
      */
     private function afficheCellier()
     {
@@ -360,6 +359,10 @@ class Controler
     {
         //Si l'utilisateur est connecté
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
+            //Afficher message de confirmation au retour d'une modification
+            if(isset($_GET["modif"])){
+                $msgConfirmation = "Les modifications ont bien été effectués.";
+            }
             //Afficher informations de l'utilisateur
             $monCpt = new Login();
             $donnees = $monCpt->getCompte($_SESSION["emailUtilisateur"]);
@@ -385,17 +388,24 @@ class Controler
     {
         $body = json_decode(file_get_contents('php://input'));
         
+        //Si le formulaire à été rempli...
         if(!empty($body)){
+            //et que les valeurs sont vides
             if($body->courrielCo == "" && $body->motPasseCo == ""){
+                //retourne false
                 echo json_encode(false);
             }
+            //Sinon, les valeurs entrées ne sont pas vide
             else{
-                $log = new Login();
-                
+                //On vérifie si le courriel et le mot de passe sont correctes
+                //grâce à la fonction d'authentification
+                $log = new Login(); 
                 $correcteInfos = $log->authentification($body);
+                //retourne un boolean qui correspond à la réussite ou à
+                //l'échec de l'authentification
                 echo json_encode($correcteInfos);
 
-                //Création de la variable session lorsque la connexion réussie
+                //Création de la variable session lorsque la connexion à réussie
                 if($correcteInfos == true)
                 {
                     $infosCompte = $log->getCompte($body->courrielCo);
@@ -410,6 +420,7 @@ class Controler
         }
         else
         {
+            //Retourne false si le formulaire n'a pas été rempli
             echo json_encode(false);
         }
         
@@ -422,15 +433,19 @@ class Controler
      */
     private function deconnexion()
     {
+        //Réinitialisation de la variable $_SESSION
         $_SESSION = array();
 
+        //Faire expirer le $_COOKIE
         if(isset($_COOKIE[session_name()]))
         {
             setcookie(session_name(), '', time() - 3600);
         }
 
+        //Fermeture de la session en cours
         session_destroy();
 
+        //Redirection vers la page de login
         $msgConfirmation = "Votre session à bien été fermée.";
         include("vues/entete.php");
         include("vues/login.php");
@@ -446,12 +461,15 @@ class Controler
         //Si l'utilisateur est connecté
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
+            //Aller vers la page monCompte.php
             include("vues/entete.php");
             include("vues/monCompte.php");
             include("vues/pied.php");
         }
         else
         {
+            //Aller vers la page d'inscription
+            $page = "inscription";
             include("vues/entete.php");
             include("vues/inscription.php");
             include("vues/pied.php");
@@ -459,52 +477,102 @@ class Controler
     }
 
     /**
-     * Ferme la session en cours afin de déconnecter l'utilisateur
-     *  puis le redirige vers la page de connexion.
+     * Après que le formulaire ait été rempli correctement, les
+     * informations relative au nouveau compte sont vérifier par le modèle
+     * puis ajouté à la base de données
+     *
+     * @return bool     true si la création du compte à fonctionné
+     *                  false si la création du compte à échoué
      *
      */
     private function creerCompteUsager()
     {
         $body = json_decode(file_get_contents('php://input'));
+        //Si le formulaire à été rempli
         if(!empty($body)){
+            //Création du compte
             $cpt = new Login();
-            $ajoutFonctionel = $cpt->nouveauCompte($body);
+            $ajoutFonctionel = $cpt->sauvegardeCompte($body);
             
-            
+            //Si la création du compte à fonctionné
             if($ajoutFonctionel == true){
-                
+                //Initialisation de la variable $_SESSION 
                 $infosCompte = $cpt->getCompte($body->courrielInscri);
                 $_SESSION["idUtilisateur"] = $infosCompte["id_usager"];
                 $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
                 $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
                 $_SESSION["emailUtilisateur"] = $infosCompte["email"];
+                //Retourne true
                 echo json_encode($ajoutFonctionel);
             }
             else{
+                //Si la création à échoué, retourne false
                 echo json_encode(false);
             }
         }
         else
         {
+            //Si le formulaire n'a pas été rempli, retourne false
             echo json_encode(false);   
         }
     }
 
-/*
+
     /**
-     * affiche le formulaire de modification et affectues les 
+     * affiche le formulaire de modification et affectue les 
      *  modifications.
      *
-    *//*
+    */
     private function modificationCompte()
     {  
         $body = json_decode(file_get_contents('php://input'));
         if(!empty($body)){
-
+            //et que les valeurs sont vides
+            if($body->courrielInscri == "" || $body->nomInscri == "" || $body->prenomInscri == ""){
+                //retourne "vide"
+                $msgRetour = "vide";
+                echo json_encode($msgRetour);
+            }
+            //Sinon, les valeurs entrées ne sont pas vide
+            else{
+                if($body->courrielInscri == $_SESSION["emailUtilisateur"] && $body->nomInscri == $_SESSION["nomUtilisateur"] && $body->prenomInscri == $_SESSION["prenomUtilisateur"]){
+                    //Si la création à échoué, retourne false
+                    $msgRetour = "sansModif";
+                    echo json_encode($msgRetour);
+                }
+                else{
+                    //Création du compte
+                    $cpt = new Login();
+                    $modifFonctionel = $cpt->sauvegardeCompte($body, $_SESSION["idUtilisateur"]);
+                
+                    //Si la création du compte à fonctionné
+                    if($modifFonctionel == true){
+                        //Initialisation de la variable $_SESSION 
+                        $infosCompte = $cpt->getCompte($body->courrielInscri);
+                        $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
+                        $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
+                        $_SESSION["emailUtilisateur"] = $infosCompte["email"];
+                        //Retourne true
+                        $msgRetour = "fonctionnel";
+                        echo json_encode($msgRetour);
+                    }
+                    else{
+                        //Si la création à échoué, retourne false
+                        $msgRetour = "mail";
+                        echo json_encode($msgRetour);
+                    }
+                }    
+            }
+        }
+        else{
+            //Aller vers la page de modification du compte
+            $page = "modification";
+            include("vues/entete.php");
+            include("vues/inscription.php");
+            include("vues/pied.php");
         }
     }
 
-*/
 }
 ?>
 

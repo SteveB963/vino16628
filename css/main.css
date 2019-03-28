@@ -734,11 +734,12 @@ button, .mesFormulaires input[type='button']{
 
 .errorBox{
 	width: 100%;
-	height: 30px;
 	border-radius: 5px;
 	display: flex;
 	align-items: center;
 	padding: 5px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	margin-bottom: 20px;
 	border:2px solid red;
 	background-color: #ff00004a;
@@ -756,9 +757,14 @@ button, .mesFormulaires input[type='button']{
 	background-color: #00800042;
 }
 
-.confirmBox > p{
+.formulaire > .confirmBox > p{
     color:black !important;
 }
+
+.formulaire > .errorBox > p{
+    color:black;
+}
+
 /*
 @media all and (max-width:450px)
 {
@@ -814,7 +820,7 @@ button, .mesFormulaires input[type='button']{
 	padding-right: 5px;
 	padding-top: 23px;
 	margin: 0px;
-	display: none;
+	cursor: pointer;
 }
 
 .monCompte div:first-child i{

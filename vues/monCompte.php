@@ -7,8 +7,18 @@
 		</div>
 		<a href="index.php?requete=deconnexion">Déconnexion</a>
 	</div>
+
+<?php
+	if(isset($msgConfirmation))
+	{
+		echo "<div class='confirmBox'>
+					<p>$msgConfirmation</p>
+				</div>";
+	}
+?>
 	
 	<div>
+		<p><strong>ID: </strong><?php echo $_SESSION["idUtilisateur"] ?></p>
 		<p><strong>Prenom: </strong><?php echo $_SESSION["prenomUtilisateur"] ?></p>
 		<p><strong>Nom: </strong><?php echo $_SESSION["nomUtilisateur"] ?></p>
 		<p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>
