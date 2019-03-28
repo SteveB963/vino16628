@@ -8,10 +8,10 @@ foreach ($data as $cle => $cellier) {
     <div data-quantite="">
         <!-- <div class="img">
             
-            <img src="https:<?php echo $cellier['image'] ?>">
+            <img src="https:<?php //echo $cellier['image'] ?>">
         </div> -->
-        <div class="description">
-            <p class="nom"><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
+        <div>
+            <p><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
            
         </div>
         

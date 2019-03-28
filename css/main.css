@@ -6,7 +6,6 @@ html, body {
 	height: 100%;
 	margin: 0;
 	background-color: #3c3c40;
-	/*font-family: 'Roboto', 'RobotoDraft', sans-serif;*/
 	font-family: 'Hind', sans-serif;
 	font-size: 95%;
 	
@@ -15,8 +14,6 @@ html, body {
 	display: block;
 	border-top: 1px solid #ccc;
 	border-bottom: none;
-	/*background: #666;*/
-	/*color: #03a9f4;*/
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -27,10 +24,8 @@ html, body {
 	line-height: 40px;
 	padding: 0 20px;
 	border-bottom: 1px solid #ccc;
-	/*background: #666;*/
 	cursor: pointer;
 	transition: color 200ms ease-in-out;
-	/*background-color: #003777;*/
 	background-color:#e85e30;
 	color:#FFFFFF;
 }
@@ -40,12 +35,20 @@ html, body {
 	
 }
 
+/********
+ * footer.php
+ ********/
+
 footer
 {
-	/*bottom:0px;*/
 	width: 100%;
 	text-align: center;
 	background-color:#222224;
+	height: 50px;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
 }
 
 /********
@@ -108,6 +111,39 @@ footer
 	display: none;
 }
 
+/* Menu du compte*/
+#lienOptionsCompte{
+	text-align: right;
+	position: relative;
+	height: 130px;
+}
+
+#lienOptionsCompte p, #profile{
+	position: absolute;
+	top: 55px;
+	right: 10px;
+}
+
+#lienOptionsCompte p{
+	margin: 0;
+	font-size: 28px;
+}
+
+#profile{
+	width: 30px;
+	height: 30px;
+	z-index: 1;
+	opacity: 0;
+}
+
+#profile:checked ~ #optionsCompte{
+ 	display: block !important;
+}
+
+#optionsCompte{
+	display: none;
+}
+
 @media all and (max-width:619px)
 {
 	#liensSociaux{
@@ -160,6 +196,7 @@ footer
  		display: none;
  	}
 
+ 	/* Menu burger */
  	#burger{
  		position: absolute;
  		top: 179px;
@@ -205,7 +242,8 @@ footer
  	#burger:checked ~ nav > #mainNav{
  		display: block !important;
  	}
-     
+
+    /* Menu */ 
     nav{
         height:0px !important;
     }
@@ -307,45 +345,6 @@ nav{
 }
 
 /********
- * Pied.php
- ********/
-/*
-#footer1{
-	height: 500px;
-	background-image: url("../images/wine-black.jpg");
-	background-size: cover;
-	background-position: center;
-	display: flex;
-	align-items: center;
-}
-
-#footer1 form{
-	width: 420px;
-	margin-left: auto;
-	margin-right: auto;
-}
-#footer1 form label{
-	display: block;
-	font-size: 1.7em;
-	font-family: 'Libre Baskerville', serif;
-	color: #730101;
-	text-shadow: 1px 1px 2px white;
-}
-
-#footer1 form input{
-	width: 300px;
-	padding-left: 5px;
-}
-*/
-#footer2{
-	height: 50px;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: space-around;
-}
-
-/********
  * Accueil.php
  ********/
 
@@ -353,6 +352,7 @@ nav{
 	position: relative;
 	padding-bottom: 220px;
 }
+
 #divAccueil{
 	display: flex;
 	flex-flow: row wrap;
@@ -360,6 +360,7 @@ nav{
 	justify-content: space-around;
 }
 
+/* Div d'informations*/
 .accueil .divBlanche{
 	background-color: white;
 	height: 400px;
@@ -378,14 +379,6 @@ nav{
  	text-align: center;
  	z-index: 1;
 }
-/*
-@media all and (max-width:890px)
- {
- 	.accueil .divBlanche{
- 		width: 40%;
- 	}
- }
-*/
 
 @media all and (max-width:860px)
  {
@@ -415,6 +408,7 @@ nav{
  	/*margin-bottom: 400px;*/
  }
 
+/* Div d'inscription rouge */
 .divRouge{
 	width: 100%;
 	height: 300px;
@@ -432,6 +426,7 @@ nav{
 	text-decoration: none;
 }
 
+
 /********
  * Cellier.php
  ********/
@@ -444,7 +439,7 @@ nav{
     justify-content:space-between;
 }
 
- .cellier{
+.cellier{
  	display: flex;
  	flex-direction:column;
     align-items:center;
@@ -455,9 +450,9 @@ nav{
 	padding-right: auto;
 	padding-bottom: 20px;
 	padding-top: 20px;
- }
+}
 
- .bouteille{
+.bouteille{
     width:100%;
     display:flex;
     flex-flow:row;
@@ -466,7 +461,7 @@ nav{
  	padding-bottom: 10px;
     margin:10px;
     background-color: white;
- }
+}
 
 .bouteille > div:nth-child(2){
     width:70%;
@@ -475,29 +470,29 @@ nav{
     justify-content: space-between;
 }
 
- .img, .information, .options{
+.img, .information, .options{
  	padding: 10px;
- }
+}
 
- .img img{
+.img img{
  	width: 100%;
     background-image:url("../images/vindefault.jpg");
 
- }
+}
 
 .nom{
     font-size:14pt;
     font-family: 'Libre Baskerville', serif;
 }
 
- .information{
+.information{
  	display: flex;
  	flex-flow: column nowrap;
  	align-content: space-between; 
  	/*height: 210px;*/
- }
+}
 
- .nom{
+.nom{
  	font-weight: bold;
  	margin: 0;
  	padding-bottom: 15px;
@@ -505,13 +500,13 @@ nav{
  	padding-left: 0px;
  	color: #730101;
  	
- }
+}
 
- .information p{
+.information p{
  	margin-bottom: 5px;
  	margin-top: 5px;
  	padding-left: 10px;
- }
+}
 
  .options{
  	display: flex;
@@ -533,6 +528,7 @@ nav{
  * formulaire
  ********/
 
+/* Div comportant un fomulaire*/
 .mesFormulaires{
 	width: 80%;
 	min-width: 400px;
@@ -556,6 +552,7 @@ nav{
 	width: 100%;
 }
 
+/* Formulaires */
 .formulaire{
 	width: 60%;
 	margin-right: auto;
@@ -692,54 +689,37 @@ button, .mesFormulaires input[type='button']{
 	width: 45%;
 }
 
-/* Ajustement du nombre de bouteille afficher selon les 
-	résolutions d'écran */
-/*
- @media all and (max-width:1182px)
- {
- 	.bouteille{
- 		width: 33%;
- 	}
- }
-*/
- @media all and (max-width:770px)
- {
-     .bouteille > div:nth-child(2){
-         flex-flow:column;
-     }
-     .options{
-         flex-flow:row;
-     }
- }
+@media all and (max-width:770px)
+{
+    .bouteille > div:nth-child(2){
+        flex-flow:column;
+    }
+    .options{
+        flex-flow:row;
+    }
+}
 
- @media all and (max-width:635px)
- {
-     .bouteille{
+@media all and (max-width:635px)
+{
+    .bouteille{
  		max-width:300px;
         flex-flow:column;
  	}
      
-     .description{
-         display:none;
+    .description{
+        display:none;
      }
      
-     .options{
-         display:none;
+    .options{
+        display:none;
      }
      
-     .bouteille > div:nth-child(2){
-         width:100%;
-     }
+    .bouteille > div:nth-child(2){
+        width:100%;
+    }
  }
-/*
- @media all and (min-width:1182px)
- {
- 	 .bouteille{
-	 	width: 25%;
-	 }
- }
-*/
 
+/* Erreurs générées par le php */
 .errorBox{
 	width: 100%;
 	border-radius: 5px;
@@ -766,32 +746,17 @@ button, .mesFormulaires input[type='button']{
 }
 
 .formulaire > .confirmBox > p{
-    color:black !important;
+    color:black;
 }
 
 .formulaire > .errorBox > p{
     color:black;
 }
 
-/*
-@media all and (max-width:450px)
-{
-	.mesFormulaires{
-		min-width: 200px;
-		width: 100% !important;
-		padding:20px !important;
-		box-sizing: border-box;
-	}
-	.formulaire, .msg{
-		width: 90%;
-	}
-}
-*/
 
 /********
  * trier
  ********/
-
 .trier{
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -801,28 +766,17 @@ button, .mesFormulaires input[type='button']{
 	background-color: white;
 
 }
-/*
-@media all and (min-width:451px)
-{
-	.trier{
-	width: 250px;
-	
-}
-*/
+
 
 /********
  * monCompte.php
  ********/
-
- .monCompte{
- 	
- }
-
 .monCompte div:first-child div{
 	display: flex;
 	align-items: center;
 }
 
+/* Bouton Modifier compte */
 .monCompte div:first-child p{
 	padding-left: 5px;
 	padding-right: 5px;
@@ -831,6 +785,7 @@ button, .mesFormulaires input[type='button']{
 	cursor: pointer;
 }
 
+/* Font awesome modifier compte */
 .monCompte div:first-child i{
 	padding-left: 5px;
 }
@@ -849,14 +804,25 @@ button, .mesFormulaires input[type='button']{
 /********
  * listCellier.php
  ********/
-    .listCellier{
-        display:flex;
-        flex-flow:column;
-        align-items:center;
-    }
+.listCellier{
+    display:flex;
+    flex-flow:column;
+    align-items:center;
+}
+
 .listCellier > div{
     width:80%;
-    margin:10px;
-    padding:10px;
+    margin:20px;
+    padding:15px;
     background-color:white;
+    color: black;
+    height: 50px;
+}
+
+.listCellier a{
+	color: black;
+	font-size: 20px;
+	width: 100%;
+	text-decoration: none;
+	font-family: 'Hind', sans-serif;
 }
