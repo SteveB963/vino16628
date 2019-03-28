@@ -62,7 +62,7 @@
                             <tr data-id="<?php echo $bouteille['id'] ?>">
                                 <td><?php echo $bouteille['date_ajout'] ?></td>
                                 <td><?php echo $bouteille['garde_jusqua'] ?></td>
-                                <td><button class="btnBoire"><img class="icone" src="./images/icones/bouteille-moins.svg"></button></td>
+                                <td><button class="btnBoire"><span><img class="icone" src="./images/icones/bouteille-moins.svg"></span></button></td>
                                 <td><button>Modifier</button></td>
                             </tr>
                             <?php

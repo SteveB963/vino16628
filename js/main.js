@@ -49,16 +49,27 @@ window.addEventListener('load', function() {
     }
 
     
-    //buttonn Boire
+    //button Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
         actionBtnBoire(element);
     });
+    
+    /**
+     * applique le traitement de l'action de boire une bouteille sur un bouton boire
+     *
+     * @param DOM Element element bouton boire
+     */
     function actionBtnBoire(element){
         element.addEventListener("click", function(evt){
+            //div principal de la bouteille
             let divBouteille = evt.currentTarget.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+            //id du row dans cellier_contenu
             let id = evt.currentTarget.parentNode.parentElement.dataset.id;
-            let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
+            //nombre de ranger dans la liste de bouteille
+            let nbRange = evt.currentTarget.parentNode.parentNode.parentNode.childElementCount;
 
+            
+            let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
             fetch(requete)
             .then(response => {
                 if(response.status === 200) {
@@ -69,10 +80,11 @@ window.addEventListener('load', function() {
               })
               .then(data => {
                     if(data == true){
-                        let nbRange = evt.target.parentNode.parentNode.parentNode.childElementCount;
+                        //si c'est le dernier élément de la liste on supprime la bouteille
                         if(nbRange <= 2){
                             divBouteille.parentNode.removeChild(divBouteille);
                         }
+                        //sinon on supprime la ligne et on modifie la quantité restante
                         else{
                             let bouteille = document.querySelector("[data-id='" + id + "']");
                             bouteille.parentNode.removeChild(bouteille);
@@ -91,7 +103,7 @@ window.addEventListener('load', function() {
     //bouton ajouter, ajoute un bouteille dans le cellier
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
-
+            //id de la bouteille et du cellier
             let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
             let id_cellier = document.querySelector(".cellier").dataset.cellier;
             
@@ -101,7 +113,6 @@ window.addEventListener('load', function() {
             };
             
             let requete = new Request("index.php?requete=ajouterBouteille", {method: 'POST', body: JSON.stringify(param)});
-            
             fetch(requete)
             .then(response => {
                 if (response.status === 200) {
@@ -111,7 +122,8 @@ window.addEventListener('load', function() {
                 }
             })
             .then(data => {
-                let table = document.getElementById("bouteille" + id_bouteille).getElementsByTagName("table")[0];
+                //créer un nouvelle bouteille dans la liste de bouteille
+                let table = document.getElementById("bouteille" + id_bouteille).getElementsByTagName("tbody")[0];
                 let row = document.createElement("tr");
                 table.appendChild(row);
                 table.lastChild.setAttribute("data-id", data['ajout'].id);
@@ -119,7 +131,8 @@ window.addEventListener('load', function() {
                                 "<td>" + data['ajout'].garde_jusqua + "</td>"+
                                 "<td><button class='btnBoire'><img class='icone' src='./images/icones/bouteille-moins.svg'></button></td>"+
                                 "<td><button>Modifier</button></td>";
-                actionBtnBoire(table.lastChild.children[2]);
+                //modifie la quantité des bouteilles 
+                actionBtnBoire(table.lastChild.children[2].firstChild);
                 let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
                 quantite = btnBouteille.textContent.match(/\d+/);
                 btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) + 1) + ")";
@@ -131,6 +144,7 @@ window.addEventListener('load', function() {
 
     });
     
+    //affiche la liste des bouteilles
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id_bouteille = evt.target.parentElement.dataset.bouteille;  
