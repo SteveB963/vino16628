@@ -275,70 +275,56 @@ class Controler
         }
         else{
             $resultat = new stdClass();
-            $resultat -> erreur = $body -> verif;
             $resultat -> succes = false;
-            $erreur = false;
+        
+            //récupération des infos de la bouteille avant modif
+            $bte = new Bouteille();
+            $bteAvant = $bte -> getBouteille($body -> id_bouteille);
+            //tableau contenant les modif.
+            $bteNouvelle = (array) $body;
 
-            //récupère les résultat des vérification
-            $verif = (array) $body -> verif;
-            foreach($verif as $err){
-                if($err != ""){
-                    $erreur = true;
+            //vérifie si il y a eu des modifications
+            $duplication = true;
+            foreach($bteAvant as $champ => $valeur){
+                if($bteAvant[$champ] != $bteNouvelle[$champ]){
+                    $duplication = false;
                 }
             }
+            //si modification
+            if(!$duplication){
+                //si bouteille est listé
+                if($body -> non_liste == 0){
+                    //ajoute nouvelle bouteille non-liste
+                    $resultat -> succes = $bte -> ajouterBouteilleNonListe($body);
 
-            //traitement si pas d'érreur
-            if(!$erreur){
-                //récupération des infos de la bouteille avant modif
-                $bte = new Bouteille();
-                $bteAvant = $bte -> getBouteille($body -> bte -> id_bouteille);
-                //tableau contenant les modif.
-                $bteNouvelle = (array) $body -> bte;
+                    //remplace la bouteille liste par la nouvelle bouteille non liste
+                    if($resultat -> succes == true){
+                        //recupération de l'id du dernier ajout
+                        $dernId = $bte -> getDernBouteille();
+                        $resultat -> idNouvelle = $dernId;
+                        //remplace l'id_bouteille dans le cellier avec la nouvelle id
+                        $resultat -> succes = $bte -> remplaceBouteilleCellier($body -> id_cellier, $body-> id_bouteille, $dernId);
 
-                //vérifie si il y a eu des modifications
-                $duplication = true;
-                foreach($bteAvant as $champ => $valeur){
-                    if($bteAvant[$champ] != $bteNouvelle[$champ]){
-                        $duplication = false;
-                    }
-                }
-                //si modification
-                if(!$duplication){
-                    //si bouteille est listé
-                    if($body -> bte -> non_liste == 0){
-                        //ajoute nouvelle bouteille non-liste
-                        $resultat -> succes = $bte -> ajouterBouteilleNonListe($body -> bte);
-
-                        //remplace la bouteille liste par la nouvelle bouteille non liste
-                        if($resultat -> succes == true){
-                            //recupération de l'id du dernier ajout
-                            $dernId = $bte -> getDernBouteille();
-                            $resultat -> idNouvelle = $dernId;
-                            //remplace l'id_bouteille dans le cellier avec la nouvelle id
-                            $resultat -> succes = $bte -> remplaceBouteilleCellier($body -> bte -> id_cellier, $body-> bte -> id_bouteille, $dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
-                            $resultat -> status = "remplaceBouteille";
-
-                            if($resultat -> succes == false){
-                                $resultat  -> echec = "erreur lors du remplacement";
-                            }
-                        }
-                        else{
-                            $resultat  -> echec = "erreur lors de l'insertion";
-                        }
-                    }
-                    //si non listé
-                    else{
-                        //si deja non liste,update de la bouteille.
-                        $resultat -> succes = $bte -> modiferBouteilleNonListe($body -> bte);
                         if($resultat -> succes == false){
-                                $resultat  -> echec = "erreur lors de la mise à jour";
-                            }
+                            $resultat  -> echec = "erreur lors du remplacement";
+                        }
+                    }
+                    else{
+                        $resultat  -> echec = "erreur lors de l'insertion";
                     }
                 }
-                //si pas de modification
+                //si non listé
                 else{
-                    $resultat -> succes = "dup";
+                    //si deja non liste,update de la bouteille.
+                    $resultat -> succes = $bte -> modiferBouteilleNonListe($body);
+                    if($resultat -> succes == false){
+                        $resultat  -> echec = "erreur lors de la mise à jour";
+                    }
                 }
+            }
+            //si pas de modification
+            else{
+                $resultat -> succes = "dup";
             }
 
             echo trim(json_encode($resultat));

@@ -174,9 +174,10 @@ window.addEventListener('load', function() {
     }
     
     //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
-    var sauver = document.querySelector("[name='sauver']");
-    if(sauver){
-        sauver.addEventListener("click", function(evt){
+    var modifier = document.querySelector("[name='modifier']");
+    if(modifier){
+        modifier.addEventListener("click", function(evt){
+            let erreur = false;
             //récupère les informations de la bouteille dans les inputs
             let bouteille = {
                 id_bouteille : document.querySelector("[name='id_bouteille']").value,
@@ -200,74 +201,72 @@ window.addEventListener('load', function() {
                 prix : verifChamp(bouteille.prix,"prix"),
                 format : verifChamp(bouteille.format,"num"),
                 millesime : verifChamp(bouteille.millesime,"num",4),
-                code_saq : verifChamp(bouteille.code_saq,"num",8),
-                url_saq : verifChamp(bouteille.url_saq,"text")
+                codesaq : verifChamp(bouteille.code_saq,"num",8),
+                urlsaq : verifChamp(bouteille.url_saq,"text")
             };
             
+            Object.keys(verif).forEach(function(msg){
+                if(verif[msg] != ""){
+                    erreur = true;
+                }
+                document.querySelector(".erreur"+msg).innerHTML = verif[msg];
+            });
             
-            let body = { 
-                bte :  bouteille,
-                verif : verif
+                                       
+            if(!erreur){
+                //envoie de la requete avec les informations du formulaire et les erreurs de champs
+                let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: JSON.stringify(bouteille)});
+            
+                fetch(requete)
+                .then(response => response.json())
+                .then(data =>{
+                    //éhec sql affiche l'erreur sql
+                    if(data.echec){
+                        document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i>" + data.echec;
+                    }
+                    else{
+                        //si l'operation est un succès
+                        if(data.succes == true){
+                            //affiche le message
+                            document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
+                            document.querySelector(".msg").firstElementChild.classList.add("succes");
+
+                            //si ajout et remplacement d'id est effectuer, l'id dans le form est mit à jour ainsi que lui dans l'url
+                            if(data.status == "remplaceBouteille"){
+                                document.querySelector("[name='id_bouteille']").setAttribute("value", data.idNouvelle);
+                                document.querySelector("[name='nonliste']").setAttribute("value", 1);
+                                history.pushState("modification", "Vino", BaseURL + "index.php?requete=modifierBouteilleCellier&id_bouteille=" + data.idNouvelle + "&id_cellier=" + bouteille.id_cellier);
+                            }
+                            setTimeout(function(){ 
+                                document.querySelector(".msg").innerHTML = "";
+                            }, 2000);
+                        }
+                        //si pas eu de modification
+                        else if(data.succes == "dup"){
+                            document.querySelector(".msg").classList.remove("attention");
+                            document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
+                            setTimeout(function(){ 
+                                document.querySelector(".msg").innerHTML = "";
+                            }, 2000);
+                        }
+                        else{
+                            document.querySelector(".msg").classList.add("attention");
+                            document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Erreur lors de la modification";
+                        }
+                        
+                        
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
+            }
+            else{
+                document.querySelector(".msg").classList.add("attention");
+                document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
             }
             
-            body = JSON.stringify(body);
             
-            //envoie de la requete avec les informations du formulaire et les erreurs de champs
-            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', headers: {"Content-Type": "application/json"}, body: body });
-
-            fetch(requete)
-            .then(response => response.json())
-            .then(data =>{
-                //retourne les erreurs au champs approprié
-                document.querySelector(".erreurNom").innerHTML = data.erreur.nom;
-                document.querySelector(".erreurImage").innerHTML = data.erreur.image;
-                document.querySelector(".erreurPrix").innerHTML = data.erreur.prix;
-                document.querySelector(".erreurFormat").innerHTML = data.erreur.format;
-                document.querySelector(".erreurMillesime").innerHTML = data.erreur.millesime;
-                document.querySelector(".erreurCodesaq").innerHTML = data.erreur.code_saq;
-                document.querySelector(".erreurUrlsaq").innerHTML = data.erreur.url_saq;
-                
-                //éhec sql affiche l'erreur sql
-                if(data.echec){
-                    document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i>" + data.echec;
-                }
-                else{
-                    //si l'operation est un succès
-                    if(data.succes == true){
-                        //affiche le message
-                        document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
-                        document.querySelector(".msg").firstElementChild.classList.add("succes");
-                        
-                        //si ajout et remplacement d'id est effectuer, l'id dans le form est mit à jour ainsi que lui dans l'url
-                        if(data.status == "remplaceBouteille"){
-                            document.querySelector("[name='id_bouteille']").setAttribute("value", data.idNouvelle);
-                            document.querySelector("[name='nonliste']").setAttribute("value", 1);
-                            history.pushState("modification", "Vino", BaseURL + "index.php?requete=modifierBouteilleCellier&id_bouteille=" + data.idNouvelle + "&id_cellier=" + bouteille.id_cellier);
-                        }
-                        setTimeout(function(){ 
-                            document.querySelector(".msg").innerHTML = "";
-                        }, 2000);
-                    }
-                    //si pas eu de modification
-                    else if(data.succes == "dup"){
-                        document.querySelector(".msg").classList.remove("attention");
-                        document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
-                        setTimeout(function(){ 
-                            document.querySelector(".msg").innerHTML = "";
-                        }, 2000);
-                    }
-                    //si erreur dans les champs
-                    else{
-                        document.querySelector(".msg").classList.add("attention");
-                        document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
-                    }
-                    
-                    
-                }
-            }).catch(error => {
-                console.error(error);
-            });
-
+        
         });
     }
     
@@ -345,27 +344,36 @@ window.addEventListener('load', function() {
       let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
       if(btnAjouter){
             btnAjouter.addEventListener("click", function(evt){
-                var param = {
+                let erreur = false;
+                
+                //recupère donné formulaire
+                let param = {
                     id_bouteille : bouteille.nom.dataset.id,
                     id_cellier : bouteille.id_cellier.value,
                     date_ajout : bouteille.date_ajout.value,
                     garde_jusqua : bouteille.garde_jusqua.value
                 };
                 
-                var verif = {
+                //vérifie si les champ sont bien remlpi
+                let verif = {
                     nom : verifChamp(bouteille.nom.value,"text"),
-                    date_ajout : verifChamp(param.date_ajout,"date"),
-                    garde_jusqua : verifChamp(param.garde_jusqua,"date")
+                    date : verifChamp(param.date_ajout,"date"),
+                    garde : verifChamp(param.garde_jusqua,"date")
                 }
                 
-                if(verif.nom != ""){
-                    verif.nom = "Utiliser la recherche pour sélectionner un nom";
-                }
-                document.querySelector(".erreurNom").innerHTML = verif.nom;
-                document.querySelector(".erreurDate").innerHTML = verif.date_ajout;
-                document.querySelector(".erreurGarde").innerHTML = verif.garde_jusqua;
+                Object.keys(verif).forEach(function(msg){
+                    if(verif[msg] != ""){
+                        erreur = true;
+                    }
+                    if(msg == "nom" && verif[msg] != ""){
+                        verif[msg] = "Utiliser la recherche pour sélectionner un nom";
+                    }
+                    document.querySelector(".erreur"+msg).innerHTML = verif[msg];
+                });
                 
-                if(verif.nom == "" && verif.date_ajout == "" && verif.garde_jusqua == ""){
+                
+                if(!erreur){
+                    //vérifi si la date garde jusqua est plus grand que la date d'ajout
                     let date_ajout = new Date(param.date_ajout);
                     let garde_jusqua = new Date(param.garde_jusqua);
                     
@@ -380,13 +388,14 @@ window.addEventListener('load', function() {
                             }
                         })
                         .then(data => {
+                            //si ajout redirection vers le cellier
                             window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" + param.id_cellier; 
                         }).catch(error => {
                            console.error(error);
                         });
                     }
                     else{
-                        document.querySelector(".erreurGarde").innerHTML = "La date \"Garder jusqu'à\" doit être plus grande que la date d'ajout";
+                        document.querySelector(".erreurgarde").innerHTML = "La date \"Garder jusqu'à\" doit être plus grande que la date d'ajout";
                     } 
                 }
 
