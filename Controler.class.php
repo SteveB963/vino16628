@@ -67,6 +67,9 @@ class Controler
             case 'modificationCompte':
                 $this->modificationCompte();
                 break;
+            case 'autocompleteCherche':
+                $this->autocompleteCherche();
+                break;
             default:
                 $this->accueil();
                 break;
@@ -95,14 +98,20 @@ class Controler
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
             if(isset($_GET['id_cellier'])){
-                if(isset($_GET['trierCellier'])){
-                    $trier = $_GET['trierCellier'];
+               if(isset($_GET['inputCherche'])){
+                    $cherche = $_GET['inputCherche'];
+                }
+                else{
+                    $cherche='';
+                }
+               if(isset($_GET['trierCellier'])){
+                    $trier = $_GET['trierCellier']; 
                 }
                 else{
                     $trier = "nom";
                 }
                 $bte = new Bouteille();
-                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier);
+                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
                 $cellier = new Cellier();
                 $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
                 include("vues/entete.php");
@@ -159,6 +168,19 @@ class Controler
 
     }
 
+    /**
+     * Affiche le recherche champ
+     */
+     private function autocompleteCherche()
+    {
+       
+            $body = json_decode(file_get_contents('php://input'));
+             //var_dump($_GET['id_cellier']);
+            $bte = new Bouteille();
+            $list = $bte->autocompleteCherche($body->chercheValue, $body->id_cellier);
+            echo json_encode($list);
+        
+    }
     /**
      * 
      *
