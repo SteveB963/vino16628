@@ -27,6 +27,7 @@
 	<body >
 		<header>
             <div>
+                <!-- Premier menu avec logo du site -->
                 <div id="entete1">
                     <div>
                         <a href="?requete=accueil"><img id="logo" src="./images/logo_blanc.png"></a>
@@ -34,29 +35,28 @@
                     <div id="titreEntete">
                         <h1>Vino</h1>
                     </div>
-                <!--
-                    <div id="liensSociaux">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook-square"></i></a>
-                        <a href="#"><i class="fab fa-twitter-square"></i></a>
-                        <a href="#"><i class="fab fa-pinterest-square"></i></a>
-                    </div>
-                -->
+                    <!-- Menu Burger des options liés au compte -->
                     <div id="lienOptionsCompte">
+                        <p><i class='fas fa-user-circle'></i></p><input type='checkbox' id='profile'>
+                        <div id='optionsCompte'>
+                            <ul>
 <?php
+    //Les options accessibles depuis le menu du compte diffèrent selon si l'usager 
+    //est connecté ou pas.
     if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
-        echo "<p><i class='fas fa-user-circle'></i></p><input type='checkbox' id='profile'>
-            <div id='optionsCompte'>
-                <ul>
-                    <li><a href='?requete=compte'>Voir mon profile</a></li>
-                    <li><a href='?requete=deconnexion'>Se déconnecter</a></li>
-                </ul>
-            </div>";
+        echo " <li>" . $_SESSION['prenomUtilisateur'] . " " . $_SESSION['nomUtilisateur'] . "</li>
+                <li><a href='?requete=compte'>Voir mon profile</a></li>
+                <li><a href='?requete=deconnexion'>Se déconnecter</a></li>
+                ";
     }
     else{
-        echo "<p><a href='?requete=compte'>Se connecter/S'inscrire</a></p>";
+        echo "<li>Visiteur</li>
+            <li><a href='?requete=compte'>Se connecter</a></li>
+            <li><a href='?requete=inscription'>S'inscrire</a></li>";
     }                          
 ?>
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
@@ -64,31 +64,36 @@
 
                 </div>
             </div>
+
+            <!-- Menu Burger -->
 			<input type="checkbox" id="burger">
 			<i class="fas fa-bars"></i>
 			<i class="fas fa-times"></i>
+
+            <!-- Menu Principale -->
 			<nav>
                 <div id="mainNav">
                     <ul>
-                    <!--
-                        <li><a href="?requete=accueil">Mon cellier</a></li>
-                    -->
-                    <li><a href="?requete=accueil">Accueil</a></li>
-                    <li><a href="#">Vins</a></li>
+                        <li><a href="?requete=accueil">Accueil</a></li>
+                        <li><a href="#">Vins</a></li>
 <?php
+    //La page des celliers est disponible uniquement lorsque l'usager est connecté
     if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
         echo "<li><a href='?requete=afficheListCellier'>Mes Celliers</a></li>";
     }                         
-?>     
-                    <li><a href="?requete=compte">Mon Compte</a></li>
-                <!--
-                    <div id="liensSociauxMobile">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook-square"></i></a>
-                        <a href="#"><i class="fab fa-twitter-square"></i></a>
-                        <a href="#"><i class="fab fa-pinterest-square"></i></a>
-                    </div>
-                -->
+
+    //Les options suivante sont accesssible depuis le menu principale seulement
+    //en format mobile
+    if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
+        echo "<li class='menuMobile'><a href='?requete=compte'>Mon profile <i class='fas fa-user-circle'></i></a></li>
+                <li class='menuMobile'><a href='?requete=deconnexion'>Se déconnecter <i class='fas fa-sign-out-alt'></i></a></li>
+                ";
+    }
+    else{
+        echo "<li class='menuMobile'><a href='?requete=compte'>Se connecter <i class='fas fa-sign-in-alt'></i></a></li>
+            <li class='menuMobile'><a href='?requete=inscription'>S'inscrire <i class='fas fa-user-plus'></i></a></li>";
+    }                          
+?>
 
                     </ul>
                 </div>

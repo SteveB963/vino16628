@@ -32,7 +32,10 @@ html, body {
 .liste > div:hover {
 	color:#000000;
 	transition: color 200ms ease-in-out;
-	
+}
+
+a{
+	text-decoration: none !important;
 }
 
 /********
@@ -113,14 +116,17 @@ footer
 
 /* Menu du compte*/
 #lienOptionsCompte{
-	text-align: right;
+	text-align: center;
 	position: relative;
-	height: 130px;
+	height: 250px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
 }
 
 #lienOptionsCompte p, #profile{
 	position: absolute;
-	top: 55px;
+	top: 115px;
 	right: 10px;
 }
 
@@ -129,19 +135,65 @@ footer
 	font-size: 28px;
 }
 
+/* Checkbox invisible sur l'image de profile*/
 #profile{
 	width: 30px;
 	height: 30px;
 	z-index: 1;
 	opacity: 0;
 }
-
+/* Affiche les options du compte lorsque */
+/* l'utilisateur clique sur l'image de profile*/
 #profile:checked ~ #optionsCompte{
- 	display: block !important;
+ 	display: flex !important;
 }
 
-#optionsCompte{
+#profile:checked .fa-user-circle{
+	color: #730101;
+}
+
+#entete1 #optionsCompte{
 	display: none;
+	width: 150px;
+	height: 100px;
+	background-color: white;
+	margin-top: 90px;
+	justify-content: space-around;
+	align-items: center;
+	margin-left: 20px;
+}
+
+#entete1 #optionsCompte ul{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+/* Nom Utilisateur */
+#entete1 #optionsCompte ul li:first-child{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: 8px;
+	font-size: 16px;
+	color: white;
+	background-color: #730101;
+	box-shadow: 0px 2px 3px #00000059;
+}
+
+/* Options du menu de compte*/
+#entete1 #optionsCompte ul li{
+	padding-bottom: 5px;
+	list-style: none;
+}
+
+#entete1 #optionsCompte ul li a{
+	color: gray;
+	padding-bottom: 5px;
+	list-style: none;
+}
+
+#entete1 #optionsCompte ul li:hover a{
+	color: black;
 }
 
 @media all and (max-width:619px)
@@ -161,7 +213,8 @@ footer
 
 @media all and (min-width:451px)
 {
-	#burger, .fa-bars, .fa-times{
+	/* Retirer les liens de menu du format mobile*/
+	#burger, .fa-bars, .fa-times, .menuMobile{
 		display: none !important;
 	}
 }
