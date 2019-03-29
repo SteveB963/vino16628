@@ -221,6 +221,7 @@ window.addEventListener('load', function() {
                         //sinon on supprime la ligne et on modifie la quantité restante
                         else{
                             let bouteille = document.querySelector("[data-id='" + id + "']");
+                            bouteille.parentNode.removeChild(bouteille.nextElementSibling);
                             bouteille.parentNode.removeChild(bouteille);
                             
                             let btnBouteille = divBouteille.querySelector(".btnBouteille");
@@ -269,6 +270,10 @@ window.addEventListener('load', function() {
                 //applique les actions sur les boutons
                 actionBtnBoire(table.lastChild.children[3].firstChild);
                 actionModifierDate(table.lastChild.children[2].firstChild);
+                
+                let rowErreur = document.createElement("tr");
+                table.appendChild(rowErreur);
+                table.lastChild.innerHTML = "<td colspan='4' class='erreur'></td>";
                 
                 //modifie la quantité des bouteilles 
                 let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
