@@ -413,7 +413,7 @@ window.addEventListener('load', function() {
              }
             else{
                 alert('Vous devez entrer une valeur de champ rechercher');
-                window.location.href = "index.php?requete=afficheCellier" ;
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier  ;
             }
         });
     }
