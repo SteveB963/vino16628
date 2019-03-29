@@ -14,7 +14,12 @@
     class Controler 
     {
 
-
+        /**
+         * Traite la requête
+         * @return void
+         */
+        public function gerer()
+        {
         switch ($_GET['requete']) {
             case 'autocompleteBouteille':
                 $this->autocompleteBouteille();
@@ -68,7 +73,7 @@
                 $this->accueil();
                 break;
         }
-    }  
+    }
 
     /**
      * Affiche la page d'accueil
@@ -90,7 +95,7 @@
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
             if(isset($_GET['id_cellier'])){
-                if(isset($_GET['inputCherche'])){
+               if(isset($_GET['inputCherche'])){
                     $cherche = $_GET['inputCherche'];
                 }
                 else{
@@ -182,7 +187,6 @@
         if(!empty($body)){
             $cellier = new Cellier();
             $resultat = $cellier->ajouterBouteille($body);
-
             echo json_encode($resultat);
         }
         else{
@@ -191,21 +195,6 @@
             include("vues/pied.php");
         }
     }
-    
-    /**
-     * Affiche le recherche champ
-     */
-     private function autocompleteCherche()
-    {
-       
-            $body = json_decode(file_get_contents('php://input'));
-             //var_dump($_GET['id_cellier']);
-            $bte = new Bouteille();
-            $list = $bte->autocompleteCherche($body->cherche,$_SESSION["id_cellier"]);
-            echo json_encode($list);
-        
-    }
-
     
 		
 	private function creerUnCellier()
@@ -244,7 +233,6 @@
     {
         $body = json_decode(file_get_contents('php://input'));
         $cellier = new Cellier();
-
         //retire une bouteille du cellier et récupère la nouvelle quantité
         $resultat = $cellier -> supprimerBouteille($body -> id);
         echo json_encode($resultat);
