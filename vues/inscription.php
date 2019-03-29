@@ -38,15 +38,24 @@
 			<label for="motPasseInscri" class="hide">Mot de passe:</label>
 			<p class="erreurMotPasse"></p>
 		</div>
-		<input type="button" name="ajouterNouveauCompte" value="S'inscrire!">
+<?php
+	}
+?>
+		
+	</form>
+	<div class="boutonForm">
+        <button class="retour" name="retourCompte">Retour</button>
+<?php
+	if($page == "inscription"){
+?>
+		<button class="soumettre" name="ajouterNouveauCompte">S'inscrire!</button>
 <?php
 	}
 	else{
 ?>
-		<!--<input type="hidden" name="idCompte" value="<?php// echo $_SESSION['idUtilisateur'] ?>">-->
-		<input type="button" name="sauvegardeModifCompte" value="Sauvegarder les modifications">
-	</form>
+		<button class="soumettre" name="sauvegardeModifCompte">Sauvegarder les modifications</button>
 <?php
 	}
 ?>
+    </div>
 </div>

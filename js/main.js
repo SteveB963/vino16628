@@ -597,6 +597,7 @@ window.addEventListener('load', function() {
             document.querySelector("[name='msgErreur']").classList.add('errorBox');
             var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Les informations entrées sont incorrectes.</p>";
             document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+            document.querySelector(".eraseBox").innerHTML = "";
           }
           
         }).catch(error => {
@@ -612,6 +613,14 @@ window.addEventListener('load', function() {
       window.location.href = "index.php?requete=modificationCompte";
     });
   }
+
+    //btnModif - redirection vers le formulaire de modification du compte
+    let btnRetourCompte = document.querySelector("[name='retourCompte']");
+    if(btnRetourCompte){
+        btnRetourCompte.addEventListener("click", function(evt){
+          window.location.href = "index.php?requete=compte";
+        });
+    }
 
   //btnSauvCompte - Envoie les informations entrées dans le formulaire
   //au controleur afin de permettre leur sauvegarde dans la bd

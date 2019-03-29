@@ -24,7 +24,7 @@
 		<script src="./js/main.js"></script>
 		<script src="./js/stylemenu.js"></script>
 	</head>
-	<body >
+	<body>
 		<header>
             <div>
                 <!-- Premier menu avec logo du site -->

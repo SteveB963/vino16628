@@ -466,12 +466,17 @@ nav{
 	width: 100%;
 	height: 300px;
 	display: flex;
+	padding-bottom: 20px;
+	padding-top: 100px;
+	box-sizing: border-box;
+	flex-flow: column nowrap;
 	justify-content: space-around;
 	align-items: center;
 	background-color: #730101;
 	position: absolute;
 	bottom: 0px;
 	box-shadow: 0px -5px 7px #42424270 inset;
+	text-align: center;
 }
 
 .divRouge a{
@@ -631,6 +636,10 @@ nav{
     width:60%;
     margin:5px auto;
     height:15px;
+}
+
+.msgBox{
+	margin: 0 !important;
 }
 
 /*erreur des champs du formulaire*/
@@ -847,11 +856,11 @@ button, .mesFormulaires input[type='button']{
 	margin-bottom: 0px;
 	padding-right: 5px;
 }
-
+/*
 .monCompte div:last-child{
 	margin-top: 40px;
 }
-    
+*/  
 
     
 /********
