@@ -137,9 +137,9 @@ class Cellier extends Modele {
 	}
     
     /**
-	 * Supprime une bouteille dans le cellier
+	 * ajouter un bouteille dans le contenu du cellier
 	 * 
-	 * @param int $id ranger dans le contenu cellier a supprimer
+	 * @param int $data date ajout et date garde jusqua
 	 * 
 	 * @return Boolean Succès ou échec de l'ajout.
 	 */
@@ -150,6 +150,25 @@ class Cellier extends Modele {
             ' . $data -> id_bouteille . ',
             "' . $data -> date_ajout . '",
             "' . $data -> garde_jusqua . '")';
+        
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+    
+    /**
+	 * modifie la date ajout et la date garde jusqua d'un bouteille dans le cellier
+	 * 
+	 * @param int $data nouvelle date
+	 * 
+	 * @return Boolean Succès ou échec de l'ajout.
+	 */
+	public function modifierBouteille($data)
+	{
+		$requete = 'UPDATE cellier_contenu SET
+            date_ajout = "' . $data -> date_ajout . '", 
+            garde_jusqua = "' . $data -> garde_jusqua . '" 
+            WHERE id = ' . $data -> id;
         
         $res = $this->_db->query($requete);
         

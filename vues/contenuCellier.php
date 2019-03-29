@@ -20,7 +20,7 @@
     if($data){
         foreach ($data['info'] as $cle => $infoBout) {
     ?>
-    <div id="bouteille<?php echo $infoBout['id_bouteille'] ?>"><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
+    <div class="divBouteille" id="bouteille<?php echo $infoBout['id_bouteille'] ?>"><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
         <div class="bouteille">
             <div class="img">
                 <img class="imgvin" src="<?php echo $infoBout['image'] ?>">
@@ -60,10 +60,13 @@
                         if($bouteille['id_bouteille'] == $infoBout['id_bouteille']){
                             ?>
                             <tr data-id="<?php echo $bouteille['id'] ?>">
-                                <td><?php echo $bouteille['date_ajout'] ?></td>
-                                <td><?php echo $bouteille['garde_jusqua'] ?></td>
+                                <td data-date="<?php echo $bouteille['date_ajout'] ?>"><?php echo $bouteille['date_ajout'] ?></td>
+                                <td data-date="<?php echo $bouteille['garde_jusqua'] ?>"><?php echo $bouteille['garde_jusqua'] ?></td>
+                                <td><button class="modifDate"><i class="fas fa-pen"></i></button></td>
                                 <td><button class="btnBoire"><span><img class="icone" src="./images/icones/bouteille-moins.svg"></span></button></td>
-                                <td><button>Modifier</button></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="erreur"></td>
                             </tr>
                             <?php
                         }

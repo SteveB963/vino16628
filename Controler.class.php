@@ -36,7 +36,10 @@ class Controler
                 break;
             case 'boireBouteille':
                 $this->boireBouteille();
-                break;                
+                break;
+            case 'modifierContenuCellier':
+                $this->modifierContenuCellier();
+                break;
             case 'afficheContenuCellier':
                 $this->afficheContenuCellier();
 				break;
@@ -244,6 +247,21 @@ class Controler
         $cellier = new Cellier();
         $resultat['succes'] = $cellier -> ajouterBouteille($body);
         $resultat['ajout'] = $cellier -> getDernAjout();
+        
+        echo json_encode($resultat);
+    }
+    
+    
+    /**
+     * Modifie la date d'ajout et la date garder jusqu'à d'un bouteille dans un cellier
+     *
+     */
+    private function modifierContenuCellier(){
+        $body = json_decode(file_get_contents('php://input'));
+        
+        $cellier = new Cellier();
+        $resultat['succes'] = $cellier -> modifierBouteille($body);
+        $resultat['donnee'] = $body;
         
         echo json_encode($resultat);
     }

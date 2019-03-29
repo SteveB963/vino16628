@@ -47,6 +47,141 @@ window.addEventListener('load', function() {
                 });
       });
     }
+    
+    //button modifier dans la liste
+    document.querySelectorAll(".modifDate").forEach(function(element){
+        actionModifierDate(element);
+    });
+    
+    /**
+     * active la modification des dates sur une bouteille dans un cellier
+     *
+     * @param DOM Element element bouton boire
+     */
+    function actionModifierDate(element){
+        element.addEventListener("click", function(evt){
+            
+            //annule opération modif sur les autre champs
+            let champActif = document.querySelectorAll(".active");
+            if(champActif){
+                champActif.forEach(function(champ){
+                    let date_ajout = champ.children[0].dataset.date;
+                    let garde_jusqua = champ.children[1].dataset.date;
+                    
+                    champ.classList.remove("active");
+                    champ.children[0].innerHTML = "<td>" + date_ajout + "</td>";
+                    champ.children[1].innerHTML = "<td>" + garde_jusqua + "</td>";
+                    champ.children[2].innerHTML = "<button class='modifDate'><i class='fas fa-pen'></i></button>";
+                    actionModifierDate(champ.children[2].firstChild);
+                
+                    champ.nextElementSibling.children[0].innerHTML = "";
+                });
+            }
+            
+            let td = evt.currentTarget.parentNode;
+            let tr = td.parentNode;
+            let date_ajout = tr.children[0].dataset.date;
+            let garde_jusqua = tr.children[1].dataset.date;
+            
+            td.parentNode.classList.add("active");
+            td.innerHTML = "<button class='accpetModif'><i class='fas fa-check'></i></button>"+
+                            "<button class='annuleModif'><img class='icone' src='./images/icones/times-solid.svg'></button>";
+            tr.children[0].innerHTML = "<input type='date' name='date_ajout' value='" + date_ajout + "'>";
+            tr.children[1].innerHTML = "<input type='date' name='garde_jusqua' value='" + garde_jusqua + "'>";
+            
+            traitementModifierDate(td.firstChild);
+            annuleModifierDate(td.children[1]);
+            
+            
+            
+        });
+    }
+    
+    function traitementModifierDate(element){
+        element.addEventListener("click", function(evt){
+            let tr = evt.currentTarget.parentNode.parentNode;
+            let erreur = false;
+  
+            let param = {
+                id: evt.currentTarget.parentNode.parentElement.dataset.id, 
+                date_ajout: document.querySelector("[name='date_ajout']").value,
+                garde_jusqua: document.querySelector("[name='garde_jusqua']").value
+            }
+            
+            //vérifie si les champ sont bien remlpi
+            let verif = {
+                date : verifChamp(param.date_ajout,"date"),
+                garde : verifChamp(param.garde_jusqua,"date")
+            }
+
+            Object.keys(verif).forEach(function(msg){
+                if(verif[msg] != ""){
+                    erreur = true;
+                }
+            });
+            
+            if(!erreur){
+                tr.nextElementSibling.children[0].innerHTML = "";
+                
+                let date_ajout = new Date(param.date_ajout);
+                let garde_jusqua = new Date(param.garde_jusqua);
+
+                if(date_ajout < garde_jusqua){
+                    let requete = new Request("index.php?requete=modifierContenuCellier", {method: 'POST', body: JSON.stringify(param)});
+                    fetch(requete)
+                    .then(response => {
+                        if(response.status === 200) {
+                            return response.json();
+                        } else {
+                            throw new Error('Erreur');
+                        }
+                    })
+                    .then(data => {
+                        if(data.succes){
+                            tr.classList.remove("active");
+                            tr.children[0].innerHTML = data.donnee.date_ajout;
+                            tr.children[0].setAttribute("data-date", data.donnee.date_ajout);
+                            tr.children[1].innerHTML = data.donnee.garde_jusqua;
+                            tr.children[1].setAttribute("data-date", data.donnee.garde_jusqua);
+                            tr.children[2].innerHTML = "<button class='modifDate'><i class='fas fa-pen'></i></button>";
+                            actionModifierDate(tr.children[2].firstChild);
+                        
+                        }
+                        else{
+                            tr.nextElementSibling.children[0].innerHTML = "erreur de traitement";
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+                }
+                else{
+                    tr.nextElementSibling.children[0].innerHTML = "Garder jusqu'à doit être plus grand";
+                }
+            }
+            else{
+                tr.nextElementSibling.children[0].innerHTML = "date invalide";
+            }
+        });
+    }
+    
+    function annuleModifierDate(element){
+        element.addEventListener("click", function(evt){
+            let tr = evt.currentTarget.parentNode.parentNode;
+            
+            let date_ajout = tr.children[0].dataset.date;
+            let garde_jusqua = tr.children[1].dataset.date;
+
+            tr.classList.remove("active");
+            tr.children[0].innerHTML = date_ajout;
+            tr.children[1].innerHTML = garde_jusqua;
+            tr.children[2].innerHTML = "<button class='modifDate'><i class='fas fa-pen'></i></button>";
+            actionModifierDate(tr.children[2].firstChild);
+            
+            tr.nextElementSibling.children[0].innerHTML = "";
+        });
+    }
 
     
     //button Boire
@@ -62,12 +197,11 @@ window.addEventListener('load', function() {
     function actionBtnBoire(element){
         element.addEventListener("click", function(evt){
             //div principal de la bouteille
-            let divBouteille = evt.currentTarget.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+            let divBouteille = evt.currentTarget.closest(".divBouteille");
             //id du row dans cellier_contenu
-            let id = evt.currentTarget.parentNode.parentElement.dataset.id;
+            let id = evt.currentTarget.closest("tr").dataset.id;
             //nombre de ranger dans la liste de bouteille
-            let nbRange = evt.currentTarget.parentNode.parentNode.parentNode.childElementCount;
-
+            let nbRange = evt.currentTarget.closest("tbody").childElementCount;
             
             let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
             fetch(requete)
@@ -105,7 +239,7 @@ window.addEventListener('load', function() {
         element.addEventListener("click", function(evt){
             //id de la bouteille et du cellier
             let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
-            let id_cellier = document.querySelector(".cellier").dataset.cellier;
+            let id_cellier = document.querySelector(".cellier").dataset.cellier;   
             
             let param = {
                 id_bouteille : id_bouteille,
@@ -127,12 +261,16 @@ window.addEventListener('load', function() {
                 let row = document.createElement("tr");
                 table.appendChild(row);
                 table.lastChild.setAttribute("data-id", data['ajout'].id);
-                table.lastChild.innerHTML = "<td>" + data['ajout'].date_ajout + "</td>"+
-                                "<td>" + data['ajout'].garde_jusqua + "</td>"+
-                                "<td><button class='btnBoire'><img class='icone' src='./images/icones/bouteille-moins.svg'></button></td>"+
-                                "<td><button>Modifier</button></td>";
+                table.lastChild.innerHTML = "<td data-date='" + data['ajout'].date_ajout + "'>" + data['ajout'].date_ajout + "</td>"+
+                                "<td data-date='" + data['ajout'].garde_jusqua + "'>" + data['ajout'].garde_jusqua + "</td>"+
+                                "<td><button><i class='fas fa-pen'></i></button></td>"+
+                                "<td><button class='btnBoire'><img class='icone' src='./images/icones/bouteille-moins.svg'></button></td>";
+                
+                //applique les actions sur les boutons
+                actionBtnBoire(table.lastChild.children[3].firstChild);
+                actionModifierDate(table.lastChild.children[2].firstChild);
+                
                 //modifie la quantité des bouteilles 
-                actionBtnBoire(table.lastChild.children[2].firstChild);
                 let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
                 quantite = btnBouteille.textContent.match(/\d+/);
                 btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) + 1) + ")";
