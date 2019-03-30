@@ -1,6 +1,18 @@
 <div class="actionCellier">
     <button name="nouvelleBouteille">Ajouter une boueille</button>
     <!--<p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Creer votre cellier</a></p>-->
+    <div class="trier">
+        Trier le cellier par:
+        <select id="trier">
+            <option value="nom" <?php echo $trier== 'nom' ? 'selected' : ''?>>Nom</option>
+            <option value="prix" <?php echo $trier == 'prix' ? 'selected' : ''?>>Prix</option>
+            <option value="pays" <?php echo $trier == 'pays' ? 'selected' : ''?>>Pays</option>
+            <option value="type" <?php echo $trier == 'type' ? 'selected' : ''?>>Type</option>
+            <option value="format" <?php echo $trier== 'format' ? 'selected' : ''?>>Format</option>
+            <option value="millesime" <?php echo $trier == 'millesime' ? 'selected' : ''?>>Millesime</option>
+            <option value="code_saq" <?php echo $trier == 'code_saq' ? 'selected' : ''?>>Code_SAQ</option>
+        </select>    
+    </div>
     <div class="search">
         <input id='searchValue' placeholder="Recherche"> 
         <button id='cherche'><i class="fa fa-search"></i></button> 
@@ -21,25 +33,8 @@
             </ul>
         </ul>
     </div>
-    <div class="trier">
-        Trier le cellier par:
-        <select id="trier">
-            <option value="nom" <?php echo $trier== 'nom' ? 'selected' : ''?>>Nom</option>
-            <option value="prix" <?php echo $trier == 'prix' ? 'selected' : ''?>>Prix</option>
-            <option value="pays" <?php echo $trier == 'pays' ? 'selected' : ''?>>Pays</option>
-            <option value="type" <?php echo $trier == 'type' ? 'selected' : ''?>>Type</option>
-            <option value="format" <?php echo $trier== 'format' ? 'selected' : ''?>>Format</option>
-            <option value="millesime" <?php echo $trier == 'millesime' ? 'selected' : ''?>>Millesime</option>
-            <option value="code_saq" <?php echo $trier == 'code_saq' ? 'selected' : ''?>>Code_SAQ</option>
-        </select>
-        
-    </div>
 </div>
-
-<div class="cellier content" data-cellier="<?php echo $_GET['id_cellier']?>">
-
-    
-     
+<div class="cellier content" data-cellier="<?php echo $_GET['id_cellier']?>">    
 <?php
     if($data){
         ?>

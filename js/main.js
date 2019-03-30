@@ -419,14 +419,14 @@ window.addEventListener('load', function() {
     }
     
    // vous pouvez clicker en button enter en clavier
-   /*let inpChercher=document.getElementById('searchValue');
+   let inpChercher=document.getElementById('searchValue');
     if(inpChercher){
         inpChercher.addEventListener('keyup', function(){
            if (event.keyCode === 13) {
                 //console.log("coucou");
                 let inputCherche= document.getElementById('searchValue').value;
                 console.log(inputCherche);
-                var id_cellier = document.querySelector("[name='cellier']").getAttribute("data-id");
+                var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
                 //verifier le champ de chercher est vide ou pas
                 if(inputCherche!=''){
                     window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
@@ -436,7 +436,7 @@ window.addEventListener('load', function() {
                 }
            }
         });
-    }*/
+    }
 
     //bouton dirige vers le formulaire d'ajout d'un bouteille
     var btnNouvelleBouteille = document.querySelector("[name='nouvelleBouteille']");
