@@ -21,13 +21,37 @@ class Cellier extends Modele {
 	 */
 	public function creerUnNouveauCellier($data)
 	{
-		$requete = "INSERT INTO cellier(id_usager,nom) VALUES (".
-		"'".$data["idUsager"]."',".
-		"'".$data["nomCellier"]."')";
+		$rows = Array();
+		$allCelliers = $this->_db->query('SELECT nom FROM ' . self::TABLE);
+		$nomExistant = false;
+		//Vérifier si le nom entrer pour la création du nouveau
+		//cellier est déjà existant
+		if($allCelliers->num_rows)
+		{
 
-        $res = $this->_db->query($requete);
-        
-		return $res;
+            while($row = $allCelliers->fetch_assoc())
+            {
+            	if(strtolower($data["nomCellier"]) == strtolower($row["nom"])){
+            		$nomExistant = true;
+            		break;
+            	}else{
+            		$nomExistant = false;
+            	}
+            }
+		}
+
+		if($nomExistant == false)
+		{
+			$requete = "INSERT INTO cellier(id_usager,nom) VALUES (".
+			"'".$data["idUsager"]."',".
+			"'".$data["nomCellier"]."')";
+			$res = $this->_db->query($requete);			
+			return $res;
+		}
+		else if($nomExistant == true){
+			return false;
+
+		}
 	}   
 	
 	

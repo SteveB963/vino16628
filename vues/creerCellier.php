@@ -1,11 +1,13 @@
 <div class="mesFormulaires content">
     <h2>Créer votre nouveau cellier</h2>
 
-    <div class="nouvelleBouteille" vertical layout>
+    <div>
         
-            <form class="formulaire">
+            <form >
+                <div name="msgErreur"></div>
                 <div>
-                    <input type="text" name="nom" placeholder="Nom du cellier"><label class="hide" for="nom">Nom du cellier : </label>
+                    <input type="text" name="nom" placeholder="Nom du cellier">
+                    <p class="erreurNomCellier"></p>
                 </div> 
                
                  
