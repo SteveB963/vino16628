@@ -215,6 +215,7 @@ window.addEventListener('load', function() {
      */
     function actionBtnBoire(element){
         element.addEventListener("click", function(evt){
+            //animation de chargement
             let button = evt.currentTarget;
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
@@ -235,7 +236,10 @@ window.addEventListener('load', function() {
                 }
               })
               .then(data => {
+                    //replace l'icone dans le bouton
                     button.innerHTML = '<img class="icone" src="./images/icones/bouteille-moins.svg">';
+                    
+                    //affichage du message dans le bas de la page
                     document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>Bouteille retiré avec succès</p>";
                     document.getElementById("msgContenuCellier").classList.add("affichemsg");
                     setTimeout(function(){ 
@@ -268,6 +272,7 @@ window.addEventListener('load', function() {
     //bouton ajouter, ajoute un bouteille dans le cellier
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
+            //animation de chargement
             let button = evt.currentTarget;
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             //id de la bouteille et du cellier
@@ -289,7 +294,10 @@ window.addEventListener('load', function() {
                 }
             })
             .then(data => {
+                //replace l'icone dans le bouton
                 button.innerHTML = '<img class="icone" src="./images/icones/bouteille-plus.svg">';
+                
+                //affiche du message dans le bas de la page
                 document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>Bouteille ajouté avec succès</p>";
                 document.getElementById("msgContenuCellier").classList.add("affichemsg");
                 setTimeout(function(){ 
@@ -310,6 +318,14 @@ window.addEventListener('load', function() {
                 actionBtnBoire(table.lastChild.children[3].firstChild);
                 actionModifierDate(table.lastChild.children[2].firstChild);
                 
+                //affiche la liste
+                document.getElementById("bouteille" + id_bouteille).children[1].classList.remove("hideBouteille");
+                
+                //applique animation higlight sur la nouvelle ajout
+                table.lastChild.classList.add("highlight");
+                table.lastChild.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+                
+                //créer le tr pour recevoir un message d'erreur
                 let rowErreur = document.createElement("tr");
                 table.appendChild(rowErreur);
                 table.lastChild.innerHTML = "<td colspan='4' class='erreur'></td>";
@@ -318,6 +334,7 @@ window.addEventListener('load', function() {
                 let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
                 quantite = btnBouteille.textContent.match(/\d+/);
                 btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) + 1) + ")";
+                
             }).catch(error => {
                 console.error(error);
             });
