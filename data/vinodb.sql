@@ -301,7 +301,7 @@ CREATE TABLE usager(
 
 --
 -- password Jean: Admin123
--- password John: User123
+-- password John: Usager123
 --
 
 INSERT INTO usager VALUES
