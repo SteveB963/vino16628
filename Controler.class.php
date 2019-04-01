@@ -11,34 +11,33 @@
  * 
  */
 
-class Controler 
-{
-
-    /**
-     * Traite la requête
-     * @return void
-     */
-    public function gerer()
+    class Controler 
     {
 
+        /**
+         * Traite la requête
+         * @return void
+         */
+        public function gerer()
+        {
         switch ($_GET['requete']) {
             case 'autocompleteBouteille':
                 $this->autocompleteBouteille();
                 break;
-            case 'ajouterNouvelleBouteilleCellier':
-                $this->ajouterNouvelleBouteilleCellier();
+            case 'ajouterNouvelleBouteille':
+                $this->ajouterNouvelleBouteille();
                 break;
-            case 'ajouterBouteilleCellier':
-                $this->ajouterBouteilleCellier();
+            case 'ajouterBouteille':
+                $this->ajouterBouteille();
                 break;
             case 'modifierBouteilleCellier':
                 $this->modifierBouteilleCellier();
                 break;
-            case 'boireBouteilleCellier':
-                $this->boireBouteilleCellier();
+            case 'boireBouteille':
+                $this->boireBouteille();
                 break;                
-            case 'afficheCellier':
-                $this->afficheCellier();
+            case 'afficheContenuCellier':
+                $this->afficheContenuCellier();
 				break;
 			case 'creerUnCellier':
                 $this->creerUnCellier();
@@ -67,16 +66,17 @@ class Controler
             case 'modifierNomCellier':
                 $this->modifierNomCellier();
                 break;
-                
+            case 'autocompleteCherche':
+                $this->autocompleteCherche();
+                break;
             default:
                 $this->accueil();
                 break;
         }
     }
 
-
     /**
-     * Affiche la page d'acceil
+     * Affiche la page d'accueil
      *
      */
     private function accueil()
@@ -86,28 +86,37 @@ class Controler
         include("vues/pied.php");
     }
 
-
     /**
      * Affiche la liste des bouteilles d'un cellier
      *
      */
-    private function afficheCellier()
+    private function afficheContenuCellier()
     {
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
             if(isset($_GET['id_cellier'])){
-                if(isset($_GET['trierCellier'])){
-                    $trier = $_GET['trierCellier'];
+               if(isset($_GET['inputCherche'])){
+                    $cherche = $_GET['inputCherche'];
+                }
+                else{
+                    $cherche='';
+                }
+               if(isset($_GET['trierCellier'])){
+                    $trier = $_GET['trierCellier']; 
                 }
                 else{
                     $trier = "nom";
                 }
                 $bte = new Bouteille();
-                $data = $bte->getListeBouteilleCellier($_GET['id_cellier'], $trier);
+                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
+                $cellier = new Cellier();
+                $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
                 include("vues/entete.php");
-                include("vues/cellier.php");
+                include("vues/contenuCellier.php");
                 include("vues/pied.php");
+              
             }
+            
             else{
                 $this->afficheListCellier();
             }
@@ -117,10 +126,9 @@ class Controler
             include("vues/nonConnecte.php");
             include("vues/pied.php");
         }
-        
-
     }
- /**
+
+    /**
      * Affiche la liste des celliers d'un usager
      *
      */
@@ -143,7 +151,6 @@ class Controler
     }
 
 
-
      /**
      * 
      *
@@ -151,41 +158,51 @@ class Controler
      */
     private function autocompleteBouteille()
     {
-        $bte = new Bouteille();
         $body = json_decode(file_get_contents('php://input'));
+        
+        $bte = new Bouteille();
         $listeBouteille = $bte->autocomplete($body->nom);
-
         echo json_encode($listeBouteille);
-
     }
 
+    /**
+     * Affiche le recherche champ
+     */
+     private function autocompleteCherche()
+    {
+       
+            $body = json_decode(file_get_contents('php://input'));
+             //var_dump($_GET['id_cellier']);
+            $bte = new Bouteille();
+            $list = $bte->autocompleteCherche($body->chercheValue, $body->id_cellier);
+            echo json_encode($list);
+        
+    }
     /**
      * 
      *
      * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
      */
-    private function ajouterNouvelleBouteilleCellier()
+    private function ajouterNouvelleBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
+        
         if(!empty($body)){
-            $bte = new Bouteille();
-
-            $resultat = $bte->ajouterBouteilleCellier($body);
+            $cellier = new Cellier();
+            $resultat = $cellier->ajouterBouteille($body);
             echo json_encode($resultat);
         }
         else{
             include("vues/entete.php");
-            include("vues/ajouter.php");
+            include("vues/formAjoutBout.php");
             include("vues/pied.php");
         }
-
-
     }
+    
 		
- /**
+    /**
      * Créer un nouveau cellier d'un usager
      */
-	
 	private function creerUnCellier()
 	{	
 		if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
@@ -219,14 +236,12 @@ class Controler
      * ?? ajout d'une note dans historique pour les statistiques
      *
      */
-    private function boireBouteilleCellier()
+    private function boireBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
-
-        $bte = new Bouteille();
+        $cellier = new Cellier();
         //retire une bouteille du cellier et récupère la nouvelle quantité
-        $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, -1);
-        $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
+        $resultat = $cellier -> supprimerBouteille($body -> id);
         echo json_encode($resultat);
     }
 
@@ -235,14 +250,19 @@ class Controler
      * ?? ajout d'une note dans historique pour les statistiques
      *
      */
-    private function ajouterBouteilleCellier()
+    private function ajouterBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
-
-        $bte = new Bouteille();
-        //ajoute une bouteille au cellier et récupère la nouvelle quantité
-        $resultat = $bte->modifierQuantiteBouteilleCellier($body->id, 1);
-        $resultat = $bte->obtenirQuantiteBouteilleCellier($body->id);
+        
+        $body -> date_ajout = date('Y-m-d');
+        $garde_jusqua = new DateTime($body -> date_ajout);
+        $garde_jusqua = $garde_jusqua -> add(new DateInterval('P1Y'));
+        $body -> garde_jusqua = $garde_jusqua -> format('Y-m-d');
+        
+        $cellier = new Cellier();
+        $resultat['succes'] = $cellier -> ajouterBouteille($body);
+        $resultat['ajout'] = $cellier -> getDernAjout();
+        
         echo json_encode($resultat);
     }
 
@@ -343,19 +363,6 @@ class Controler
         }
 
     }
-
-
-    //affiche le page accueil apres choisir le trier(par select box)
-    private function uploadPage()
-    {
-        $bte = new Bouteille();
-        include("vues/entete.php");
-        $data = $bte->getListeBouteilleCellier($_GET['trierCellier']); 
-        include("vues/cellier.php");
-        include("vues/pied.php");
-
-    }
-
 
     /**
      * Affiche différentes pages concernant le login selon
@@ -633,6 +640,7 @@ class Controler
     }
 
 }
+
 ?>
 
 

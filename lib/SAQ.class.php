@@ -36,7 +36,7 @@ class SAQ extends Modele {
      *
      * @return int $i nombre de produit ajouté
 	 */
-	public function getProduits($nombre = 100, $debut = 0) {
+	public function getProduits($nombre = 100, $debut = 0,) {
         $s = curl_init();
         //visite la page de produit de la saq avec les filtres reçu en paramêtre
 		curl_setopt($s, CURLOPT_URL, "https://www.saq.com/webapp/wcs/stores/servlet/SearchDisplay?categoryIdentifier=06&showOnly=product&langId=-2&beginIndex=" . $debut . "&pageSize=" . $nombre . "&catalogId=50000&searchTerm=*&categoryId=39919&storeId=20002");
@@ -179,27 +179,29 @@ class SAQ extends Modele {
 		// Récupère l'id du type du pays associer
 		$type = $this -> _db -> query("select id_type from bouteille_type where type = '" . $bte -> type . "'");
 		$pays = $this -> _db -> query("select id_pays from pays where pays = '" . $bte -> pays . "'");
-		
-		if ($type -> num_rows == 1 && $pays -> num_rows == 1) {
-			$type = $type -> fetch_assoc();
+        if ($type -> num_rows == 1 && $pays -> num_rows == 1) {
+            $type = $type -> fetch_assoc();
             $pays = $pays -> fetch_assoc();
             //var_dump($type);
             //var_dump($pays);
             //vérifie si le code SAQ correspond à une bouteille déjà entré de la bd
-			$rows = $this -> _db -> query("select id_bouteille from bouteille where code_saq = '" . $bte -> code_SAQ . "'");
-			if ($rows -> num_rows < 1) {
-                //insère les inforamtions dans la bd
-                $this -> stmt -> bind_param("sisiidsii", $bte -> nom, $type['id_type'], $bte -> img, $bte -> code_SAQ, $pays['id_pays'], $bte -> prix, $bte -> url, $bte -> format, $bte -> millesime);
-				$retour -> succes = $this -> stmt -> execute();
-			} else {
-				$retour -> succes = false;
-				$retour -> raison = self::DUPLICATION;
-			}
-		} else {
-			$retour -> succes = false;
-			$retour -> raison = self::ERREURDB;
+            $rows = $this -> _db -> query("select id_bouteille from bouteille where code_saq = '" . $bte -> code_SAQ . "'");
 
-		}
+                if ($rows -> num_rows < 1) {
+                    //insère les inforamtions dans la bd
+                    $this -> stmt -> bind_param("sisiidsii", $bte -> nom, $type['id_type'], $bte -> img, $bte -> code_SAQ, $pays['id_pays'], $bte -> prix, $bte -> url, $bte -> format, $bte -> millesime);
+                    $retour -> succes = $this -> stmt -> execute();
+                } else {
+                    $retour -> succes = false;
+                    $retour -> raison = self::DUPLICATION;
+                }
+        } else {
+            $retour -> succes = false;
+            $retour -> raison = self::ERREURDB;
+
+        }
+        
+            
 		return $retour;
 
 	}
