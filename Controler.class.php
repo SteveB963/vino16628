@@ -11,16 +11,15 @@
  * 
  */
 
-class Controler 
-{
-
-    /**
-     * Traite la requête
-     * @return void
-     */
-    public function gerer()
+    class Controler 
     {
 
+        /**
+         * Traite la requête
+         * @return void
+         */
+        public function gerer()
+        {
         switch ($_GET['requete']) {
             case 'autocompleteBouteille':
                 $this->autocompleteBouteille();
@@ -70,15 +69,17 @@ class Controler
             case 'modificationCompte':
                 $this->modificationCompte();
                 break;
+            case 'autocompleteCherche':
+                $this->autocompleteCherche();
+                break;
             default:
                 $this->accueil();
                 break;
         }
     }
 
-
     /**
-     * Affiche la page d'acceil
+     * Affiche la page d'accueil
      *
      */
     private function accueil()
@@ -87,7 +88,6 @@ class Controler
         include("vues/accueil.php");
         include("vues/pied.php");
     }
-
 
     /**
      * Affiche la liste des bouteilles d'un cellier
@@ -98,20 +98,28 @@ class Controler
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
             if(isset($_GET['id_cellier'])){
-                if(isset($_GET['trierCellier'])){
-                    $trier = $_GET['trierCellier'];
+               if(isset($_GET['inputCherche'])){
+                    $cherche = $_GET['inputCherche'];
+                }
+                else{
+                    $cherche='';
+                }
+               if(isset($_GET['trierCellier'])){
+                    $trier = $_GET['trierCellier']; 
                 }
                 else{
                     $trier = "nom";
                 }
                 $bte = new Bouteille();
-                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier);
+                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
                 $cellier = new Cellier();
                 $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
                 include("vues/entete.php");
                 include("vues/contenuCellier.php");
                 include("vues/pied.php");
+               //var_dump($_SESSION["id_cellier"]);   
             }
+            
             else{
                 $this->afficheListCellier();
             }
@@ -121,8 +129,6 @@ class Controler
             include("vues/nonConnecte.php");
             include("vues/pied.php");
         }
-        
-
     }
     
 
@@ -145,7 +151,6 @@ class Controler
     }
 
 
-
      /**
      * 
      *
@@ -157,11 +162,22 @@ class Controler
         
         $bte = new Bouteille();
         $listeBouteille = $bte->autocomplete($body->nom);
-
         echo json_encode($listeBouteille);
-
     }
 
+    /**
+     * Affiche le recherche champ
+     */
+     private function autocompleteCherche()
+    {
+       
+            $body = json_decode(file_get_contents('php://input'));
+             //var_dump($_GET['id_cellier']);
+            $bte = new Bouteille();
+            $list = $bte->autocompleteCherche($body->chercheValue, $body->id_cellier);
+            echo json_encode($list);
+        
+    }
     /**
      * 
      *
@@ -173,7 +189,6 @@ class Controler
         
         if(!empty($body)){
             $cellier = new Cellier();
-
             $resultat = $cellier->ajouterBouteille($body);
             echo json_encode($resultat);
         }
@@ -182,12 +197,9 @@ class Controler
             include("vues/formAjoutBout.php");
             include("vues/pied.php");
         }
-
-
     }
+    
 		
-
-	
 	private function creerUnCellier()
 	{	
 		if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
@@ -223,7 +235,6 @@ class Controler
     private function boireBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
-
         $cellier = new Cellier();
         //retire une bouteille du cellier et récupère la nouvelle quantité
         $resultat = $cellier -> supprimerBouteille($body -> id);
@@ -574,6 +585,7 @@ class Controler
     }
 
 }
+
 ?>
 
 

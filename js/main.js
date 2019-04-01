@@ -29,21 +29,20 @@ window.addEventListener('load', function() {
         
         fetch(requete)
               .then(response => {
-                  if (response.status === 200) {
-                    return response.json();
-                  } else {
-                    throw new Error('Erreur');
-                  }
+                    if (response.status === 200) {
+                        return response.json();
+                    } else {
+                        throw new Error('Erreur');
+                    }
                 })
                 .then(data => { 
                   console.log(data);
-                  if(data == true){
-                     window.location.href = "index.php?requete=afficheListCellier";
-                  }
-                 
-                
-                }).catch(error => {
-                  console.error(error);
+                      if(data == true){
+                         window.location.href = "index.php?requete=afficheListCellier";
+                      } 
+                })
+                .catch(error => {
+                    console.error(error);
                 });
       });
     }
@@ -183,6 +182,7 @@ window.addEventListener('load', function() {
         });
     }
 
+
     
     //button Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
@@ -234,6 +234,7 @@ window.addEventListener('load', function() {
               });
         });
     }
+
 
     //bouton ajouter, ajoute un bouteille dans le cellier
     document.querySelectorAll(".btnAjouter").forEach(function(element){
@@ -295,13 +296,16 @@ window.addEventListener('load', function() {
         })
 
     });
-   
+
+    
+    
+    
     //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id_bouteille = evt.target.parentElement.dataset.bouteille;
             let id_cellier = document.querySelector(".cellier").dataset.cellier;
-            window.location.href = BaseURL + "index.php?requete=modifierBouteilleCellier&id_bouteille=" + id_bouteille + "&id_cellier=" + id_cellier; 
+            window.location.href ="index.php?requete=modifierBouteilleCellier&id_bouteille=" + id_bouteille + "&id_cellier=" + id_cellier; 
     
         })
 
@@ -395,9 +399,7 @@ window.addEventListener('load', function() {
                         else{
                             document.querySelector(".msg").classList.add("attention");
                             document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Erreur lors de la modification";
-                        }
-                        
-                        
+                        } 
                     }
                 }).catch(error => {
                     console.error(error);
@@ -407,14 +409,13 @@ window.addEventListener('load', function() {
                 document.querySelector(".msg").classList.add("attention");
                 document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
             }
-            
-            
-        
         });
     }
     
+    
+    
     //buttonn Trier par le selct box value
-     let btnTrier = document.getElementById('trier');
+    let btnTrier = document.getElementById('trier');
     if(btnTrier){
         btnTrier.addEventListener("change", function(evt){
             var trier=document.getElementById('trier').value;
@@ -423,18 +424,189 @@ window.addEventListener('load', function() {
             window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
         });
     } 
+    //autocomplete de rechercher champ
+    let inputCherche = document.getElementById('searchValue');
+    //console.log(inputCherche);
+    let listeCherche = document.querySelector('.listeChercheAutoComplete');
+    let listeNom = document.querySelector('.listeNom');
+    let listePrix = document.querySelector('.listePrix');
+    let listePays = document.querySelector('.listePays');
+    let listeType = document.querySelector('.listeType');
+    let listeMillesime = document.querySelector('.listeMillesime');
+    let listeFormat = document.querySelector('.listeFormat');
+    let listeCode = document.querySelector('.listeCode');
     
+    if(inputCherche){
+        inputCherche.addEventListener("keyup", function(evt){
+           let cherche= inputCherche.value;
+            listeCherche.innerHTML = "";
+
+            //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
+            listeNom.innerHTML ="<li>Nom:</li>";
+            listeNom.style.visibility="hidden";
+            listePrix.innerHTML ="<li>Prix:</li>";
+            listePrix.style.visibility="hidden";
+            listePays.innerHTML ="<li>Pays:</li>";
+            listePays.style.visibility="hidden";
+            listeType.innerHTML ="<li>Type:</li>";
+            listeType.style.visibility="hidden";
+            listeMillesime.innerHTML ="<li>Millesime:<li>";
+            listeMillesime.style.visibility="hidden";
+            listeFormat.innerHTML ="<li>Format:</li>";
+            listeFormat.style.visibility="hidden";
+            listeCode.innerHTML ="<li>Code:</li>";
+            listeCode.style.visibility="hidden";
+            let param = {
+                id_cellier: document.querySelector(".cellier").getAttribute("data-cellier"),
+                chercheValue:inputCherche.value 
+            };
+             
+            console.log(cherche);
+            if(cherche!=""){
+                //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
+                
+                console.log(param );
+                let requete = new Request("index.php?requete=autocompleteCherche", {method: 'POST', body: JSON.stringify(param)});
+                console.log(requete);
+                fetch(requete)
+                  .then(response => {
+                      if (response.status === 200) {
+                        return response.json();
+                      } else {
+                        throw new Error('Erreur');
+                      }
+                    })
+                    .then(response => {
+                    //affiche l'autocomlplete resultat en liste
+                    response.forEach(function(element){
+                    //verifier chaque resultat de recherche 
+                      if(element.nom){
+                           listeNom.style.visibility="visible";
+                            listeNom.innerHTML += "<li class='listCherche' id='"+element.nom +"'>"+element.nom+"</li>";  
+                        }
+                         if(element.prix){
+                            listePrix.style.visibility="visible";
+                            listePrix.innerHTML += "<li class='listCherche' id='"+element.prix+"'>"+element.prix+"</li>";
+                        }
+                        if(element.pays){
+                            listePays.style.visibility="visible";
+                            listePays.innerHTML += "<li class='listCherche' id='"+element.pays+"'>"+element.pays+"</li>";
+                        }
+                        if(element.type){
+                            listeType.style.visibility="visible";
+                            listeType.innerHTML += "<li class='listCherche' id='"+element.type+"'>"+element.type+"</li>";
+                        }
+                        if(element.format){
+                            listeFormat.style.visibility="visible";
+                            listeFormat.innerHTML += "<li class='listCherche' id='"+element.format+"'>"+element.format+"</li>";
+                        }
+                        if(element.millesime){
+                            listeMillesime.style.visibility="visible";
+                            listeMillesime.innerHTML += "<li class='listCherche' id='"+element.millesime+"'>"+element.millesime+"</li>"; 
+                        }
+                        if(element.code){
+                            listeCode.style.visibility="visible";
+                            listeCode.innerHTML += "<li class='listCherche' id='"+element.code+"'>"+element.code+"</li>"; 
+                        }
+                    })
+                    //verifier le length de chaque liste 
+
+                    if (listeNom.style.visibility!="hidden") { 
+                        listeCherche.innerHTML +=listeNom.innerHTML; 
+                    }
+                    if (listePrix.style.visibility!="hidden") { 
+                        listeCherche.innerHTML +=listePrix.innerHTML ;
+                    }
+                    if (listePays.style.visibility!="hidden") { 
+                        listeCherche.innerHTML +=listePays.innerHTML ;
+                    }
+                    if (listeType.style.visibility!="hidden") { 
+                        listeCherche.innerHTML +=listeType.innerHTML ;
+                    }
+                    if (listeFormat.style.visibility!="hidden") { 
+                        listeCherche.innerHTML +=listeFormat.innerHTML ;
+                    }
+                    if (listeMillesime.style.visibility!="hidden") { 
+                        listeCherche.innerHTML += listeMillesime.innerHTML ;
+                    }
+                    if (listeCode.style.visibility!="hidden") { 
+                        listeCherche.innerHTML +=listeCode.innerHTML ;
+                    }
+
+                    }).catch(error => {
+                      console.error(error);
+                    });
+           }
+           
+        });
+    }
+   
+    //prendre le valeur du liste de recherche
+    if( listeCherche){
+        listeCherche.addEventListener("click", function(evt){
+            console.dir(evt.target)
+            if(evt.target.className == 'listCherche'){
+                inputCherche.value = evt.target.id;
+                console.log(evt.target.id);
+                listeCherche.innerHTML = "";
+            }
+        });
+    }
+  
+   
+    //button chercher  dans mon cellier
+    let btnChercher = document.getElementById('cherche');
+    //quand on click en button chercher 
+    if(btnChercher){
+       btnChercher.addEventListener('click', function(){
+            var inputCherche= document.getElementById('searchValue').value;
+            console.log(inputCherche);
+            //verifier le champ de chercher est vide ou pas
+             var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+            console.log(id_cellier);
+            if(inputCherche!=''){
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
+             }
+            else{
+                alert('Vous devez entrer une valeur de champ rechercher');
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier  ;
+            }
+        });
+    }
+    
+   // vous pouvez clicker en button enter en clavier
+   let inpChercher=document.getElementById('searchValue');
+    if(inpChercher){
+        inpChercher.addEventListener('keyup', function(){
+           if (event.keyCode === 13) {
+                //console.log("coucou");
+                let inputCherche= document.getElementById('searchValue').value;
+                console.log(inputCherche);
+                var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+                //verifier le champ de chercher est vide ou pas
+                if(inputCherche!=''){
+                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
+                 }
+                else{
+                    alert('Vous devez entrer une valeur de champ rechercher') ;
+                }
+           }
+        });
+    }
+
     //bouton dirige vers le formulaire d'ajout d'un bouteille
     var btnNouvelleBouteille = document.querySelector("[name='nouvelleBouteille']");
     if(btnNouvelleBouteille){
         btnNouvelleBouteille.addEventListener("click", function(evt){
             var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-            window.location.href = BaseURL + "index.php?requete=ajouterNouvelleBouteille&id_cellier=" + id_cellier; 
+            console.log(id_cellier);
+            window.location.href = "index.php?requete=ajouterNouvelleBouteille&id_cellier=" + id_cellier; 
         });
     }
 
     
     //autocomplete dans formulaire d'ajout d'un nouvelle bouteille
+
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
     let liste = document.querySelector('.listeAutoComplete');
     if(inputNomBouteille){
@@ -471,17 +643,18 @@ window.addEventListener('load', function() {
         id_cellier : document.querySelector("[name='cellier']")
       };
 
-      //sélection d'un nom de bouteille dans le résultat de l'autocomplete
-      liste.addEventListener("click", function(evt){
-        if(evt.target.tagName == "LI"){
-          bouteille.nom.dataset.id = evt.target.dataset.id;
-          bouteille.nom.setAttribute("value", evt.target.innerHTML);
-          
-          liste.innerHTML = "";
-          inputNomBouteille.value = "";
+    if(liste){
+        liste.addEventListener("click", function(evt){
+            console.dir(evt.target)
+            if(evt.target.tagName == "LI"){
+                bouteille.nom.dataset.id = evt.target.dataset.id;
+                bouteille.nom.innerHTML = evt.target.innerHTML;
+                liste.innerHTML = "";
+                inputNomBouteille.value = "";
 
-        }
-      });
+            }
+        });
+    }
 
       //formulaire d'ajout, bouton ajouter et traitement du formulaire
       let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
