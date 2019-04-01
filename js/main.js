@@ -64,16 +64,7 @@ window.addEventListener('load', function() {
             let champActif = document.querySelectorAll(".active");
             if(champActif){
                 champActif.forEach(function(champ){
-                    let date_ajout = champ.children[0].dataset.date;
-                    let garde_jusqua = champ.children[1].dataset.date;
-                    
-                    champ.classList.remove("active");
-                    champ.children[0].innerHTML = "<td>" + date_ajout + "</td>";
-                    champ.children[1].innerHTML = "<td>" + garde_jusqua + "</td>";
-                    champ.children[2].innerHTML = "<button class='modifDate'><i class='fas fa-pen'></i></button>";
-                    actionModifierDate(champ.children[2].firstChild);
-                
-                    champ.nextElementSibling.children[0].innerHTML = "";
+                    resetBoutonModifier(champ);
                 });
             }
             
@@ -96,8 +87,16 @@ window.addEventListener('load', function() {
         });
     }
     
+    /**
+     * applique la function de traitement de changement de date sur un element button
+     *
+     * @pram DOM Element element button modifier dans le liste de bouteille
+     */
     function traitementModifierDate(element){
         element.addEventListener("click", function(evt){
+            let button = evt.currentTarget;
+            button.innerHTML = "<i class='loading fas fa-spinner'></i>";
+            
             let tr = evt.currentTarget.parentNode.parentNode;
             let erreur = false;
   
@@ -147,6 +146,7 @@ window.addEventListener('load', function() {
                         
                         }
                         else{
+                            button.innerHTML = "<i class='fas fa-check'></i>";
                             tr.nextElementSibling.children[0].innerHTML = "erreur de traitement";
                         }
 
@@ -156,30 +156,47 @@ window.addEventListener('load', function() {
                     });
                 }
                 else{
+                    button.innerHTML = "<i class='fas fa-check'></i>";
                     tr.nextElementSibling.children[0].innerHTML = "Garder jusqu'à doit être plus grand";
                 }
             }
             else{
+                button.innerHTML = "<i class='fas fa-check'></i>";
                 tr.nextElementSibling.children[0].innerHTML = "date invalide";
             }
         });
     }
     
+    /**
+     * applique la l'action d'annuler les modifications de date dans la liste de bouteille
+     *
+     * @pram DOM Element element button annuler
+     */
     function annuleModifierDate(element){
         element.addEventListener("click", function(evt){
             let tr = evt.currentTarget.parentNode.parentNode;
             
-            let date_ajout = tr.children[0].dataset.date;
-            let garde_jusqua = tr.children[1].dataset.date;
-
-            tr.classList.remove("active");
-            tr.children[0].innerHTML = date_ajout;
-            tr.children[1].innerHTML = garde_jusqua;
-            tr.children[2].innerHTML = "<button class='modifDate'><i class='fas fa-pen'></i></button>";
-            actionModifierDate(tr.children[2].firstChild);
-            
-            tr.nextElementSibling.children[0].innerHTML = "";
+            resetBoutonModifier(tr);
         });
+    }
+    
+    /**
+     * annule la modification de date en retirant les input text
+     * et réaffiche les anciennes valeurs
+     *
+     * @pram DOM Element element tr sur le quel on veut annuler la modification
+     */
+    function resetBoutonModifier(tr){
+        let date_ajout = tr.children[0].dataset.date;
+        let garde_jusqua = tr.children[1].dataset.date;
+
+        tr.classList.remove("active");
+        tr.children[0].innerHTML = date_ajout;
+        tr.children[1].innerHTML = garde_jusqua;
+        tr.children[2].innerHTML = "<button class='modifDate'><i class='fas fa-pen'></i></button>";
+        actionModifierDate(tr.children[2].firstChild);
+
+        tr.nextElementSibling.children[0].innerHTML = "";
     }
 
 
@@ -196,6 +213,9 @@ window.addEventListener('load', function() {
      */
     function actionBtnBoire(element){
         element.addEventListener("click", function(evt){
+            let button = evt.currentTarget;
+            button.innerHTML = "<i class='loading fas fa-spinner'></i>";
+            
             //div principal de la bouteille
             let divBouteille = evt.currentTarget.closest(".divBouteille");
             //id du row dans cellier_contenu
@@ -213,6 +233,8 @@ window.addEventListener('load', function() {
                 }
               })
               .then(data => {
+                    button.innerHTML = '<img class="icone" src="./images/icones/bouteille-moins.svg">';
+                    
                     if(data == true){
                         //si c'est le dernier élément de la liste on supprime la bouteille
                         if(nbRange <= 2){
@@ -239,6 +261,8 @@ window.addEventListener('load', function() {
     //bouton ajouter, ajoute un bouteille dans le cellier
     document.querySelectorAll(".btnAjouter").forEach(function(element){
         element.addEventListener("click", function(evt){
+            let button = evt.currentTarget;
+            button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             //id de la bouteille et du cellier
             let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
             let id_cellier = document.querySelector(".cellier").dataset.cellier;   
@@ -258,6 +282,7 @@ window.addEventListener('load', function() {
                 }
             })
             .then(data => {
+                button.innerHTML = '<img class="icone" src="./images/icones/bouteille-plus.svg">';
                 //créer un nouvelle bouteille dans la liste de bouteille
                 let table = document.getElementById("bouteille" + id_bouteille).getElementsByTagName("tbody")[0];
                 let row = document.createElement("tr");
@@ -292,6 +317,15 @@ window.addEventListener('load', function() {
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id_bouteille = evt.target.parentElement.dataset.bouteille;  
+            
+            //annule opération modif sur les autre champs
+            let champActif = document.getElementById("bouteille"+id_bouteille).querySelectorAll(".active");
+            if(champActif){
+                champActif.forEach(function(champ){
+                    resetBoutonModifier(champ);
+                });
+            }
+            
             document.getElementById("bouteille" + id_bouteille).children[1].classList.toggle("hideBouteille");
         })
 
@@ -606,7 +640,6 @@ window.addEventListener('load', function() {
 
     
     //autocomplete dans formulaire d'ajout d'un nouvelle bouteille
-
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
     let liste = document.querySelector('.listeAutoComplete');
     if(inputNomBouteille){
