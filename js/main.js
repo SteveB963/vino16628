@@ -643,18 +643,17 @@ window.addEventListener('load', function() {
         id_cellier : document.querySelector("[name='cellier']")
       };
 
-    if(liste){
-        liste.addEventListener("click", function(evt){
-            console.dir(evt.target)
-            if(evt.target.tagName == "LI"){
-                bouteille.nom.dataset.id = evt.target.dataset.id;
-                bouteille.nom.innerHTML = evt.target.innerHTML;
-                liste.innerHTML = "";
-                inputNomBouteille.value = "";
+      //sélection d'un nom de bouteille dans le résultat de l'autocomplete
+      liste.addEventListener("click", function(evt){
+        if(evt.target.tagName == "LI"){
+          bouteille.nom.dataset.id = evt.target.dataset.id;
+          bouteille.nom.setAttribute("value", evt.target.innerHTML);
+          
+          liste.innerHTML = "";
+          inputNomBouteille.value = "";
 
-            }
-        });
-    }
+        }
+      });
 
       //formulaire d'ajout, bouton ajouter et traitement du formulaire
       let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
