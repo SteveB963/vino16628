@@ -888,3 +888,44 @@ button, .mesFormulaires input[type='button']{
 	text-decoration: none;
 	font-family: 'Hind', sans-serif;
 }
+
+
+/********
+ * formAjoutBout.php
+ ********/
+.divAutoComplete{
+	position: relative;
+	margin-bottom: 10px;
+}
+
+ /* Affichage des resultats de l'autocomplete */
+ .displayResultats{
+ 	width: 210px;
+ 	height: 150px;
+ 	position: absolute;
+ 		top: 40px;
+ 	overflow-y: auto;
+ 	z-index: 2;
+ 	padding: 0;
+ 	margin-top: 0;
+ 	background-color: white;
+ 	border: 2px solid black;
+ 	border-top: none;
+ 	box-shadow: 2px 2px 5px #8080809e;
+ }
+
+.displayResultats li{
+ 	padding: 3px;
+ 	padding-left: 10px;
+ 	list-style: none;
+ }
+
+ .displayResultats li:hover{
+ 	background-color: #730101;
+ 	color: white;
+ }
+
+ .displayResultats:empty{
+ 	height: 0;
+ 	display: none;
+ }

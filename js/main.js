@@ -297,6 +297,7 @@ window.addEventListener('load', function() {
                 })
                 .then(response => {                 
                   response.forEach(function(element){
+                    liste.classList.add("displayResultats");
                     liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
                   })
                 }).catch(error => {
@@ -323,6 +324,7 @@ window.addEventListener('load', function() {
           
           liste.innerHTML = "";
           inputNomBouteille.value = "";
+          liste.classList.remove("displayResutats");
 
         }
       });
