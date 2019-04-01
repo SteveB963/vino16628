@@ -491,10 +491,15 @@ nav{
 
 .actionCellier{
     margin:auto;
+    margin-top: 20px;
     width:80%;
     display:flex;
-    flex-flow:row;
+    flex-flow:row nowrap;
     justify-content:space-between;
+}
+
+.actionCellier button{
+	margin-top: 0;
 }
 
 .cellier{
@@ -556,8 +561,7 @@ nav{
  	padding-bottom: 15px;
  	padding-top: 15px;
  	padding-left: 0px;
- 	color: #730101;
- 	
+ 	color: #730101; 	
 }
 
 .information p{
@@ -579,6 +583,88 @@ nav{
 
 .hideBouteille{
     display:none;
+}
+
+.trier{
+	width: 250px;
+    height: 30px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding:10px;
+    text-align: center;
+	background-color: white;
+}
+/*
+@media all and (min-width:451px)
+{
+    .actionCellier{
+        margin:auto;
+        width:80%;
+        display:flex;
+        flex-flow:row;
+        justify-content:space-between;
+    }
+	.trier{
+        margin-left: 0px;
+        margin-bottom:0px;
+	}
+}
+*/
+/*
+.search{
+	float:center;
+    margin-left: 10%;
+    margin-top:2%;
+    margin-bottom: 0px;
+}
+.search input{
+    width:250px;
+    border:none;
+    margin-right:0px;
+}
+.search button{
+   background-color:#3c3c40; 
+    border:none;
+    width:20px;
+}
+
+.search i{
+    color:white;
+}
+@media all and (min-width:451px)
+{
+	.search{
+        margin-top:0px;
+	    float:right;
+        margin-right:0px;
+        margin-left:0px;
+    }
+	
+}*/
+.listeChercheAutoComplete{
+    width:250px;
+    list-style: none;
+    color:black;
+    padding:0px;
+    display:block;
+    margin-top: 0px;
+    background-color: white;
+}
+
+.listeChercheAutoComplete li:not(.listCherche) {   
+   font-weight: bold; 
+    font-size: 15px;
+    font-family: 'Libre Baskerville', serif;
+    background-color: lightgrey;
+}
+
+
+.erreur, .count{
+     width:100%;
+    font-family: 'Roboto', 'RobotoDraft', sans-serif;
+    font-size: 20px;
+    color:white;
+    text-align: center;
 }
 
 
@@ -654,10 +740,19 @@ nav{
 	width: 200px;
 	padding: 5px;
 	height: 25px;
+	background-color: white;
 }
 
 .recherche input{
 	border: none;
+	box-shadow: none;
+}
+
+.recherche button{
+	width: 20px;
+	margin: 0;
+	height: 20px;
+	background-color: transparent;
 	box-shadow: none;
 }
 
@@ -813,20 +908,6 @@ button, .mesFormulaires input[type='button']{
 
 .formulaire > .errorBox > p{
     color:black;
-}
-
-
-/********
- * trier
- ********/
-.trier{
-	margin-top: 10px;
-	margin-bottom: 10px;
-    border: 1px solid black;
-    padding:1%;
-    text-align: center;
-	background-color: white;
-
 }
 
 

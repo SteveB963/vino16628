@@ -1,23 +1,49 @@
 <div class="actionCellier">
     <button name="nouvelleBouteille">Ajouter une boueille</button>
     <!--<p class="trier" id="creerCellier"><a href="?requete=creerUnCellier">Creer votre cellier</a></p>-->
-    <p class="trier">
+    <div class="trier">
         Trier le cellier par:
         <select id="trier">
-          <option value="nom">Nom</option>
-          <option value="pays">Pays</option>
-          <option value="format">Format</option>
-          <option value="type">Type</option>
-          <option value="prix">Prix</option>
-          <option value="millesime">Millesime</option>
-          <option value="code_saq">Code_SAQ</option>
-        </select>
-    </p>
+            <option value="nom" <?php echo $trier== 'nom' ? 'selected' : ''?>>Nom</option>
+            <option value="prix" <?php echo $trier == 'prix' ? 'selected' : ''?>>Prix</option>
+            <option value="pays" <?php echo $trier == 'pays' ? 'selected' : ''?>>Pays</option>
+            <option value="type" <?php echo $trier == 'type' ? 'selected' : ''?>>Type</option>
+            <option value="format" <?php echo $trier== 'format' ? 'selected' : ''?>>Format</option>
+            <option value="millesime" <?php echo $trier == 'millesime' ? 'selected' : ''?>>Millesime</option>
+            <option value="code_saq" <?php echo $trier == 'code_saq' ? 'selected' : ''?>>Code_SAQ</option>
+        </select>    
+    </div>
+    <div class="search divAutoComplete">
+        <div class="recherche">
+            <input id='searchValue' placeholder="Recherche"> 
+            <button id='cherche'><i class="fa fa-search"></i></button>
+        </div>
+        <ul class="listeChercheAutoComplete displayResultats">
+            <ul class="listeNom">
+            </ul>
+            <ul class="listePrix">
+            </ul>
+            <ul class="listePays">
+            </ul>
+            <ul class="listeType">
+            </ul>
+            <ul class="listeFormat">
+            </ul>
+            <ul class="listeMillesime">
+            </ul>
+            <ul class="listeCode">
+            </ul>
+        </ul>
+    </div>
 </div>
-
-<div class="cellier content" data-cellier="<?php echo $_GET['id_cellier']?>">
+<div class="cellier content" data-cellier="<?php echo $_GET['id_cellier']?>">    
 <?php
     if($data){
+        ?>
+        <div class="count">
+            <h4> Resultat-<?php echo sizeof($data['info'])?> Bouteilles</h4>
+    </div>
+       <?php
         foreach ($data['info'] as $cle => $infoBout) {
     ?>
     <div id="bouteille<?php echo $infoBout['id_bouteille'] ?>"><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
