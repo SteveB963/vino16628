@@ -65,6 +65,33 @@ window.addEventListener('load', function() {
         })
 
     });
+
+//bouton modifier le nom du cellier dans la liste des celliers
+document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
+  element.addEventListener("click", function(evt){
+      let id_cellier = evt.target.parentElement.dataset.id;
+      console.log(id_cellier);
+      window.location.href = BaseURL + "index.php?requete=modifierNomCellier&id_cellier=" + id_cellier;    
+  })
+
+});
+
+//bouton supprimer le cellier dans la liste des celliers
+document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
+  element.addEventListener("click", function(evt){
+      let id_cellier = evt.target.parentElement.dataset.id;
+      console.log(id_cellier);
+      window.location.href = BaseURL + "index.php?requete=supprimerCellier&id_cellier=" + id_cellier;    
+  })
+});
+
+
+
+
+
+
+
+
    
     //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){

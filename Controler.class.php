@@ -64,6 +64,10 @@ class Controler
             case 'modificationCompte':
                 $this->modificationCompte();
                 break;
+            case 'modifierNomCellier':
+                $this->modifierNomCellier();
+                break;
+                
             default:
                 $this->accueil();
                 break;
@@ -196,6 +200,7 @@ class Controler
                 echo json_encode($resultat);			
     		}
     		else{
+                $page = "creer";
     			include("vues/entete.php");
     			include("vues/creerCellier.php");
     			include("vues/pied.php");
@@ -571,6 +576,58 @@ class Controler
             $page = "modification";
             include("vues/entete.php");
             include("vues/inscription.php");
+            include("vues/pied.php");
+        }
+    }
+
+
+
+    private function modifierNomCellier()
+    {  
+        $body = json_decode(file_get_contents('php://input'));
+        if(!empty($body)){
+            //et que les valeurs sont vides
+            if($body->courrielInscri == "" || $body->nomInscri == "" || $body->prenomInscri == ""){
+                //retourne "vide"
+                $msgRetour = "vide";
+                echo json_encode($msgRetour);
+            }
+            //Sinon, les valeurs entrées ne sont pas vide
+            else{
+                if($body->courrielInscri == $_SESSION["emailUtilisateur"] && $body->nomInscri == $_SESSION["nomUtilisateur"] && $body->prenomInscri == $_SESSION["prenomUtilisateur"]){
+                    //Si la création à échoué, retourne false
+                    $msgRetour = "sansModif";
+                    echo json_encode($msgRetour);
+                }
+                else{
+                    //Création du compte
+                    $cpt = new Login();
+                    $modifFonctionel = $cpt->sauvegardeCompte($body, $_SESSION["idUtilisateur"]);
+                
+                    //Si la création du compte à fonctionné
+                    if($modifFonctionel == true){
+                        //Initialisation de la variable $_SESSION 
+                        $infosCompte = $cpt->getCompte($body->courrielInscri);
+                        $_SESSION["nomUtilisateur"] = $infosCompte["nom"];
+                        $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
+                        $_SESSION["emailUtilisateur"] = $infosCompte["email"];
+                        //Retourne true
+                        $msgRetour = "fonctionnel";
+                        echo json_encode($msgRetour);
+                    }
+                    else{
+                        //Si la création à échoué, retourne false
+                        $msgRetour = "mail";
+                        echo json_encode($msgRetour);
+                    }
+                }    
+            }
+        }
+        else{
+            //Aller vers la page de modification du compte
+            $page = "modification";
+            include("vues/entete.php");
+            include("vues/creerCellier.php");
             include("vues/pied.php");
         }
     }
