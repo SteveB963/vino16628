@@ -198,6 +198,8 @@ window.addEventListener('load', function() {
 
         tr.nextElementSibling.children[0].innerHTML = "";
     }
+    
+    
 
 
     
@@ -234,7 +236,12 @@ window.addEventListener('load', function() {
               })
               .then(data => {
                     button.innerHTML = '<img class="icone" src="./images/icones/bouteille-moins.svg">';
-                    
+                    document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>Bouteille retiré avec succès</p>";
+                    document.getElementById("msgContenuCellier").classList.add("affichemsg");
+                    setTimeout(function(){ 
+                        document.getElementById("msgContenuCellier").classList.remove("affichemsg");
+                    }, 3000);
+                
                     if(data == true){
                         //si c'est le dernier élément de la liste on supprime la bouteille
                         if(nbRange <= 2){
@@ -283,6 +290,12 @@ window.addEventListener('load', function() {
             })
             .then(data => {
                 button.innerHTML = '<img class="icone" src="./images/icones/bouteille-plus.svg">';
+                document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>Bouteille ajouté avec succès</p>";
+                document.getElementById("msgContenuCellier").classList.add("affichemsg");
+                setTimeout(function(){ 
+                    document.getElementById("msgContenuCellier").classList.remove("affichemsg");
+                }, 3000);
+                
                 //créer un nouvelle bouteille dans la liste de bouteille
                 let table = document.getElementById("bouteille" + id_bouteille).getElementsByTagName("tbody")[0];
                 let row = document.createElement("tr");

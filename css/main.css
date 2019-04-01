@@ -4,6 +4,7 @@
 
 html, body {
 	height: 100%;
+    max-width:100%;
 	margin: 0;
 	background-color: #3c3c40;
 	/*font-family: 'Roboto', 'RobotoDraft', sans-serif;*/
@@ -11,6 +12,11 @@ html, body {
 	font-size: 95%;
 	
 }
+
+main{
+    max-width:100%;
+}
+
 .liste {
 	display: block;
 	border-top: 1px solid #ccc;
@@ -970,3 +976,44 @@ table td button{
         transform:rotate(360deg);
     }
 }
+
+#msgContenuCellier{
+    position:fixed;
+        bottom:-30px;
+    padding:0px;
+    margin:0px;
+    box-sizing:border-box;
+    width:100%;
+    border-radius:0px;
+    border-width:1px;
+    background-color:#99ff99;
+    
+}
+
+#msgContenuCellier p{
+    margin:auto;
+    width:75%;
+    color:green;
+}
+
+.affichemsg{
+    animation: affichemsg 3s linear forwards;
+}
+
+@keyframes affichemsg{
+    0%{
+        bottom:-30px;
+    }
+    
+    25%{
+        bottom:0px;
+    }
+    
+    75%{
+        bottom:0px;
+    }
+    100%{
+        bottom:-30px;
+    }
+}
+

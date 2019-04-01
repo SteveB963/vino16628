@@ -34,13 +34,13 @@
         </ul>
     </div>
 </div>
-<div class="cellier content" data-cellier="<?php echo $_GET['id_cellier']?>">    
+<div class="cellier content" data-cellier="<?php echo $_GET['id_cellier']?>">
 <?php
     if($data){
         ?>
         <div class="count">
             <h4> Resultat-<?php echo sizeof($data['info'])?> Bouteilles</h4>
-    </div>
+        </div>
        <?php
         foreach ($data['info'] as $cle => $infoBout) {
     ?>
@@ -101,11 +101,14 @@
         </div>
     </div>
 <?php
-}
+        }
 
-}
+    }
 
 ?>	
+</div>
+<div id="msgContenuCellier" class='confirmBox'>
+    <p><?php if(isset($msgConfirmation)){echo $msgConfirmation;} ?></p>
 </div>
 
 
