@@ -77,12 +77,12 @@ class Cellier extends Modele {
 
 		if($nomExistant == false)
 		{
-			var_dump($data["nomCellier"]);
-			die();
+			// var_dump($data["nomCellier"]);
+			// die();
+			
+
 			$requete = "UPDATE cellier SET 
-			nom = ".
-			"'".$data["nomCellier"]."'
-			WHERE id_cellier = " . $data["id_cellier"];
+			nom = "."'".$data["nomCellier"]."' WHERE id_cellier = " . $data["id_cellier"];
 			$res = $this->_db->query($requete);			
 			return $res;
 		}
@@ -232,6 +232,14 @@ class Cellier extends Modele {
 		}
 		
 		return $row;
+	}
+
+	public function supprimerCellier($id)
+	{
+		$requete = 'DELETE FROM cellier WHERE id_cellier = ' . $id;
+        $res = $this->_db->query($requete);
+        
+		return $res;
 	}
     
 

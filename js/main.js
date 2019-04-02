@@ -108,24 +108,33 @@ document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
   })
 
 });
-
 //bouton supprimer le cellier dans la liste des celliers
 document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
   element.addEventListener("click", function(evt){
+    alert("Vous êtes sûr de supprimer ce cellier?")
       let id_cellier = evt.target.parentElement.dataset.id;
+      let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
       console.log(id_cellier);
-      window.location.href = BaseURL + "index.php?requete=supprimerCellier&id_cellier=" + id_cellier;    
+      fetch(requete)
+      .then(response => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            throw new Error('Erreur');
+          }
+        })
+        .then(data => { 
+          console.log(data);
+          if(data == true){
+             window.location.href = "index.php?requete=afficheListCellier";
+          }        
+        }).catch(error => {
+          console.error(error);
+        });   
   })
+
 });
-
-
-
-
-
-
-
-
-   
+  
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id_bouteille = evt.target.parentElement.dataset.bouteille;  
@@ -279,6 +288,8 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
            let cherche= inputCherche.value;
             listeCherche.innerHTML = "";
 
+            listeCherche.classList.add("displayResultats");
+
             //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
             listeNom.innerHTML ="<li>Nom:</li>";
             listeNom.style.visibility="hidden";
@@ -299,13 +310,9 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
                 chercheValue:inputCherche.value 
             };
              
-            console.log(cherche);
             if(cherche!=""){
                 //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
-                
-                console.log(param );
                 let requete = new Request("index.php?requete=autocompleteCherche", {method: 'POST', body: JSON.stringify(param)});
-                console.log(requete);
                 fetch(requete)
                   .then(response => {
                       if (response.status === 200) {
@@ -382,10 +389,8 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     //prendre le valeur du liste de recherche
     if( listeCherche){
         listeCherche.addEventListener("click", function(evt){
-            console.dir(evt.target)
             if(evt.target.className == 'listCherche'){
                 inputCherche.value = evt.target.id;
-                console.log(evt.target.id);
                 listeCherche.innerHTML = "";
             }
         });
@@ -398,10 +403,8 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     if(btnChercher){
        btnChercher.addEventListener('click', function(){
             var inputCherche= document.getElementById('searchValue').value;
-            console.log(inputCherche);
             //verifier le champ de chercher est vide ou pas
              var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-            console.log(id_cellier);
             if(inputCherche!=''){
                 window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
              }
@@ -417,9 +420,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     if(inpChercher){
         inpChercher.addEventListener('keyup', function(){
            if (event.keyCode === 13) {
-                //console.log("coucou");
                 let inputCherche= document.getElementById('searchValue').value;
-                console.log(inputCherche);
                 var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
                 //verifier le champ de chercher est vide ou pas
                 if(inputCherche!=''){
@@ -437,7 +438,6 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     if(btnNouvelleBouteille){
         btnNouvelleBouteille.addEventListener("click", function(evt){
             var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-            console.log(id_cellier);
             window.location.href = "index.php?requete=ajouterNouvelleBouteille&id_cellier=" + id_cellier; 
         });
     }
@@ -463,6 +463,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
                 })
                 .then(response => {                 
                   response.forEach(function(element){
+                    liste.classList.add("displayResultats");
                     liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
                   })
                 }).catch(error => {
@@ -481,18 +482,18 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         id_cellier : document.querySelector("[name='cellier']")
       };
 
-    if(liste){
-        liste.addEventListener("click", function(evt){
-            console.dir(evt.target)
-            if(evt.target.tagName == "LI"){
-                bouteille.nom.dataset.id = evt.target.dataset.id;
-                bouteille.nom.innerHTML = evt.target.innerHTML;
-                liste.innerHTML = "";
-                inputNomBouteille.value = "";
-
-            }
-        });
-    }
+      //sélection d'un nom de bouteille dans le résultat de l'autocomplete
+      liste.addEventListener("click", function(evt){
+        if(evt.target.tagName == "LI"){
+          bouteille.nom.dataset.id = evt.target.dataset.id;
+          bouteille.nom.setAttribute("value", evt.target.innerHTML);
+          
+          liste.innerHTML = "";
+          inputNomBouteille.value = "";
+          liste.classList.remove("displayResutats");
+        }
+      });
+    
 
       //formulaire d'ajout, bouton ajouter et traitement du formulaire
       let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
@@ -696,7 +697,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             //Si la réponse émise par le controleur est égale à true
             if(data == true){
               //Redirection vers la page monCompte
-              window.location.href ="index.php?requete=compte";
+              window.location.href ="index.php?requete=afficheListCellier";
             }
             else if(data == "vide"){
               //Affichage d'un message d'erreur lorsque la 
@@ -756,7 +757,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
           //connection à réussie.
           console.log(data);
           if(data == true){
-            window.location.href ="index.php?requete=compte";
+            window.location.href ="index.php?requete=afficheListCellier";
           }
           else{
             //Affichage d'un message d'erreur lorsque la 
@@ -764,6 +765,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             document.querySelector("[name='msgErreur']").classList.add('errorBox');
             var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Les informations entrées sont incorrectes.</p>";
             document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+            document.querySelector(".eraseBox").innerHTML = "";
           }
           
         }).catch(error => {
@@ -779,6 +781,14 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
       window.location.href = "index.php?requete=modificationCompte";
     });
   }
+
+    //btnModif - redirection vers le formulaire de modification du compte
+    let btnRetourCompte = document.querySelector("[name='retourCompte']");
+    if(btnRetourCompte){
+        btnRetourCompte.addEventListener("click", function(evt){
+          window.location.href = "index.php?requete=compte";
+        });
+    }
 
   //btnSauvCompte - Envoie les informations entrées dans le formulaire
   //au controleur afin de permettre leur sauvegarde dans la bd
@@ -912,72 +922,55 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
    //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
    var sauverNomCellier = document.querySelector("[name='sauverNomCellier']");
    if(sauverNomCellier){
-    sauverNomCellier.addEventListener("click", function(evt){
-           //récupère les informations de la bouteille dans les inputs
-           let cellier = {
+    let cellier = { 
+      id_cellier: document.querySelector("[name='id_cellier']"),
+      nom : document.querySelector("[name='nom']") 
+    };
+    sauverNomCellier.addEventListener("click", function(evt){              
+      var param = {  
+        "id_cellier":cellier.id_cellier.value,          
+        "nom":cellier.nom.value
+      };
+      var verif = {
+        nom : verifChamp(param.nom, "text")
+      
+      }
+      console.log(verif.nom);
+      document.querySelector(".erreurNomCellier").innerHTML = verif.nom;
+      if(verif.nom == ""){
+      let requete = new Request("index.php?requete=modifierNomCellier", {method: 'POST', body: JSON.stringify(param)});
+      console.log(JSON.stringify(param));
+      
+      fetch(requete)
+            .then(response => {
+                if (response.status === 200) {
+                  return response.json();
+                } else {
+                  throw new Error('Erreur');
+                }
+              })
+              .then(data => { 
+                console.log(data);
+                if(data == true){
+                   window.location.href = "index.php?requete=afficheListCellier";
+                }
+                else if(data == false){
+                 //  alert("deja");
+                 //Affichage d'un message d'erreur lorsque la 
+                 //modification à échoué.
+                 document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                 // var messageErreur = "Le nom entré est déjà utilisé.";
+                 var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le nom entré est déjà utilisé.</p>";
+                 document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+             }
+                
                
-               id_cellier : document.querySelector("[name='id_cellier']").value,
-               nom : document.querySelector("[name='nom']").value
-           };
-           
-           //vérifi si les champs sont remplis
-           let verif = {
-               nom : verifChamp(bouteille.nom,"text")
-           };
-           
-           
-           let body = { 
-               cel :  cellier,
-               verif : verif
-           }
-           
-           body = JSON.stringify(body);
-           
-           //envoie de la requete avec les informations du formulaire et les erreurs de champs
-           let requete = new Request("index.php?requete=modifierNomCellier", {method: 'POST', headers: {"Content-Type": "application/json"}, body: body });
-
-           fetch(requete)
-           .then(response => response.json())
-           .then(data =>{
-               //retourne les erreurs au champs approprié
-               document.querySelector(".erreurNomCellier").innerHTML = data.erreur.nom;
-               
-               
-               //éhec sql affiche l'erreur sql
-               if(data.echec){
-                   document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i>" + data.echec;
-               }
-               else{
-                   //si l'operation est un succès
-                   if(data.succes == true){
-                       //affiche le message
-                       document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
-                       document.querySelector(".msg").firstElementChild.classList.add("succes");
-                       
-                       
-                       setTimeout(function(){ 
-                           document.querySelector(".msg").innerHTML = "";
-                       }, 2000);
-                   }
-                   //si pas eu de modification
-                   else if(data.succes == "dup"){
-                       document.querySelector(".msg").classList.remove("attention");
-                       document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
-                       setTimeout(function(){ 
-                           document.querySelector(".msg").innerHTML = "";
-                       }, 2000);
-                   }
-                   //si erreur dans les champs
-                   else{
-                       document.querySelector(".msg").classList.add("attention");
-                       document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
-                   }  
-               }
-           }).catch(error => {
-               console.error(error);
-           });
-
-       });
+              
+              }).catch(error => {
+                console.error(error);
+              });
+          }
+    });
    }
 
 });

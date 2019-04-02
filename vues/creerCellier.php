@@ -2,8 +2,6 @@
 
 	<h2>Créer votre nouveau cellier</h2>
 	<p>Veuillez remplir le nom de votre nouveau cellier.</p>
-
-
     <div>
         
             <form >
@@ -11,9 +9,7 @@
                 <div>
                     <input type="text" name="nom" placeholder="Nom du cellier" >
                     <p class="erreurNomCellier"></p>
-                </div> 
-               
-                 
+                </div>                 
             </form>
             <button name="creerCellier">Créer votre cellier</button>
         
