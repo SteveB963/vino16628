@@ -907,5 +907,78 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
      });
    }
 
+
+
+   //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
+   var sauverNomCellier = document.querySelector("[name='sauverNomCellier']");
+   if(sauverNomCellier){
+    sauverNomCellier.addEventListener("click", function(evt){
+           //récupère les informations de la bouteille dans les inputs
+           let cellier = {
+               
+               id_cellier : document.querySelector("[name='id_cellier']").value,
+               nom : document.querySelector("[name='nom']").value
+           };
+           
+           //vérifi si les champs sont remplis
+           let verif = {
+               nom : verifChamp(bouteille.nom,"text")
+           };
+           
+           
+           let body = { 
+               cel :  cellier,
+               verif : verif
+           }
+           
+           body = JSON.stringify(body);
+           
+           //envoie de la requete avec les informations du formulaire et les erreurs de champs
+           let requete = new Request("index.php?requete=modifierNomCellier", {method: 'POST', headers: {"Content-Type": "application/json"}, body: body });
+
+           fetch(requete)
+           .then(response => response.json())
+           .then(data =>{
+               //retourne les erreurs au champs approprié
+               document.querySelector(".erreurNomCellier").innerHTML = data.erreur.nom;
+               
+               
+               //éhec sql affiche l'erreur sql
+               if(data.echec){
+                   document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i>" + data.echec;
+               }
+               else{
+                   //si l'operation est un succès
+                   if(data.succes == true){
+                       //affiche le message
+                       document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
+                       document.querySelector(".msg").firstElementChild.classList.add("succes");
+                       
+                       
+                       setTimeout(function(){ 
+                           document.querySelector(".msg").innerHTML = "";
+                       }, 2000);
+                   }
+                   //si pas eu de modification
+                   else if(data.succes == "dup"){
+                       document.querySelector(".msg").classList.remove("attention");
+                       document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
+                       setTimeout(function(){ 
+                           document.querySelector(".msg").innerHTML = "";
+                       }, 2000);
+                   }
+                   //si erreur dans les champs
+                   else{
+                       document.querySelector(".msg").classList.add("attention");
+                       document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
+                   }  
+               }
+           }).catch(error => {
+               console.error(error);
+           });
+
+       });
+   }
+
 });
 
