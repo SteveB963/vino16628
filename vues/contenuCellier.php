@@ -46,7 +46,6 @@
             <div class="count">
                 <h4> <?php echo $msgCount?></h4>
             </div>
-            
            <?php
             foreach ($data['info'] as $cle => $infoBout) {
         ?>

@@ -532,10 +532,8 @@ window.addEventListener('load', function() {
             }
         });
     }
-    
-    
-    
-   //autocomplete de rechercher champ
+
+    //autocomplete de rechercher champ
     let inputCherche = document.getElementById('searchValue');
     //console.log(inputCherche);
     let listeCherche = document.querySelector('.listeChercheAutoComplete');
@@ -701,6 +699,7 @@ window.addEventListener('load', function() {
            }
         });
     }
+    
 
     //ajouter le button de remettre
     let search = document.querySelector('.recherche');
@@ -708,7 +707,7 @@ window.addEventListener('load', function() {
         if(inputCherche.value!=''){
             var retour=document.createElement("BUTTON");
             retour.setAttribute("id", "cherche");
-            retour.innerHTML='<i class="fa fa-refresh"></i>';
+            retour.innerHTML='<i class="fa fa-refresh"></i>';  
             search.appendChild(retour);   
         }
        
@@ -741,6 +740,7 @@ window.addEventListener('load', function() {
             }
         });
     }
+
     //bouton dirige vers le formulaire d'ajout d'un bouteille
     var btnNouvelleBouteille = document.querySelector("[name='nouvelleBouteille']");
     if(btnNouvelleBouteille){
@@ -789,18 +789,20 @@ window.addEventListener('load', function() {
         id_cellier : document.querySelector("[name='cellier']")
       };
 
-      //sélection d'un nom de bouteille dans le résultat de l'autocomplete
-      liste.addEventListener("click", function(evt){
-        if(evt.target.tagName == "LI"){
-          bouteille.nom.dataset.id = evt.target.dataset.id;
-          bouteille.nom.setAttribute("value", evt.target.innerHTML);
-          
-          liste.innerHTML = "";
-          inputNomBouteille.value = "";
-          liste.classList.remove("displayResutats");
-        }
-      });
-    
+    if(liste){
+        liste.addEventListener("click", function(evt){
+            //console.dir(evt.target)
+            if(evt.target.tagName == "LI"){
+                bouteille.nom.dataset.id = evt.target.dataset.id;
+                console.dir(evt.target.innerHTML);
+                inputNomBouteille.innerHTML = evt.target.innerHTML;
+                liste.innerHTML = "";
+                inputNomBouteille.value = "";
+
+            }
+        });
+    }
+
       //formulaire d'ajout, bouton ajouter et traitement du formulaire
       let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
       if(btnAjouter){
