@@ -258,16 +258,7 @@ window.addEventListener('load', function() {
 
         });
     }
-    //buttonn Trier par le selct box value
-    let btnTrier = document.getElementById('trier');
-    if(btnTrier){
-        btnTrier.addEventListener("change", function(evt){
-            var trier=document.getElementById('trier').value;
-            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-            console.log(id_cellier);
-            window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
-        });
-    } 
+  
     //autocomplete de rechercher champ
     let inputCherche = document.getElementById('searchValue');
     //console.log(inputCherche);
@@ -380,8 +371,7 @@ window.addEventListener('load', function() {
                     }).catch(error => {
                       console.error(error);
                     });
-           }
-           
+           }    
         });
     }
    
@@ -407,14 +397,15 @@ window.addEventListener('load', function() {
             console.log(inputCherche);
             //verifier le champ de chercher est vide ou pas
              var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+           var trier=document.getElementById('trier').value;
             console.log(id_cellier);
             if(inputCherche!=''){
-                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche +"&trierCellier=" + trier;
              }
             else{
-                alert('Vous devez entrer une valeur de champ rechercher');
-                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier  ;
-            }
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier ; 
+                }
+            
         });
     }
     
@@ -423,21 +414,61 @@ window.addEventListener('load', function() {
     if(inpChercher){
         inpChercher.addEventListener('keyup', function(){
            if (event.keyCode === 13) {
-                //console.log("coucou");
-                let inputCherche= document.getElementById('searchValue').value;
+                var inputCherche= document.getElementById('searchValue').value;
                 console.log(inputCherche);
-                var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
                 //verifier le champ de chercher est vide ou pas
+                var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+                var trier=document.getElementById('trier').value;
+                console.log(id_cellier);
                 if(inputCherche!=''){
-                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
+                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche +"&trierCellier=" + trier;
                  }
                 else{
-                    alert('Vous devez entrer une valeur de champ rechercher') ;
+                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier ; 
                 }
            }
         });
     }
+    
+    //buttonn Trier par le selct box value
+    let btnTrier = document.getElementById('trier');
+    if(btnTrier){
+        btnTrier.addEventListener("change", function(evt){
+            var trier=document.getElementById('trier').value;
+            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+            let inputCherche=document.getElementById('searchValue').value;
+            if(inputCherche!=''){
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier+"&inputCherche=" + inputCherche;
+            }
+            else{
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
+            }
+        });
+    }
 
+    //ajouter le button de remettre
+    let search = document.querySelector('.search');
+    if(inputCherche){
+        if(inputCherche.value!=''){
+            var retour=document.createElement("BUTTON");
+            retour.innerHTML='<i class="fa fa-refresh" ></i>';
+            search.appendChild(retour);   
+        }
+       
+    }
+    
+    //refrchier le champ de recherche el la page de cellier
+    if(retour){
+        retour.addEventListener('click', function(){
+            var inputCherche= document.getElementById('searchValue').value;
+            inputCherche.value="";
+            search.removeChild(retour); 
+            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+            window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier ;
+            
+        });
+        
+    }
     //bouton dirige vers le formulaire d'ajout d'un bouteille
     var btnNouvelleBouteille = document.querySelector("[name='nouvelleBouteille']");
     if(btnNouvelleBouteille){
@@ -489,10 +520,11 @@ window.addEventListener('load', function() {
 
     if(liste){
         liste.addEventListener("click", function(evt){
-            console.dir(evt.target)
+            //console.dir(evt.target)
             if(evt.target.tagName == "LI"){
                 bouteille.nom.dataset.id = evt.target.dataset.id;
-                bouteille.nom.innerHTML = evt.target.innerHTML;
+                console.dir(evt.target.innerHTML);
+                inputNomBouteille.innerHTML = evt.target.innerHTML;
                 liste.innerHTML = "";
                 inputNomBouteille.value = "";
 

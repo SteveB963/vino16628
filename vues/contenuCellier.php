@@ -14,7 +14,8 @@
         </select>    
     </div>
     <div class="search">
-        <input id='searchValue' placeholder="Recherche"> 
+        <input id='searchValue'  <?php if ($cherche!=''){?>value='<?php echo $cherche;}else?>' placeholder='recherche'> 
+        
         <button id='cherche'><i class="fa fa-search"></i></button> 
         <ul class="listeChercheAutoComplete">
             <ul class="listeNom">
@@ -39,7 +40,7 @@
     if($data){
         ?>
         <div class="count">
-            <h4> Resultat-<?php echo sizeof($data['info'])?> Bouteilles</h4>
+            <h4> <?php echo $msgCount?></h4>
     </div>
        <?php
         foreach ($data['info'] as $cle => $infoBout) {
