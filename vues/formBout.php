@@ -4,19 +4,19 @@
         <form class="formulaire">
             <div>
                 <input type="text" name="nom" value="<?php echo $donnee['bouteille']['nom'] ?>" placeholder="Nom :"><label for="nom">Nom : </label>
-                <p class="erreurNom"><?php  ?></p>
+                <p class="erreurnom"><?php  ?></p>
             </div>
             <div>
                 <input type="text" name="image" value="<?php echo $donnee['bouteille']['image'] ?>" placeholder="Image :"><label for="image">Image : </label>
-                <p class="erreurImage"></p>
+                <p class="erreurimage"></p>
             </div>
             <div>
                 <input type="text" name="prix" value="<?php echo $donnee['bouteille']['prix'] ?>" maxlength="9" placeholder="Prix :"><label for="prix">Prix : </label>
-                <p class="erreurPrix"></p>
+                <p class="erreurprix"></p>
             </div>
             <div>
                 <input type="text" name="format" value="<?php echo $donnee['bouteille']['format'] ?>" maxlength="7" placeholder="Format : (ml)"><label for="format">Format : </label>
-                <p class="erreurFormat"></p>
+                <p class="erreurformat"></p>
             </div>
             <div>
                 <label for="type">Type : </label>
@@ -58,15 +58,15 @@
             </div>
             <div>
                 <input type="text" name="millesime" value="<?php echo $donnee['bouteille']['millesime'] ?>" maxlength="4" placeholder="Millésime :"><label for="millesime">Millésime : </label>
-                <p class="erreurMillesime"></p>
+                <p class="erreurmillesime"></p>
             </div>
             <div>
                 <input type="text" name="codesaq" value="<?php echo $donnee['bouteille']['code_saq'] ?>" maxlength="8" placeholder="Code SAQ :"><label for="codesaq">Code SAQ : </label>
-                <p class="erreurCodesaq"></p>
+                <p class="erreurcodesaq"></p>
             </div>
             <div>
                 <input type="text" name="urlsaq" value="<?php echo $donnee['bouteille']['url_saq'] ?>" placeholder="URL SAQ :"><label for="urlsaq">URL SAQ : </label>
-                <p class="erreurUrlsaq"></p>
+                <p class="erreururlsaq"></p>
             </div>
         </form>
         <p class="msg"></p>
@@ -75,7 +75,7 @@
         <input type="hidden" name="id_cellier" value="<?php echo $donnee['id_cellier'] ?>">
         <div class="boutonForm">
             <button class="retour" name="retourCellier">Retour</button>
-            <button class="soumettre" name="sauver">Modifier la bouteille</button>
+            <button class="soumettre" name="modifier">Modifier la bouteille</button>
         </div>
         
         
