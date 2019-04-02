@@ -2,13 +2,15 @@
     <h2>Ajouter une bouteille au cellier</h2>
 
     <div class="nouvelleBouteille" vertical layout>
-        <div class="recherche">
-            <input type="text" name="nom_bouteille" placeholder="Rechercher"><label><i class="fas fa-search"></i></label>
-        </div>
-        
-        <ul class="listeAutoComplete">
+        <div class="divAutoComplete">
+            <div class="recherche">
+                <input type="text" name="nom_bouteille" placeholder="Rechercher"><label><i class="fas fa-search"></i></label>
+            </div>
+            
+            <ul class="listeAutoComplete">
 
-        </ul>
+            </ul>
+        </div>
             <form class="formulaire">
                 <div>
                     <label id="labelNom">Nom : </label><input data-id="" class="nom_bouteille" disabled>
