@@ -6,33 +6,11 @@ html, body {
 	height: 100%;
 	min-width: 320px;
 	margin: 0;
-	background-color: #3c3c40;
+	/*background-color: #3c3c40;*/
+	background-color: #ddd;
 	font-family: 'Hind', sans-serif;
 	font-size: 95%;
 	
-}
-.liste {
-	display: block;
-	border-top: 1px solid #ccc;
-	border-bottom: none;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.liste > div {
-	height: 40px;
-	line-height: 40px;
-	padding: 0 20px;
-	border-bottom: 1px solid #ccc;
-	cursor: pointer;
-	transition: color 200ms ease-in-out;
-	background-color:#e85e30;
-	color:#FFFFFF;
-}
-.liste > div:hover {
-	color:#000000;
-	transition: color 200ms ease-in-out;
 }
 
 a{
@@ -53,6 +31,8 @@ footer
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
+	position: fixed;
+	bottom: 0;
 }
 
 /********
@@ -251,7 +231,6 @@ footer
 /********
  * Cellier.php
  ********/
-
 .actionCellier{
     margin:auto;
     margin-top: 20px;
@@ -315,7 +294,6 @@ footer
  	display: flex;
  	flex-flow: column nowrap;
  	align-content: space-between; 
- 	/*height: 210px;*/
 }
 
 .nom{
@@ -357,53 +335,7 @@ footer
     text-align: center;
 	background-color: white;
 }
-/*
-@media all and (min-width:451px)
-{
-    .actionCellier{
-        margin:auto;
-        width:80%;
-        display:flex;
-        flex-flow:row;
-        justify-content:space-between;
-    }
-	.trier{
-        margin-left: 0px;
-        margin-bottom:0px;
-	}
-}
-*/
-/*
-.search{
-	float:center;
-    margin-left: 10%;
-    margin-top:2%;
-    margin-bottom: 0px;
-}
-.search input{
-    width:250px;
-    border:none;
-    margin-right:0px;
-}
-.search button{
-   background-color:#3c3c40; 
-    border:none;
-    width:20px;
-}
 
-.search i{
-    color:white;
-}
-@media all and (min-width:451px)
-{
-	.search{
-        margin-top:0px;
-	    float:right;
-        margin-right:0px;
-        margin-left:0px;
-    }
-	
-}*/
 .listeChercheAutoComplete{
     width:250px;
     list-style: none;
@@ -434,7 +366,6 @@ footer
 /********
  * formulaire
  ********/
-
 /* Div comportant un fomulaire*/
 .mesFormulaires, .contenuPage{
 	width: 80%;
@@ -649,6 +580,11 @@ button, .mesFormulaires input[type='button']{
 /********
  * monCompte.php
  ********/
+ .monCompte{
+ 	border: 2px solid black;
+ 	border-radius: 5px;
+ 	padding: 10px;
+ }
 .monCompte div:first-child div{
 	display: flex;
 	align-items: center;
@@ -672,40 +608,29 @@ button, .mesFormulaires input[type='button']{
 	margin-bottom: 0px;
 	padding-right: 5px;
 }
-/*
-.monCompte div:last-child{
-	margin-top: 40px;
-}
-*/  
 
-    
+
 /********
  * listCellier.php
  ********/
- /*
 .listCellier{
-    display:flex;
-    flex-flow:column;
-    align-items:center;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
+	padding-left: 0px;
 }
 
-.listCellier > div{
-    width:80%;
-    margin:20px;
-    padding:15px;
-    background-color:white;
-    color: black;
-    height: 50px;
+.mesCelliers{
+ 	width: 60%;
 }
 
-.listCellier a{
-	color: black;
-	font-size: 20px;
-	width: 100%;
-	text-decoration: none;
-	font-family: 'Hind', sans-serif;
+.mesCelliers > div{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	padding-left: 10px;
+	padding-right: 10px;
 }
-*/
 
 /********
  * formAjoutBout.php
@@ -764,6 +689,9 @@ button, .mesFormulaires input[type='button']{
 
 /**************** Mobile ****************/
 @media all and (max-width:768px){
+	main{
+		height: calc(100% - 230px);
+	}
 	/* Entête */
  	#entete1{
  		height: 200px;
