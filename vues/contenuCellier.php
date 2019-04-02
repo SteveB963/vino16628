@@ -60,13 +60,14 @@
                 </div>
                 <div class="options" data-bouteille="<?php echo $infoBout['id_bouteille'] ?>">
                     <button class='btnModifier'>Modifier</button>
-                    <button class='btnAjouter'><img class="icone" src="./images/icones/bouteille-plus.svg"></button>
+                    <button title="ajouter une bouteille" class='btnAjouter'><img class="icone" src="./images/icones/bouteille-plus.svg"></button>
                     <button class='btnBouteille'>Bouteille<?php
                         if($infoBout['quantite'] > 1){
                             echo "s";
                         }
                         echo "(" . $infoBout['quantite']; ?>)
                     </button>
+                    <button class='btnSupprimer'>Supprimer</button>
                 </div>
             </div>
 
@@ -86,8 +87,8 @@
                             <tr data-id="<?php echo $bouteille['id'] ?>">
                                 <td data-date="<?php echo $bouteille['date_ajout'] ?>"><?php echo $bouteille['date_ajout'] ?></td>
                                 <td data-date="<?php echo $bouteille['garde_jusqua'] ?>"><?php echo $bouteille['garde_jusqua'] ?></td>
-                                <td><button class="modifDate"><i class="fas fa-pen"></i></button></td>
-                                <td><button class="btnBoire"><span><img class="icone" src="./images/icones/bouteille-moins.svg"></span></button></td>
+                                <td><button title="modifier date" class="modifDate"><i class="fas fa-pen"></i></button></td>
+                                <td><button title="retirer bouteille" class="btnBoire"><span><img class="icone" src="./images/icones/bouteille-moins.svg"></span></button></td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="erreur"></td>

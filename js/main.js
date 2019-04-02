@@ -74,8 +74,8 @@ window.addEventListener('load', function() {
             let garde_jusqua = tr.children[1].dataset.date;
             
             td.parentNode.classList.add("active");
-            td.innerHTML = "<button class='accpetModif'><i class='fas fa-check'></i></button>"+
-                            "<button class='annuleModif'><img class='icone' src='./images/icones/times-solid.svg'></button>";
+            td.innerHTML = "<button title='confirmer' class='accpetModif'><i class='fas fa-check'></i></button>"+
+                            "<button title='annuler' class='annuleModif'><img class='icone' src='./images/icones/times-solid.svg'></button>";
             tr.children[0].innerHTML = "<input type='date' name='date_ajout' value='" + date_ajout + "'>";
             tr.children[1].innerHTML = "<input type='date' name='garde_jusqua' value='" + garde_jusqua + "'>";
             
@@ -360,6 +360,54 @@ window.addEventListener('load', function() {
         })
 
     });
+    
+    //bouton supprimer une bouteille
+    document.querySelectorAll(".btnSupprimer").forEach(function(element){
+        element.addEventListener("click", function(evt){
+            let button = evt.currentTarget;
+            button.innerHTML = "<i class='loading fas fa-spinner'></i>";
+            
+            if(confirm("Êtes vous sur de vouloir retiré cette bouteille de votre cellier ?")){
+                let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
+                let id_cellier = document.querySelector(".cellier").dataset.cellier;
+
+                let param = {
+                    id_bouteille : id_bouteille,
+                    id_cellier : id_cellier
+                };
+
+                let requete = new Request("index.php?requete=supprimerBouteille", {method: 'POST', body: JSON.stringify(param)});
+                fetch(requete)
+                .then(response => {
+                    if(response.status === 200) {
+                      return response.json();
+                    } else {
+                      throw new Error('Erreur');
+                    }
+                })
+                .then(data => {
+                    //affiche du message dans le bas de la page
+                    document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>La bouteille à été retirer du cellier</p>";
+                    document.getElementById("msgContenuCellier").classList.add("affichemsg");
+                    setTimeout(function(){ 
+                        document.getElementById("msgContenuCellier").classList.remove("affichemsg");
+                    }, 3000);
+                    
+                    if(data){
+                        let divBouteille = document.getElementById("bouteille" + id_bouteille);
+                        divBouteille.parentNode.removeChild(divBouteille);
+                    }
+                
+                }).catch(error => {
+                    console.error(error);
+                });
+            }
+            else{
+                //replace l'icone dans le bouton
+                button.innerHTML = 'Supprimer';
+            }
+        });                                                   
+    });
 
     
     
@@ -429,7 +477,13 @@ window.addEventListener('load', function() {
                 let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: JSON.stringify(bouteille)});
             
                 fetch(requete)
-                .then(response => response.json())
+                .then(response => {
+                    if(response.status === 200) {
+                      return response.json();
+                    } else {
+                      throw new Error('Erreur');
+                    }
+                })
                 .then(data =>{
                     //éhec sql affiche l'erreur sql
                     if(data.echec){
@@ -541,6 +595,7 @@ window.addEventListener('load', function() {
                       }
                     })
                     .then(response => {
+                    console.log(response);
                     //affiche l'autocomlplete resultat en liste
                     response.forEach(function(element){
                     //verifier chaque resultat de recherche 

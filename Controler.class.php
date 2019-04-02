@@ -30,6 +30,9 @@
             case 'ajouterBouteille':
                 $this->ajouterBouteille();
                 break;
+            case 'supprimerBouteille':
+                $this->supprimerBouteille();
+                break;
             case 'modifierBouteilleCellier':
                 $this->modifierBouteilleCellier();
                 break;
@@ -236,8 +239,7 @@
     {
         $body = json_decode(file_get_contents('php://input'));
         $cellier = new Cellier();
-        //retire une bouteille du cellier et récupère la nouvelle quantité
-        $resultat = $cellier -> supprimerBouteille($body -> id);
+        $resultat = $cellier -> boireBouteille($body -> id);
         echo json_encode($resultat);
     }
 
@@ -262,6 +264,16 @@
         echo json_encode($resultat);
     }
     
+    /**
+     * supprimer tous les bouteilles du même id dans un cellier
+     *
+     */
+    private function supprimerBouteille(){
+        $body = json_decode(file_get_contents('php://input'));
+        $cellier = new Cellier();
+        $resultat = $cellier -> supprimerBouteille($body);
+        echo json_encode($resultat);
+    }
     
     /**
      * Modifie la date d'ajout et la date garder jusqu'à d'un bouteille dans un cellier
@@ -269,7 +281,6 @@
      */
     private function modifierContenuCellier(){
         $body = json_decode(file_get_contents('php://input'));
-        
         $cellier = new Cellier();
         $resultat['succes'] = $cellier -> modifierBouteille($body);
         $resultat['donnee'] = $body;
