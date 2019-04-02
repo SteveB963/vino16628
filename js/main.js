@@ -285,6 +285,8 @@ window.addEventListener('load', function() {
            let cherche= inputCherche.value;
             listeCherche.innerHTML = "";
 
+            listeCherche.classList.add("displayResultats");
+
             //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
             listeNom.innerHTML ="<li>Nom:</li>";
             listeNom.style.visibility="hidden";
@@ -305,13 +307,9 @@ window.addEventListener('load', function() {
                 chercheValue:inputCherche.value 
             };
              
-            console.log(cherche);
             if(cherche!=""){
                 //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
-                
-                console.log(param );
                 let requete = new Request("index.php?requete=autocompleteCherche", {method: 'POST', body: JSON.stringify(param)});
-                console.log(requete);
                 fetch(requete)
                   .then(response => {
                       if (response.status === 200) {
@@ -388,10 +386,8 @@ window.addEventListener('load', function() {
     //prendre le valeur du liste de recherche
     if( listeCherche){
         listeCherche.addEventListener("click", function(evt){
-            console.dir(evt.target)
             if(evt.target.className == 'listCherche'){
                 inputCherche.value = evt.target.id;
-                console.log(evt.target.id);
                 listeCherche.innerHTML = "";
             }
         });
@@ -404,10 +400,8 @@ window.addEventListener('load', function() {
     if(btnChercher){
        btnChercher.addEventListener('click', function(){
             var inputCherche= document.getElementById('searchValue').value;
-            console.log(inputCherche);
             //verifier le champ de chercher est vide ou pas
              var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-            console.log(id_cellier);
             if(inputCherche!=''){
                 window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
              }
@@ -423,9 +417,7 @@ window.addEventListener('load', function() {
     if(inpChercher){
         inpChercher.addEventListener('keyup', function(){
            if (event.keyCode === 13) {
-                //console.log("coucou");
                 let inputCherche= document.getElementById('searchValue').value;
-                console.log(inputCherche);
                 var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
                 //verifier le champ de chercher est vide ou pas
                 if(inputCherche!=''){
@@ -443,7 +435,6 @@ window.addEventListener('load', function() {
     if(btnNouvelleBouteille){
         btnNouvelleBouteille.addEventListener("click", function(evt){
             var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-            console.log(id_cellier);
             window.location.href = "index.php?requete=ajouterNouvelleBouteille&id_cellier=" + id_cellier; 
         });
     }
@@ -469,6 +460,7 @@ window.addEventListener('load', function() {
                 })
                 .then(response => {                 
                   response.forEach(function(element){
+                    liste.classList.add("displayResultats");
                     liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
                   })
                 }).catch(error => {
@@ -487,18 +479,18 @@ window.addEventListener('load', function() {
         id_cellier : document.querySelector("[name='cellier']")
       };
 
-    if(liste){
-        liste.addEventListener("click", function(evt){
-            console.dir(evt.target)
-            if(evt.target.tagName == "LI"){
-                bouteille.nom.dataset.id = evt.target.dataset.id;
-                bouteille.nom.innerHTML = evt.target.innerHTML;
-                liste.innerHTML = "";
-                inputNomBouteille.value = "";
-
-            }
-        });
-    }
+      //sélection d'un nom de bouteille dans le résultat de l'autocomplete
+      liste.addEventListener("click", function(evt){
+        if(evt.target.tagName == "LI"){
+          bouteille.nom.dataset.id = evt.target.dataset.id;
+          bouteille.nom.setAttribute("value", evt.target.innerHTML);
+          
+          liste.innerHTML = "";
+          inputNomBouteille.value = "";
+          liste.classList.remove("displayResutats");
+        }
+      });
+    
 
       //formulaire d'ajout, bouton ajouter et traitement du formulaire
       let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
@@ -702,7 +694,7 @@ window.addEventListener('load', function() {
             //Si la réponse émise par le controleur est égale à true
             if(data == true){
               //Redirection vers la page monCompte
-              window.location.href ="index.php?requete=compte";
+              window.location.href ="index.php?requete=afficheListCellier";
             }
             else if(data == "vide"){
               //Affichage d'un message d'erreur lorsque la 
@@ -762,7 +754,7 @@ window.addEventListener('load', function() {
           //connection à réussie.
           console.log(data);
           if(data == true){
-            window.location.href ="index.php?requete=compte";
+            window.location.href ="index.php?requete=afficheListCellier";
           }
           else{
             //Affichage d'un message d'erreur lorsque la 
@@ -770,6 +762,7 @@ window.addEventListener('load', function() {
             document.querySelector("[name='msgErreur']").classList.add('errorBox');
             var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Les informations entrées sont incorrectes.</p>";
             document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+            document.querySelector(".eraseBox").innerHTML = "";
           }
           
         }).catch(error => {
@@ -785,6 +778,14 @@ window.addEventListener('load', function() {
       window.location.href = "index.php?requete=modificationCompte";
     });
   }
+
+    //btnModif - redirection vers le formulaire de modification du compte
+    let btnRetourCompte = document.querySelector("[name='retourCompte']");
+    if(btnRetourCompte){
+        btnRetourCompte.addEventListener("click", function(evt){
+          window.location.href = "index.php?requete=compte";
+        });
+    }
 
   //btnSauvCompte - Envoie les informations entrées dans le formulaire
   //au controleur afin de permettre leur sauvegarde dans la bd

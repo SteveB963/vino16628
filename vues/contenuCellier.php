@@ -13,9 +13,11 @@
             <option value="code_saq" <?php echo $trier == 'code_saq' ? 'selected' : ''?>>Code_SAQ</option>
         </select>    
     </div>
-    <div class="search">
-        <input id='searchValue' placeholder="Recherche"> 
-        <button id='cherche'><i class="fa fa-search"></i></button> 
+    <div class="search divAutoComplete">
+        <div class="recherche">
+            <input id='searchValue' placeholder="Recherche"> 
+            <button id='cherche'><i class="fa fa-search"></i></button>
+        </div>
         <ul class="listeChercheAutoComplete">
             <ul class="listeNom">
             </ul>

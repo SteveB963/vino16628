@@ -5,14 +5,16 @@
 
 			if(isset($msgConfirmation))
 			{
-				echo "<div class='confirmBox'>
+				echo "<div class='eraseBox msgBox'>
+						<div class='confirmBox msgBox'>
 							<p>$msgConfirmation</p>
-						</div>";
+						</div>
+					  </div>";
 			}
 
 		?>
-		<div name="msgErreur"></div>
-		<div name="msgConfirmation"></div>
+		<div name="msgErreur" ></div>
+		<div name="msgConfirmation" class="msgBox"></div>
 		<div>
 			<input type="email" name="courrielCo" placeholder="Courriel">
 			<label for="courrielCo" class="hide">Courriel:</label>
