@@ -30,12 +30,18 @@
             case 'ajouterBouteille':
                 $this->ajouterBouteille();
                 break;
+            case 'supprimerBouteille':
+                $this->supprimerBouteille();
+                break;
             case 'modifierBouteilleCellier':
                 $this->modifierBouteilleCellier();
                 break;
             case 'boireBouteille':
                 $this->boireBouteille();
-                break;                
+                break;
+            case 'modifierContenuCellier':
+                $this->modifierContenuCellier();
+                break;
             case 'afficheContenuCellier':
                 $this->afficheContenuCellier();
 				break;
@@ -73,14 +79,25 @@
     }
 
     /**
-     * Affiche la page d'accueil
+     * Affiche la page d'accueil si l'utilisateur n'est pas connecté. Sinon,
+     *  l'accueil devient la page de la liste des celliers.
      *
      */
     private function accueil()
     {
-        include("vues/entete.php");
-        include("vues/accueil.php");
-        include("vues/pied.php");
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+        {
+            $cel = new Cellier();
+            $data = $cel->getListeCellier($_SESSION["idUtilisateur"]);
+            include("vues/entete.php");
+            include("vues/listCellier.php");
+            include("vues/pied.php");
+        }
+        else{
+            include("vues/entete.php");
+            include("vues/accueil.php");
+            include("vues/pied.php");
+        }
     }
 
     /**
@@ -236,8 +253,7 @@
     {
         $body = json_decode(file_get_contents('php://input'));
         $cellier = new Cellier();
-        //retire une bouteille du cellier et récupère la nouvelle quantité
-        $resultat = $cellier -> supprimerBouteille($body -> id);
+        $resultat = $cellier -> boireBouteille($body -> id);
         echo json_encode($resultat);
     }
 
@@ -258,6 +274,30 @@
         $cellier = new Cellier();
         $resultat['succes'] = $cellier -> ajouterBouteille($body);
         $resultat['ajout'] = $cellier -> getDernAjout();
+        
+        echo json_encode($resultat);
+    }
+    
+    /**
+     * supprimer tous les bouteilles du même id dans un cellier
+     *
+     */
+    private function supprimerBouteille(){
+        $body = json_decode(file_get_contents('php://input'));
+        $cellier = new Cellier();
+        $resultat = $cellier -> supprimerBouteille($body);
+        echo json_encode($resultat);
+    }
+    
+    /**
+     * Modifie la date d'ajout et la date garder jusqu'à d'un bouteille dans un cellier
+     *
+     */
+    private function modifierContenuCellier(){
+        $body = json_decode(file_get_contents('php://input'));
+        $cellier = new Cellier();
+        $resultat['succes'] = $cellier -> modifierBouteille($body);
+        $resultat['donnee'] = $body;
         
         echo json_encode($resultat);
     }
@@ -289,70 +329,56 @@
         }
         else{
             $resultat = new stdClass();
-            $resultat -> erreur = $body -> verif;
             $resultat -> succes = false;
-            $erreur = false;
+        
+            //récupération des infos de la bouteille avant modif
+            $bte = new Bouteille();
+            $bteAvant = $bte -> getBouteille($body -> id_bouteille);
+            //tableau contenant les modif.
+            $bteNouvelle = (array) $body;
 
-            //récupère les résultat des vérification
-            $verif = (array) $body -> verif;
-            foreach($verif as $err){
-                if($err != ""){
-                    $erreur = true;
+            //vérifie si il y a eu des modifications
+            $duplication = true;
+            foreach($bteAvant as $champ => $valeur){
+                if($bteAvant[$champ] != $bteNouvelle[$champ]){
+                    $duplication = false;
                 }
             }
+            //si modification
+            if(!$duplication){
+                //si bouteille est listé
+                if($body -> non_liste == 0){
+                    //ajoute nouvelle bouteille non-liste
+                    $resultat -> succes = $bte -> ajouterBouteilleNonListe($body);
 
-            //traitement si pas d'érreur
-            if(!$erreur){
-                //récupération des infos de la bouteille avant modif
-                $bte = new Bouteille();
-                $bteAvant = $bte -> getBouteille($body -> bte -> id_bouteille);
-                //tableau contenant les modif.
-                $bteNouvelle = (array) $body -> bte;
+                    //remplace la bouteille liste par la nouvelle bouteille non liste
+                    if($resultat -> succes == true){
+                        //recupération de l'id du dernier ajout
+                        $dernId = $bte -> getDernBouteille();
+                        $resultat -> idNouvelle = $dernId;
+                        //remplace l'id_bouteille dans le cellier avec la nouvelle id
+                        $resultat -> succes = $bte -> remplaceBouteilleCellier($body -> id_cellier, $body-> id_bouteille, $dernId);
 
-                //vérifie si il y a eu des modifications
-                $duplication = true;
-                foreach($bteAvant as $champ => $valeur){
-                    if($bteAvant[$champ] != $bteNouvelle[$champ]){
-                        $duplication = false;
-                    }
-                }
-                //si modification
-                if(!$duplication){
-                    //si bouteille est listé
-                    if($body -> bte -> non_liste == 0){
-                        //ajoute nouvelle bouteille non-liste
-                        $resultat -> succes = $bte -> ajouterBouteilleNonListe($body -> bte);
-
-                        //remplace la bouteille liste par la nouvelle bouteille non liste
-                        if($resultat -> succes == true){
-                            //recupération de l'id du dernier ajout
-                            $dernId = $bte -> getDernBouteille();
-                            $resultat -> idNouvelle = $dernId;
-                            //remplace l'id_bouteille dans le cellier avec la nouvelle id
-                            $resultat -> succes = $bte -> remplaceBouteilleCellier($body -> bte -> id_cellier, $body-> bte -> id_bouteille, $dernId);////////BESOIN D'UN ID CELLIER PROCHIANNEMENT////////
-                            $resultat -> status = "remplaceBouteille";
-
-                            if($resultat -> succes == false){
-                                $resultat  -> echec = "erreur lors du remplacement";
-                            }
-                        }
-                        else{
-                            $resultat  -> echec = "erreur lors de l'insertion";
-                        }
-                    }
-                    //si non listé
-                    else{
-                        //si deja non liste,update de la bouteille.
-                        $resultat -> succes = $bte -> modiferBouteilleNonListe($body -> bte);
                         if($resultat -> succes == false){
-                                $resultat  -> echec = "erreur lors de la mise à jour";
-                            }
+                            $resultat  -> echec = "erreur lors du remplacement";
+                        }
+                    }
+                    else{
+                        $resultat  -> echec = "erreur lors de l'insertion";
                     }
                 }
-                //si pas de modification
+                //si non listé
                 else{
-                    $resultat -> succes = "dup";
+                    //si deja non liste,update de la bouteille.
+                    $resultat -> succes = $bte -> modiferBouteilleNonListe($body);
+                    if($resultat -> succes == false){
+                        $resultat  -> echec = "erreur lors de la mise à jour";
+                    }
                 }
+            }
+            //si pas de modification
+            else{
+                $resultat -> succes = "dup";
             }
 
             echo trim(json_encode($resultat));

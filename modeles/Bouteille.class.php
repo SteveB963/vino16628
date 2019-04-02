@@ -103,7 +103,7 @@ class Bouteille extends Modele {
         }
         $requete .= ' AND c.id_cellier = ' . $id_cellier . '
                                 ORDER BY '.$trier;
-       var_dump($requete)  ;          
+       //var_dump($requete)  ;          
 
       
 		if(($res = $this->_db->query($requete)) == true)

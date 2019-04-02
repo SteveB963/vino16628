@@ -12,8 +12,10 @@
 		<link rel="stylesheet" href="./css/normalize.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="./css/base_h5bp.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="./css/main.css" type="text/css" media="screen">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+
 
 		<!-- font-family: 'Libre Baskerville', serif; -->
 		<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
@@ -25,9 +27,10 @@
 		<script src="./js/main.js"></script>
 		<script src="./js/stylemenu.js"></script>
 	</head>
-	<body >
+	<body>
 		<header>
             <div>
+                <!-- Premier menu avec logo du site -->
                 <div id="entete1">
                     <div>
                         <a href="?requete=accueil"><img id="logo" src="./images/logo_blanc.png"></a>
@@ -35,37 +38,57 @@
                     <div id="titreEntete">
                         <h1>Vino</h1>
                     </div>
-                    <div id="liensSociaux">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook-square"></i></a>
-                        <a href="#"><i class="fab fa-twitter-square"></i></a>
-                        <a href="#"><i class="fab fa-pinterest-square"></i></a>
+                    <!-- Menu Burger des options liés au compte -->
+                    <div id="lienOptionsCompte">
+                        <p><i class='fas fa-user-circle'></i></p><input type='checkbox' id='profile'>
+                        <div id='optionsCompte'>
+                            <ul>
+<?php
+    //Les options accessibles depuis le menu du compte diffèrent selon si l'usager 
+    //est connecté ou pas.
+    if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
+        echo " <li>" . $_SESSION['prenomUtilisateur'] . " " . $_SESSION['nomUtilisateur'] . "</li>
+                <li><a href='?requete=compte'>Voir mon profile</a></li>
+                <li><a href='?requete=deconnexion'>Se déconnecter</a></li>
+                ";
+    }
+    else{
+        echo "<li>Visiteur</li>
+            <li><a href='?requete=compte'>Se connecter</a></li>
+            <li><a href='?requete=inscription'>S'inscrire</a></li>";
+    }                          
+?>
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
-                <div id="imageEntete">
 
-                </div>
             </div>
+
+            <!-- Menu Burger -->
 			<input type="checkbox" id="burger">
 			<i class="fas fa-bars"></i>
 			<i class="fas fa-times"></i>
+
+            <!-- Menu Principale -->
 			<nav>
                 <div id="mainNav">
                     <ul>
-                    <!--
-                        <li><a href="?requete=accueil">Mon cellier</a></li>
-                    -->
-                    <li><a href="?requete=accueil">Accueil</a></li>
-                    <li><a href="#">Vins</a></li>
-                    <li><a href="?requete=afficheListCellier">Mes Celliers</a></li>
-                    <li><a href="?requete=compte">Mon Compte</a></li>
-                    <div id="liensSociauxMobile">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook-square"></i></a>
-                        <a href="#"><i class="fab fa-twitter-square"></i></a>
-                        <a href="#"><i class="fab fa-pinterest-square"></i></a>
-                    </div>
+<?php                        
+    //Les options suivante sont accesssible depuis le menu principale seulement
+    //en format mobile
+    if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
+        echo "<li class='menuMobile'><a href='?requete=compte'>Mon profile <i class='fas fa-user-circle'></i></a></li>
+                <li class='menuMobile'><a href='?requete=deconnexion'>Se déconnecter <i class='fas fa-sign-out-alt'></i></a></li>
+                ";
+    }
+    else{
+        echo "<li class='menuMobile'><a href='?requete=compte'>Se connecter <i class='fas fa-sign-in-alt'></i></a></li>
+            <li class='menuMobile'><a href='?requete=inscription'>S'inscrire <i class='fas fa-user-plus'></i></a></li>";
+    }                          
+?>
+
                     </ul>
                 </div>
 			</nav>
