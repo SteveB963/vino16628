@@ -4,6 +4,7 @@
 
 html, body {
 	height: 100%;
+	min-width: 320px;
 	margin: 0;
 	background-color: #3c3c40;
 	font-family: 'Hind', sans-serif;
@@ -92,28 +93,6 @@ footer
 	font-family: 'Libre Baskerville', serif;
 }
 
-#entete1 #liensSociaux a{
-	color: white;
-	font-size: 2.2em;
-	margin-left: 10px;
-}
-
-#entete1 #liensSociaux{
-	text-align: right;	
-}
-
-#imageEntete{
-	width: 100%;
-	height: 400px;
-	background-image:url("../images/barrel-black.jpg");
-	background-size: cover;
-	background-position: center;
-}
-
-#liensSociauxMobile{
-	display: none;
-}
-
 /* Menu du compte*/
 #lienOptionsCompte{
 	text-align: center;
@@ -196,207 +175,6 @@ footer
 	color: black;
 }
 
-@media all and (max-width:619px)
-{
-	#liensSociaux{
-		padding-right: 20px;
-		padding-left: 50px;
-		box-sizing: border-box;
-		text-align: center;
-	}
-
-	#mainNav ul {
-		width: 90% !important;
-		padding-left: 0px;
-	}
-}
-
-@media all and (min-width:451px)
-{
-	/* Retirer les liens de menu du format mobile*/
-	#burger, .fa-bars, .fa-times, .menuMobile{
-		display: none !important;
-	}
-}
-
-/* Menu Hamburger */
-@media all and (max-width:450px)
- {
- 	#entete1{
- 		height: 200px;
- 		flex-flow: column;
- 		align-items: center;
- 		justify-content: space-between;
- 	}
-
- 	#entete1 div:nth-child(1){
- 		display: flex;
- 		justify-content: space-around;
- 		height: 150px;
- 	}
-
- 	#entete1 #logo{
- 		width: 150px;
- 		height: 150px;
- 	}
-
- 	#titreEntete{
- 		font-size: 0.7em;
- 		height: 60px;
- 	}
-
- 	#imageEntete{
- 		display: none;
- 	}
-
- 	/* Menu burger */
- 	#burger{
- 		position: absolute;
- 		top: 179px;
- 		right: 20px;
- 		display: block;
- 		width: 40px;
- 		height: 32px;
- 		z-index: 2;
- 		opacity: 0;
- 		cursor: pointer;
- 	}
-
- 	.fa-bars{
- 		display: block;
- 		position: absolute;
- 		top: 177px;
- 		right: 25px;
- 		font-size: 2.5em;
- 		color: white;
- 		transition: 1s;
- 		
- 	}
-
- 	.fa-times{
- 		display: block;
- 		position: absolute;
- 		top: 177px;
- 		right: 28px;
- 		font-size: 2.5em;
- 		color: white;
- 		opacity: 0;
- 		transition: 1s;
- 	}
-
- 	#burger:checked ~ .fa-bars{
- 		opacity: 0;
- 	}
-
- 	#burger:checked ~ .fa-times{
- 		opacity: 1;
- 	}
-
- 	#burger:checked ~ nav > #mainNav{
- 		display: block !important;
- 	}
-
-    /* Menu */ 
-    nav{
-        height:0px !important;
-    }
-
- 	#mainNav{
- 		display: none !important;
- 		position: absolute;
- 		top: 220px;
- 		height: 80%;
- 		width: 100%;
- 		z-index: 2;
- 		display: flex;
- 		flex-flow: column;
- 		justify-content: space-around;
- 		
- 	}
-
- 	#mainNav ul{
- 		display: block;
- 		padding-top: 20%;
- 		padding-left: 0px;
- 		display: flex !important;
- 		flex-flow: column !important;
- 		justify-content: space-between !important;
- 		align-items: center;
- 		height: 60% !important;
- 	}
-
- 	#mainNav ul li{
- 		width: 100%;
- 		text-align: center;
- 		border-bottom: 2px solid #730101;
- 	}
-
- 	#liensSociaux{
- 		display: none;
- 	}
-
- 	#liensSociauxMobile{
- 		display: block;
- 		font-size: 3em;
- 	}
-
- 	#mainNav a{
- 		text-decoration: none;
- 		color: #730101;
- 	}
-
- }
-
-/* Menu */
-nav{
-    height:50px;
-}
-
-#mainNav{
-	background-color: #222224;
-    z-index:2;
-}
-
-#mainNav li a{
-	font-family: 'Libre Baskerville', serif;
-	font-size: 1.2em;
-	text-decoration: none;
-	color: white;
-	transition: 0.5s;
-}
-
-#mainNav li a:hover{
-	color: #730101;
-}
-
-#mainNav ul{
-	list-style: none;
-	width: 80%;
-	height: 50px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 0px;
-	margin-bottom: 0px;
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-around;
-	align-items: center;
-}
-
-@media all and (min-width:451px)
-{
-	.sticky{
-		position: fixed;
-		top: 0;
-		width: 100%;
-		z-index: 1;
-	}
-
-	.sticky + .content{
-		padding-top: 610px;
-	}
-}
-
 /********
  * Accueil.php
  ********/
@@ -432,21 +210,6 @@ nav{
  	text-align: center;
  	z-index: 1;
 }
-
-@media all and (max-width:860px)
- {
- 	.accueil .divBlanche{
- 		width: 20%;
- 		min-width: 200px;
- 	}
- }
-
- @media all and (max-width:736px)
- {
- 	.accueil .divBlanche{
- 		width: 80%;
- 	}
- }
 
  .accueil .divBlanche:nth-child(1){
  	background-image: url("../images/cellier.png");	
@@ -673,9 +436,9 @@ nav{
  ********/
 
 /* Div comportant un fomulaire*/
-.mesFormulaires{
+.mesFormulaires, .contenuPage{
 	width: 80%;
-	min-width: 400px;
+	min-width: 320px;
 	margin-top: 30px;
 	margin-bottom: 30px;
 	padding: 20px;
@@ -683,7 +446,7 @@ nav{
 	background-color: white;
 }
 
-.mesFormulaires h2{
+.mesFormulaires h2, .contenuPage h2{
 	color: #730101;
 }
 
@@ -846,35 +609,7 @@ button, .mesFormulaires input[type='button']{
 	width: 45%;
 }
 
-@media all and (max-width:770px)
-{
-    .bouteille > div:nth-child(2){
-        flex-flow:column;
-    }
-    .options{
-        flex-flow:row;
-    }
-}
 
-@media all and (max-width:635px)
-{
-    .bouteille{
- 		max-width:300px;
-        flex-flow:column;
- 	}
-     
-    .description{
-        display:none;
-     }
-     
-    .options{
-        display:none;
-     }
-     
-    .bouteille > div:nth-child(2){
-        width:100%;
-    }
- }
 
 /* Erreurs générées par le php */
 .errorBox{
@@ -947,6 +682,7 @@ button, .mesFormulaires input[type='button']{
 /********
  * listCellier.php
  ********/
+ /*
 .listCellier{
     display:flex;
     flex-flow:column;
@@ -969,7 +705,7 @@ button, .mesFormulaires input[type='button']{
 	text-decoration: none;
 	font-family: 'Hind', sans-serif;
 }
-
+*/
 
 /********
  * formAjoutBout.php
@@ -1010,3 +746,192 @@ button, .mesFormulaires input[type='button']{
  	height: 0;
  	display: none;
  }
+
+/**************** Tablette ****************/
+@media all and (max-width:1024px){
+	/********
+	 * Accueil.php
+	 ********/
+ 	.accueil .divBlanche{
+ 		width: 25%;
+ 		min-width: 200px;
+ 	}
+
+ 	 .bouteille > div:nth-child(2){
+        flex-flow:column;
+    }
+}
+
+/**************** Mobile ****************/
+@media all and (max-width:768px){
+	/* Entête */
+ 	#entete1{
+ 		height: 200px;
+ 		flex-flow: column;
+ 		align-items: center;
+ 		justify-content: space-between;
+ 	}
+
+ 	#entete1 div:nth-child(1){
+ 		display: flex;
+ 		justify-content: space-around;
+ 		height: 150px;
+ 	}
+
+ 	#entete1 #logo{
+ 		width: 150px;
+ 		height: 150px;
+ 	}
+
+ 	#titreEntete{
+ 		font-size: 0.7em;
+ 		height: 60px;
+ 	}
+
+ 	#lienOptionsCompte{
+ 		display: none;
+ 	}
+
+ 	/* Menu burger */
+ 	#burger{
+ 		position: absolute;
+ 		top: 179px;
+ 		right: 20px;
+ 		display: block;
+ 		width: 40px;
+ 		height: 32px;
+ 		z-index: 2;
+ 		opacity: 0;
+ 		cursor: pointer;
+ 	}
+
+ 	.fa-bars{
+ 		display: block;
+ 		position: absolute;
+ 		top: 177px;
+ 		right: 25px;
+ 		font-size: 2.5em;
+ 		color: white;
+ 		transition: 1s;
+ 		
+ 	}
+
+ 	.fa-times{
+ 		display: block;
+ 		position: absolute;
+ 		top: 177px;
+ 		right: 28px;
+ 		font-size: 2.5em;
+ 		color: white;
+ 		opacity: 0;
+ 		transition: 1s;
+ 	}
+
+ 	#burger:checked ~ .fa-bars{
+ 		opacity: 0;
+ 	}
+
+ 	#burger:checked ~ .fa-times{
+ 		opacity: 1;
+ 	}
+
+ 	#burger:checked ~ nav > #mainNav{
+ 		display: block !important;
+ 	}
+
+    /* Menu */ 
+    nav{
+        height:0px !important;
+    }
+
+ 	#mainNav{
+ 		display: none !important;
+ 		position: absolute;
+ 		top: 220px;
+ 		height: 80%;
+ 		width: 100%;
+ 		z-index: 2;
+ 		display: flex;
+ 		flex-flow: column;
+ 		justify-content: space-around;
+ 		background-color: #222224;
+ 		
+ 	}
+
+ 	#mainNav ul{
+ 		display: flex;
+ 		flex-flow: column;
+ 		justify-content: space-around;
+ 		margin-left: auto;
+		margin-right: auto;
+		margin-top: 0px;
+		margin-bottom: 0px;
+ 		padding-top: 20%;
+ 		padding-left: 0px;
+ 		align-items: center;
+ 		height: 30%;
+ 		list-style: none;
+		width: 80%;
+ 	}
+
+ 	#mainNav ul li{
+ 		width: 100%;
+ 		text-align: center;
+ 		border-bottom: 2px solid #730101;
+ 	}
+
+ 	#mainNav li a{
+		font-family: 'Libre Baskerville', serif;
+		font-size: 1.2em;
+		color: white;
+		transition: 0.5s;
+	}
+
+	/********
+	 * Accueil.php
+	 ********/
+ 	.accueil .divBlanche{
+ 		width: 80%;
+ 	}
+
+ 	/********
+	 * ContenuCellier.php
+	 ********/
+    .options{
+        flex-flow:row;
+    }
+
+    .bouteille{
+ 		max-width:300px;
+        flex-flow:column;
+ 	}
+     
+    .description{
+        display:none;
+     }
+     
+    .options{
+        display:none;
+     }
+     
+    .bouteille > div:nth-child(2){
+        width:100%;
+    }
+
+
+}
+
+/**************** Tout sauf mobile ****************/
+@media all and (min-width:769px)
+{
+	/* Retirer les liens de menu du format mobile*/
+	#burger, .fa-bars, .fa-times, .menuMobile{
+		display: none !important;
+	}
+}
+
+ /*	tablette = 768 a 1024
+
+ 	mobile = -768
+
+ 	web = +1024 */

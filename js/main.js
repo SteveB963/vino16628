@@ -285,6 +285,8 @@ window.addEventListener('load', function() {
            let cherche= inputCherche.value;
             listeCherche.innerHTML = "";
 
+            listeCherche.classList.add("displayResultats");
+
             //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
             listeNom.innerHTML ="<li>Nom:</li>";
             listeNom.style.visibility="hidden";
@@ -692,7 +694,7 @@ window.addEventListener('load', function() {
             //Si la réponse émise par le controleur est égale à true
             if(data == true){
               //Redirection vers la page monCompte
-              window.location.href ="index.php?requete=compte";
+              window.location.href ="index.php?requete=afficheListCellier";
             }
             else if(data == "vide"){
               //Affichage d'un message d'erreur lorsque la 
@@ -752,7 +754,7 @@ window.addEventListener('load', function() {
           //connection à réussie.
           console.log(data);
           if(data == true){
-            window.location.href ="index.php?requete=compte";
+            window.location.href ="index.php?requete=afficheListCellier";
           }
           else{
             //Affichage d'un message d'erreur lorsque la 

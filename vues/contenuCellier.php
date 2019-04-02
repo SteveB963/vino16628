@@ -18,7 +18,7 @@
             <input id='searchValue' placeholder="Recherche"> 
             <button id='cherche'><i class="fa fa-search"></i></button>
         </div>
-        <ul class="listeChercheAutoComplete displayResultats">
+        <ul class="listeChercheAutoComplete">
             <ul class="listeNom">
             </ul>
             <ul class="listePrix">

@@ -76,14 +76,25 @@
     }
 
     /**
-     * Affiche la page d'accueil
+     * Affiche la page d'accueil si l'utilisateur n'est pas connecté. Sinon,
+     *  l'accueil devient la page de la liste des celliers.
      *
      */
     private function accueil()
     {
-        include("vues/entete.php");
-        include("vues/accueil.php");
-        include("vues/pied.php");
+        if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
+        {
+            $cel = new Cellier();
+            $data = $cel->getListeCellier($_SESSION["idUtilisateur"]);
+            include("vues/entete.php");
+            include("vues/listCellier.php");
+            include("vues/pied.php");
+        }
+        else{
+            include("vues/entete.php");
+            include("vues/accueil.php");
+            include("vues/pied.php");
+        }
     }
 
     /**

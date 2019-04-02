@@ -61,9 +61,7 @@
                     </div>
 
                 </div>
-                <div id="imageEntete">
 
-                </div>
             </div>
 
             <!-- Menu Burger -->
@@ -75,14 +73,7 @@
 			<nav>
                 <div id="mainNav">
                     <ul>
-                        <li><a href="?requete=accueil">Accueil</a></li>
-                        <li><a href="#">Vins</a></li>
-<?php
-    //La page des celliers est disponible uniquement lorsque l'usager est connecté
-    if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
-        echo "<li><a href='?requete=afficheListCellier'>Mes Celliers</a></li>";
-    }                         
-
+<?php                        
     //Les options suivante sont accesssible depuis le menu principale seulement
     //en format mobile
     if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
