@@ -128,6 +128,12 @@
                 $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
                 $cellier = new Cellier();
                 $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
+                if($cherche==''){
+                    $msgCount='<h4> Resultat-' .sizeof($data['info']).' Bouteilles</h4>';
+                }
+                else{
+                    $msgCount='<h4>' .sizeof($data['info']).' Bouteille trouve</h4>';
+                }
                 include("vues/entete.php");
                 include("vues/contenuCellier.php");
                 include("vues/pied.php");

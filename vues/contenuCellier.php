@@ -18,7 +18,7 @@
         </div>
         <div class="search divAutoComplete">
             <div class="recherche">
-                <input id='searchValue' placeholder="Recherche"> 
+                 <input id='searchValue'  <?php if ($cherche!=''){?>value='<?php echo $cherche;}else?>' placeholder='Recherche'> 
                 <button id='cherche'><i class="fa fa-search"></i></button>
             </div>
             <ul class="listeChercheAutoComplete">
@@ -42,11 +42,12 @@
     <div class="cellier" data-cellier="<?php echo $_GET['id_cellier']?>">
     <?php
         if($data){
-            /*?>
+            ?>
             <div class="count">
-                <h4> Resultat-<?php echo sizeof($data['info'])?> Bouteilles</h4>
+                <h4> <?php echo $msgCount?></h4>
             </div>
-           <?php*/
+            
+           <?php
             foreach ($data['info'] as $cle => $infoBout) {
         ?>
         <div class="bouteille" id="bouteille<?php echo $infoBout['id_bouteille'] ?>"><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
