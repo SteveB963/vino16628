@@ -111,7 +111,7 @@ document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
 //bouton supprimer le cellier dans la liste des celliers
 document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
   element.addEventListener("click", function(evt){
-    alert("Vous êtes sûr de supprimer ce cellier?")
+    if (confirm("Vous êtes sûr de supprimer ce cellier?")){
       let id_cellier = evt.target.parentElement.dataset.id;
       let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
       console.log(id_cellier);
@@ -130,7 +130,8 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
           }        
         }).catch(error => {
           console.error(error);
-        });   
+        });  
+      } 
   })
 
 });
