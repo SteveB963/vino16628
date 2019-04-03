@@ -1,5 +1,5 @@
-
-<div class="listCellier content contenuPage">
+<!-- listCellier contenuPage -->
+<div class="content contenuCellier">
 
     <div class="monCompte">
         <div>
@@ -26,23 +26,27 @@
     </div>
 
     <div class="mesCelliers">
+        <h2>Mes Celliers</h2>
+        <!-- mesCellliers -->
+        <div class="divMesCelliers">
 <?php
 if($data){
 
     foreach ($data as $cle => $cellier) {
  
     ?>
-        <div>
-            <p><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
             <div>
-                <button>test</button>
-                <button>test2</button>
-            </div> 
-        </div>
+                <p><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
+                <div>
+                    <button>test</button>
+                    <button>test2</button>
+                </div> 
+            </div>
    
 <?php
     }
 ?>
+        </div>
     </div>
 <?php
 }

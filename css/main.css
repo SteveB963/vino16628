@@ -636,7 +636,6 @@ button, .mesFormulaires input[type='button']{
 	margin-bottom: 0px;
 	padding-right: 5px;
 }
-<<<<<<< HEAD
 
 
 /********
@@ -650,20 +649,44 @@ button, .mesFormulaires input[type='button']{
 }
 
 .mesCelliers{
- 	width: 60%;
+	margin: auto;
+	margin-top: 0;
+	box-sizing: border-box;
+	width: 50%;
 }
 
-.mesCelliers > div{
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-between;
-	padding-left: 10px;
-	padding-right: 10px;
+.monCompte{
+    position:sticky;
+    top:0px;
+    display:flex;
+    flex-flow:column nowrap;
+    margin-top: 20px;
+    padding:10px;
+    height:auto;
+    background-color:white;
+    width:25%;
+    border:1px solid #ddd;
 }
-=======
 
+.divMesCelliers > div{
+ 	display: flex;
+ 	flex-direction: row;
+ 	justify-content: space-between;
+    align-items: center;
+	width: 100%;
+	padding:10px 10px 10px 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+}
 
->>>>>>> 88e9b9c4a7dee6f35eac935f4ae8865acd9f2aac
+.divMesCelliers button{
+	margin: 5px;
+}
+
+.divMesCelliers p{
+	margin-left: 5px;
+}
+
 
 /********
  * formAjoutBout.php
