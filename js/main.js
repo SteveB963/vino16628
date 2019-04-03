@@ -16,7 +16,7 @@ window.addEventListener('load', function() {
 
 
     
-    //buttonn Boire
+    //button Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
         actionBtnBoire(element);
     });
