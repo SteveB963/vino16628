@@ -21,14 +21,81 @@ class Cellier extends Modele {
 	 */
 	public function creerUnNouveauCellier($data)
 	{
-		$requete = "INSERT INTO cellier(id_usager,nom) VALUES (".
-		"'".$data["idUsager"]."',".
-		"'".$data["nomCellier"]."')";
+		$rows = Array();
+		$allCelliers = $this->_db->query('SELECT nom FROM ' . self::TABLE);
+		$nomExistant = false;
+		//Vérifier si le nom entrer pour la création du nouveau
+		//cellier est déjà existant
+		if($allCelliers->num_rows)
+		{
 
-        $res = $this->_db->query($requete);
-        
-		return $res;
-	}   
+            while($row = $allCelliers->fetch_assoc())
+            {
+            	if(strtolower($data["nomCellier"]) == strtolower($row["nom"])){
+            		$nomExistant = true;
+            		break;
+            	}else{
+            		$nomExistant = false;
+            	}
+            }
+		}
+
+		if($nomExistant == false)
+		{
+			$requete = "INSERT INTO cellier(id_usager,nom) VALUES (".
+			"'".$data["idUsager"]."',".
+			"'".$data["nomCellier"]."')";
+			$res = $this->_db->query($requete);			
+			return $res;
+		}
+		else if($nomExistant == true){
+			return false;
+
+		}
+	} 
+	
+	public function modifierNomCellier($data)
+	{
+		$rows = Array();
+		$allCelliers = $this->_db->query('SELECT * FROM ' . self::TABLE);
+		$nomExistant = false;
+		//Vérifier si le nom entrer pour la création du nouveau
+		//cellier est déjà existant
+		// $nom=getNomCellier($data["id_cellier"])['nom'];
+		 if($allCelliers->num_rows)
+		{
+
+            while($row = $allCelliers->fetch_assoc())
+            {
+            	if(strtolower($data["nomCellier"]) == strtolower($row["nom"])){
+					if($data["id_cellier"]==$row["id_cellier"]){
+						$nomExistant = false;
+					}
+					else
+            		$nomExistant = true;
+            		break;
+            	}else{
+            		$nomExistant = false;
+            	}
+            }
+		}
+
+		if($nomExistant == false)
+		{
+			// var_dump($data["nomCellier"]);
+			// die();
+			
+
+			$requete = "UPDATE cellier SET 
+			nom = "."'".$data["nomCellier"]."' WHERE id_cellier = " . $data["id_cellier"];
+			$res = $this->_db->query($requete);			
+			return $res;
+		}
+		else if($nomExistant == true){
+			return false;
+
+		}
+	}
 	
 	
 
@@ -192,6 +259,31 @@ class Cellier extends Modele {
         
 		return $res;
 	}
+
+	public function getNomCellier($id)
+	{
+		$row = Array();
+		
+        $res = $this->_db->query('SELECT 
+                                    * 
+                                    FROM '. self::TABLE . '
+                                    WHERE id_cellier = ' . $id);
+		if($res->num_rows)
+		{
+            $row = $res->fetch_assoc();
+		}
+		
+		return $row;
+	}
+
+	public function supprimerCellier($id)
+	{
+		$requete = 'DELETE FROM cellier WHERE id_cellier = ' . $id;
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+    
 
 
 

@@ -641,18 +641,23 @@ button, .mesFormulaires input[type='button']{
 /********
  * listCellier.php
  ********/
+ /*
 .listCellier{
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-around;
 	padding-left: 0px;
+}*/
+
+.listCellierDivDroite{
+	width: 25%;
+	min-width: 230px;
 }
 
 .mesCelliers{
 	margin: auto;
 	margin-top: 0;
-	box-sizing: border-box;
-	width: 50%;
+	width: 55%;
 }
 
 .monCompte{
@@ -664,7 +669,6 @@ button, .mesFormulaires input[type='button']{
     padding:10px;
     height:auto;
     background-color:white;
-    width:25%;
     border:1px solid #ddd;
 }
 
@@ -673,18 +677,29 @@ button, .mesFormulaires input[type='button']{
  	flex-direction: row;
  	justify-content: space-between;
     align-items: center;
-	width: 100%;
 	padding:10px 10px 10px 10px;
     background-color: white;
     border: 1px solid #ddd;
 }
 
+.divMesCelliers{
+ 	box-sizing: border-box;
+}
+
 .divMesCelliers button{
 	margin: 5px;
+	width: 30%;
 }
 
 .divMesCelliers p{
 	margin-left: 5px;
+	font-size: 18px;
+	width: 20%;
+}
+
+.divMesCelliers .options{
+	width: 80%;
+	text-align: right;
 }
 
 

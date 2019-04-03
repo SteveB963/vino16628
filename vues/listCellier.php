@@ -1,13 +1,14 @@
 <!-- listCellier contenuPage -->
-<div class="content contenuCellier">
+<div class="listCellier content contenuCellier">
 
-    <div class="monCompte">
-        <div>
+    <div class="listCellierDivDroite">
+        <div class="monCompte">
             <div>
-                <h2>Mon Compte</h2>
-                <p><a name="modifierCompte">Modifier<i class="fas fa-user-edit"></i></a></p>
+                <div>
+                    <h2>Mon Compte</h2>
+                    <p><a name="modifierCompte">Modifier<i class="fas fa-user-edit"></i></a></p>
+                </div>
             </div>
-        </div>
 
 <?php
     if(isset($msgConfirmation))
@@ -18,11 +19,13 @@
     }
 ?>
         
-        <div>
-            <p><strong>Prenom: </strong><?php echo $_SESSION["prenomUtilisateur"] ?></p>
-            <p><strong>Nom: </strong><?php echo $_SESSION["nomUtilisateur"] ?></p>
-            <p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>
+            <div>
+                <p><strong>Prenom: </strong><?php echo $_SESSION["prenomUtilisateur"] ?></p>
+                <p><strong>Nom: </strong><?php echo $_SESSION["nomUtilisateur"] ?></p>
+                <p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>
+            </div>
         </div>
+        <button class='btnAjoutCellier'>Ajouter un cellier</button>
     </div>
 
     <div class="mesCelliers">
@@ -35,14 +38,14 @@ if($data){
     foreach ($data as $cle => $cellier) {
  
     ?>
-            <div>
-                <p><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
-                <div>
-                    <button>test</button>
-                    <button>test2</button>
-                </div> 
+        <div class="">
+            <p class="nom"><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
+            <div class="options"  data-id="<?php echo $cellier['id_cellier']  ?>">
+                <button class='btnModifierNomCellier'>Modifier</button>
+                <button class='btnSupprimerCellier'>Supprimer</button>
             </div>
-   
+           
+        </div> 
 <?php
     }
 ?>
