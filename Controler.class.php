@@ -51,9 +51,6 @@
 			case 'afficheListCellier':
                 $this->afficheListCellier();
 				break;
-            case 'uploadPage':
-                $this->uploadPage();
-                break;
             case 'compte':
                 $this->compte();
                 break;
@@ -71,6 +68,12 @@
                 break;
             case 'modificationCompte':
                 $this->modificationCompte();
+                break;
+            case 'modifierNomCellier':
+                $this->modifierNomCellier();
+                break;
+            case 'supprimerCellier':
+                $this->supprimerCellier();
                 break;
             case 'autocompleteCherche':
                 $this->autocompleteCherche();
@@ -126,12 +129,20 @@
                 }
                 $bte = new Bouteille();
                 $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
+                
+                //affichage le numero de resultat de recherche 
+                if($cherche!=''){
+                    $msgCount='<h4> Resultat-' .sizeof($data['info']).' Bouteille Trouvé</h4>';
+                }
+                else{
+                    $msgCount='';
+                }
                 $cellier = new Cellier();
                 $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
                 include("vues/entete.php");
                 include("vues/contenuCellier.php");
                 include("vues/pied.php");
-               //var_dump($_SESSION["id_cellier"]);   
+              
             }
             
             else{
@@ -144,8 +155,11 @@
             include("vues/pied.php");
         }
     }
-    
 
+    /**
+     * Affiche la liste des celliers d'un usager
+     *
+     */
     private function afficheListCellier()
     {
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
@@ -188,7 +202,7 @@
             $body = json_decode(file_get_contents('php://input'));
              //var_dump($_GET['id_cellier']);
             $bte = new Bouteille();
-            $list = $bte->autocompleteCherche($body->chercheValue, $body->id_cellier);
+            $list = $bte->autocompleteCherche($body->chercheValue,$body->id_cellier);
             echo json_encode($list);
         
     }
@@ -214,6 +228,9 @@
     }
     
 		
+    /**
+     * Créer un nouveau cellier d'un usager
+     */
 	private function creerUnCellier()
 	{	
 		if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
@@ -228,6 +245,7 @@
                 echo json_encode($resultat);			
     		}
     		else{
+                $page = "creer";
     			include("vues/entete.php");
     			include("vues/creerCellier.php");
     			include("vues/pied.php");
@@ -605,6 +623,47 @@
             include("vues/pied.php");
         }
     }
+
+
+
+    private function modifierNomCellier()
+    {  
+        $body = json_decode(file_get_contents('php://input'));
+        
+        
+        if(!empty($body)){ 
+            
+            $cel = new Cellier();
+            $data["nomCellier"] = $body->nom;
+            $data["id_cellier"] = $body->id_cellier;
+
+                                
+            $resultat = $cel->modifierNomCellier($data);				
+            echo json_encode($resultat);
+        }
+        else{
+            //Aller vers la page de modification du compte
+            $cel = new Cellier();
+            $donnee['cellier'] = $cel->getNomCellier($_GET['id_cellier']);
+            
+            include("vues/entete.php");
+            include("vues/modifierNomCellier.php");
+            include("vues/pied.php");
+        }
+    }
+
+    private function supprimerCellier()
+    {  
+       
+        
+        $body = json_decode(file_get_contents('php://input'));
+        
+            $cel = new Cellier();
+            $resultat = $cel->supprimerCellier($body -> id_cellier);
+            echo json_encode($resultat);
+           
+    }
+    
 
 }
 

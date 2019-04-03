@@ -292,7 +292,7 @@ h2{
      width:100%;
     font-family: 'Roboto', 'RobotoDraft', sans-serif;
     font-size: 20px;
-    color:white;
+    color:black;
     text-align: center;
 }
 
@@ -392,6 +392,7 @@ table td button{
     height:40px;
 }
 
+
 /*cache la liste de bouteille*/
 .hideListe{
     display:none;
@@ -489,7 +490,6 @@ table td button{
 	border: none;
 	box-shadow: none;
 }
-
 .recherche button{
 	width: 20px;
 	margin: 0;
