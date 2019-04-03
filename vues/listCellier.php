@@ -7,12 +7,24 @@ if($data){
     foreach ($data as $cle => $cellier) {
  
     ?>
-    <div data-quantite="">
-        <div>
-            <p><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
+     <!-- <div class="bouteille"> -->
+    
+        <!-- <div class="img">
+            
+            <img src="https:<?php echo $cellier['image'] ?>">
+        </div> -->
+        <div class="description">
+            <p class="nom"><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a>
+                <div class="options"  data-id="<?php echo $cellier['id_cellier']  ?>">
+                    <button class='btnModifierNomCellier'>Modifier</button>
+                    <button class='btnSupprimerCellier'>Supprimer</button>
+                </div>
+            </p>
+           
         </div>
         
-    </div>
+    
+    <!-- </div> -->
    
 <?php
     }
