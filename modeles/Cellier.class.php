@@ -57,16 +57,21 @@ class Cellier extends Modele {
 	public function modifierNomCellier($data)
 	{
 		$rows = Array();
-		$allCelliers = $this->_db->query('SELECT nom FROM ' . self::TABLE);
+		$allCelliers = $this->_db->query('SELECT * FROM ' . self::TABLE);
 		$nomExistant = false;
 		//Vérifier si le nom entrer pour la création du nouveau
 		//cellier est déjà existant
-		if($allCelliers->num_rows)
+		// $nom=getNomCellier($data["id_cellier"])['nom'];
+		 if($allCelliers->num_rows)
 		{
 
             while($row = $allCelliers->fetch_assoc())
             {
             	if(strtolower($data["nomCellier"]) == strtolower($row["nom"])){
+					if($data["id_cellier"]==$row["id_cellier"]){
+						$nomExistant = false;
+					}
+					else
             		$nomExistant = true;
             		break;
             	}else{
