@@ -189,13 +189,13 @@ class Cellier extends Modele {
 	}
     
     /**
-	 * ajoute une bouteille dans le cellier
+	 * supprime une bouteille dans le cellier
 	 * 
 	 * @param int $id ranger dans le contenu cellier a supprimer
 	 * 
-	 * @return Boolean Succès ou échec de l'ajout.
+	 * @return Boolean Succès ou échec de la suppression.
 	 */
-	public function supprimerBouteille($id)
+	public function boireBouteille($id)
 	{
 		$requete = 'DELETE FROM cellier_contenu WHERE id = ' . $id;
         $res = $this->_db->query($requete);
@@ -204,9 +204,9 @@ class Cellier extends Modele {
 	}
     
     /**
-	 * Supprime une bouteille dans le cellier
+	 * ajouter un bouteille dans le contenu du cellier
 	 * 
-	 * @param int $id ranger dans le contenu cellier a supprimer
+	 * @param object $data date ajout et date garde jusqua
 	 * 
 	 * @return Boolean Succès ou échec de l'ajout.
 	 */
@@ -217,6 +217,43 @@ class Cellier extends Modele {
             ' . $data -> id_bouteille . ',
             "' . $data -> date_ajout . '",
             "' . $data -> garde_jusqua . '")';
+        
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+    
+    /**
+	 * modifie la date ajout et la date garde jusqua d'un bouteille dans le cellier
+	 * 
+	 * @param object $data les nouvelles dates
+	 * 
+	 * @return Boolean Succès ou échec de la modification
+	 */
+	public function modifierBouteille($data)
+	{
+		$requete = 'UPDATE cellier_contenu SET
+            date_ajout = "' . $data -> date_ajout . '", 
+            garde_jusqua = "' . $data -> garde_jusqua . '" 
+            WHERE id = ' . $data -> id;
+        
+        $res = $this->_db->query($requete);
+        
+		return $res;
+	}
+    
+    /**
+	 * supprimer tout les bouteilles du même id dans un cellier
+	 * 
+	 * @param object $data id du cellier et id de bouteille
+	 * 
+	 * @return Boolean Succès ou échec de la suppression
+	 */
+	public function supprimerBouteille($data)
+	{
+		$requete = 'DELETE FROM cellier_contenu 
+            WHERE id_bouteille = ' . $data -> id_bouteille . ' 
+            AND id_cellier = ' . $data -> id_cellier;
         
         $res = $this->_db->query($requete);
         
