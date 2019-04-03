@@ -49,7 +49,7 @@
            <?php*/
             foreach ($data['info'] as $cle => $infoBout) {
         ?>
-        <div class="bouteille" id="bouteille<?php echo $infoBout['id_bouteille'] ?>"><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
+        <div class="bouteille" id="<?php echo $infoBout['id_bouteille'] ?>">
             <div class="information">
                 <div class="img">
                     <img class="imgvin" src="<?php echo $infoBout['image'] ?>">
@@ -58,21 +58,23 @@
                     <div>
                         <p><?php echo $infoBout['nom'] ?></p>
                         <div class="description">
-                            <p class="type"><?php echo $infoBout['type'] ?>, <?php echo $infoBout['pays'] ?>, <?php echo $infoBout['format'] ?> ml, millesime : <?php echo $infoBout['millesime'] ?></p>
-                            <p class="millesime"><?php echo $infoBout['prix'] ?> $, Code_SAQ: <?php echo $infoBout['code_saq'] ?>, <a href="<?php echo $infoBout['url_saq'] ?>">Page SAQ</a></p>
-                            <p></p>
+                            <div>
+                                <p class="titre">Détails :</p>
+                                <p><?php echo $infoBout['type'] ?>, <?php echo $infoBout['pays'] ?>, <?php echo $infoBout['format'] ?> ml<br>millesime : <?php echo $infoBout['millesime'] ?></p>
+                            </div>
+                            <div>
+                                <p>Information SAQ:</p>
+                                <p><?php echo $infoBout['prix'] ?> $, Code_SAQ: <?php echo $infoBout['code_saq'] ?><br><a href="<?php echo $infoBout['url_saq'] ?>">Visité la page SAQ</a></p>
+                            </div>
                         </div>
-                        <button class='btnBouteille'>Bouteille<?php
-                            if($infoBout['quantite'] > 1){
-                                echo "s";
-                            }
-                            echo "(" . $infoBout['quantite']; ?>)
+                        <button class='btnBouteille'>Liste des bouteilles(<?php
+                            echo $infoBout['quantite']; ?>) <i class="fas fa-sort-down"></i>
                         </button>
                     </div>
-                    <div class="actionBouteille" data-bouteille="<?php echo $infoBout['id_bouteille'] ?>">
-                        <button class='btnModifier'>Modifier</button>
+                    <div class="actionBouteille">
+                        <button class='btnModifier'><i class="fas fa-pen"></i></button>
                         <button title="ajouter une bouteille" class='btnAjouter'><img class="icone" src="./images/icones/bouteille-plus.svg"></button>
-                        <button class='btnSupprimer'>Supprimer</button>
+                        <button class='btnSupprimer'><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
             </div>

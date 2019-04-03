@@ -220,7 +220,7 @@ window.addEventListener('load', function() {
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
             //div principal de la bouteille
-            let divBouteille = evt.currentTarget.closest(".divBouteille");
+            let divBouteille = evt.currentTarget.closest(".bouteille");
             //id du row dans cellier_contenu
             let id = evt.currentTarget.closest("tr").dataset.id;
             //nombre de ranger dans la liste de bouteille
@@ -276,7 +276,7 @@ window.addEventListener('load', function() {
             let button = evt.currentTarget;
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             //id de la bouteille et du cellier
-            let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
+            let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
             let id_cellier = document.querySelector(".cellier").dataset.cellier;   
             
             let param = {
@@ -305,7 +305,7 @@ window.addEventListener('load', function() {
                 }, 3000);
                 
                 //créer un nouvelle bouteille dans la liste de bouteille
-                let table = document.getElementById("bouteille" + id_bouteille).getElementsByTagName("tbody")[0];
+                let table = document.getElementById(id_bouteille).getElementsByTagName("tbody")[0];
                 let row = document.createElement("tr");
                 table.appendChild(row);
                 table.lastChild.setAttribute("data-id", data['ajout'].id);
@@ -319,7 +319,7 @@ window.addEventListener('load', function() {
                 actionModifierDate(table.lastChild.children[2].firstChild);
                 
                 //affiche la liste
-                document.getElementById("bouteille" + id_bouteille).children[1].classList.remove("hideListe");
+                document.getElementById(id_bouteille).children[1].classList.remove("hideListe");
                 
                 //applique animation higlight sur la nouvelle ajout
                 table.lastChild.classList.add("highlight");
@@ -331,7 +331,7 @@ window.addEventListener('load', function() {
                 table.lastChild.innerHTML = "<td colspan='4' class='erreur'></td>";
                 
                 //modifie la quantité des bouteilles 
-                let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
+                let btnBouteille = document.getElementById(id_bouteille).querySelector(".btnBouteille");
                 quantite = btnBouteille.textContent.match(/\d+/);
                 btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) + 1) + ")";
                 
@@ -346,20 +346,17 @@ window.addEventListener('load', function() {
     //affiche la liste des bouteilles
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
-            //console.log(evt.currentTarget)
-            /*
-            let id_bouteille = evt.target.parentElement.dataset.bouteille;  
+            let id_bouteille = evt.target.closest(".bouteille").getAttribute("id");
             
             //annule opération modif sur les autre champs
-            let champActif = document.getElementById("bouteille"+id_bouteille).querySelectorAll(".active");
+            let champActif = document.getElementById(id_bouteille).querySelectorAll(".active");
             if(champActif){
                 champActif.forEach(function(champ){
                     resetBoutonModifier(champ);
                 });
             }
             
-            document.getElementById("bouteille" + id_bouteille).children[1].classList.toggle("hideListe");
-            */
+            document.getElementById(id_bouteille).children[1].classList.toggle("hideListe");
         })
 
     });
@@ -371,7 +368,7 @@ window.addEventListener('load', function() {
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
             if(confirm("Êtes vous sur de vouloir retiré cette bouteille de votre cellier ?")){
-                let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
+                let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
                 let id_cellier = document.querySelector(".cellier").dataset.cellier;
 
                 let param = {
@@ -397,7 +394,7 @@ window.addEventListener('load', function() {
                     }, 3000);
                     
                     if(data){
-                        let divBouteille = document.getElementById("bouteille" + id_bouteille);
+                        let divBouteille = document.getElementById(id_bouteille);
                         divBouteille.parentNode.removeChild(divBouteille);
                     }
                 
@@ -418,7 +415,7 @@ window.addEventListener('load', function() {
     //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id_bouteille = evt.target.parentElement.dataset.bouteille;
+            let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
             let id_cellier = document.querySelector(".cellier").dataset.cellier;
             window.location.href ="index.php?requete=modifierBouteilleCellier&id_bouteille=" + id_bouteille + "&id_cellier=" + id_cellier; 
     

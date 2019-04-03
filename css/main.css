@@ -12,6 +12,11 @@ html, body {
 	
 }
 
+.content{
+    max-width:1300px;
+    margin:auto  
+}
+
 /********
  * footer.php
  ********/
@@ -232,6 +237,10 @@ footer
     align-items:flex-start;
 }
 
+h2{
+    text-align:center;
+}
+
 /*action du formulaire*/
 
 .actionCellier{
@@ -239,11 +248,10 @@ footer
     top:0px;
     display:flex;
     flex-flow:column nowrap;
-    margin-top: 20px;
     padding:10px;
     height:auto;
     background-color:white;
-    width:25%;
+    width:30%;
      border:1px solid #ddd;
 }
 
@@ -295,10 +303,12 @@ footer
  	flex-direction:column;
     align-items:center;
 	width:65%;
-	padding:10px 10px 10px 10px;
+	padding:0px 10px 0px 10px;
     margin:auto;
     background-color:white;
     border:1px solid #ddd;
+    max-width:800px;
+    margin-bottom:20px;
 }
 
 .bouteille{
@@ -328,8 +338,9 @@ footer
  	width:160px;
 }
 
-.information > div:nth-child(2) > div{
-    padding-top:5px;
+.information > div:nth-child(2) > div:first-child{
+    padding-top:0px;
+    width:100%;
 }
 
 .information > div:nth-child(2) > div > p:first-child{
@@ -337,12 +348,30 @@ footer
     font-family: 'Libre Baskerville', serif;
  	font-weight: bold;
  	margin: 0; 	
+    padding:0px;
 }
 
 .information > div:nth-child(2) p{
- 	margin-bottom: 5px;
- 	margin-top: 5px;
- 	padding-left: 10px;
+ 	margin:0px;
+}
+
+.description{
+    display:flex;
+    flex-flow:row nowrap;
+    padding-right:10px;
+}
+
+.description > div{
+    padding:10px;
+}
+
+.description > div:first-child{
+    border-right:1px solid #ddd;
+}
+
+.description > div > p:first-child{
+    text-decoration:underline;
+    /*border-bottom:1px solid #ddd;*/
 }
 
  .actionBouteille{
