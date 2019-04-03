@@ -11,41 +11,6 @@
 window.addEventListener('load', function() {
     
     const BaseURL = document.baseURI;
-
-    //bouton créer un cellier
-    let btnCreer = document.querySelector("[name='creerCellier']");
-    
-    if(btnCreer){
-      let cellier = { 
-        nom : document.querySelector("[name='nom']") 
-      };
-      btnCreer.addEventListener("click", function(){              
-        var param = {            
-          "nom":cellier.nom.value
-        };
-      
-        let requete = new Request("index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
-        console.log(JSON.stringify(param));
-        
-        fetch(requete)
-              .then(response => {
-                    if (response.status === 200) {
-                        return response.json();
-                    } else {
-                        throw new Error('Erreur');
-                    }
-                })
-                .then(data => { 
-                  console.log(data);
-                      if(data == true){
-                         window.location.href = "index.php?requete=afficheListCellier";
-                      } 
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-      });
-    }
     
     //button modifier dans la liste
     document.querySelectorAll(".modifDate").forEach(function(element){
@@ -199,10 +164,6 @@ window.addEventListener('load', function() {
         tr.nextElementSibling.children[0].innerHTML = "";
     }
     
-    
-
-
-    
     //button Boire
     document.querySelectorAll(".btnBoire").forEach(function(element){
         actionBtnBoire(element);
@@ -342,6 +303,44 @@ window.addEventListener('load', function() {
         })
 
     });
+
+//bouton modifier le nom du cellier dans la liste des celliers
+document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
+  element.addEventListener("click", function(evt){
+      let id_cellier = evt.target.parentElement.dataset.id;
+      console.log(id_cellier);
+      window.location.href = BaseURL + "index.php?requete=modifierNomCellier&id_cellier=" + id_cellier;    
+  })
+
+});
+//bouton supprimer le cellier dans la liste des celliers
+document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
+  element.addEventListener("click", function(evt){
+    if (confirm("Vous êtes sûr de supprimer ce cellier?")){
+      let id_cellier = evt.target.parentElement.dataset.id;
+      let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
+      console.log(id_cellier);
+      fetch(requete)
+      .then(response => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            throw new Error('Erreur');
+          }
+        })
+        .then(data => { 
+          console.log(data);
+          if(data == true){
+             window.location.href = "index.php?requete=afficheListCellier";
+          }        
+        }).catch(error => {
+          console.error(error);
+        });  
+      } 
+  })
+
+});
+  
     
     //affiche la liste des bouteilles
     document.querySelectorAll(".btnBouteille").forEach(function(element){
@@ -1169,6 +1168,114 @@ window.addEventListener('load', function() {
       
     });
   }
+   //bouton créer un cellier
+   let btnCreer = document.querySelector("[name='creerCellier']");
+    
+   if(btnCreer){
+     let cellier = { 
+       nom : document.querySelector("[name='nom']") 
+     };
+     btnCreer.addEventListener("click", function(){              
+       var param = {            
+         "nom":cellier.nom.value
+       };
+       var verif = {
+         nom : verifChamp(param.nom, "text")
+       
+       }
+       console.log(verif.nom);
+       document.querySelector(".erreurNomCellier").innerHTML = verif.nom;
+       if(verif.nom == ""){
+       let requete = new Request("index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
+       console.log(JSON.stringify(param));
+       
+       fetch(requete)
+             .then(response => {
+                 if (response.status === 200) {
+                   return response.json();
+                 } else {
+                   throw new Error('Erreur');
+                 }
+               })
+               .then(data => { 
+                 console.log(data);
+                 if(data == true){
+                    window.location.href = "index.php?requete=afficheListCellier";
+                 }
+                 else if(data == false){
+                  //  alert("deja");
+                  //Affichage d'un message d'erreur lorsque la 
+                  //modification à échoué.
+                  document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                  // var messageErreur = "Le nom entré est déjà utilisé.";
+                  var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le nom entré est déjà utilisé.</p>";
+                  document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+              }
+                 
+                
+               
+               }).catch(error => {
+                 console.error(error);
+               });
+             }
+     });
+   }
+
+
+
+   //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
+   var sauverNomCellier = document.querySelector("[name='sauverNomCellier']");
+   if(sauverNomCellier){
+    let cellier = { 
+      id_cellier: document.querySelector("[name='id_cellier']"),
+      nom : document.querySelector("[name='nom']") 
+    };
+    sauverNomCellier.addEventListener("click", function(evt){              
+      var param = {  
+        "id_cellier":cellier.id_cellier.value,          
+        "nom":cellier.nom.value
+      };
+      var verif = {
+        nom : verifChamp(param.nom, "text")
+      
+      }
+      console.log(verif.nom);
+      document.querySelector(".erreurNomCellier").innerHTML = verif.nom;
+      if(verif.nom == ""){
+      let requete = new Request("index.php?requete=modifierNomCellier", {method: 'POST', body: JSON.stringify(param)});
+      console.log(JSON.stringify(param));
+      
+      fetch(requete)
+            .then(response => {
+                if (response.status === 200) {
+                  return response.json();
+                } else {
+                  throw new Error('Erreur');
+                }
+              })
+              .then(data => { 
+                console.log(data);
+                if(data == true){
+                   window.location.href = "index.php?requete=afficheListCellier";
+                }
+                else if(data == false){
+                 //  alert("deja");
+                 //Affichage d'un message d'erreur lorsque la 
+                 //modification à échoué.
+                 document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                 // var messageErreur = "Le nom entré est déjà utilisé.";
+                 var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le nom entré est déjà utilisé.</p>";
+                 document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+             }
+                
+               
+              
+              }).catch(error => {
+                console.error(error);
+              });
+          }
+    });
+   }
 
 });
 
