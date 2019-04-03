@@ -41,12 +41,14 @@
     </div>
     <div class="cellier" data-cellier="<?php echo $_GET['id_cellier']?>">
     <?php
-        if($data){
+        if($msgCount!=''){
             ?>
             <div class="count">
                 <h4> <?php echo $msgCount?></h4>
             </div>
            <?php
+        }
+        if($data){
             foreach ($data['info'] as $cle => $infoBout) {
         ?>
         <div class="bouteille" id="bouteille<?php echo $infoBout['id_bouteille'] ?>"><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
