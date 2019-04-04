@@ -9,7 +9,59 @@ html, body {
 	background-color: #dddddd45;
 	font-family: 'Hind', sans-serif;
 	font-size: 95%;
+    color:#730101;
 	
+}
+
+main{
+    max-width:1300px;
+    margin:auto;
+    display:flex;
+    flex-flow:row nowrap;
+    justify-content:center;
+    
+}
+
+.content{
+    box-sizing:border-box;
+    border:1px solid #ddd;
+    padding:15px;
+    margin:30px 0px;
+	background-color:white;
+}
+
+/********
+ * bouton
+ ********/
+
+button{
+	border: none;
+	box-shadow: 2px 2px 5px grey;
+	border-radius: 5px;
+	padding: 5px;
+    margin:0px;
+    background-color:#730101;
+    color:white;
+}
+
+.petitBtn{
+    height:40px;
+    width:40px;
+}
+
+.moyenBtn{
+    height:40px;
+ 	width:60px;
+}
+
+.largeBtn{
+    width:250px;
+}
+
+.retour{
+    font-weight:bold;
+    color:#730101;
+    background-color: lightgray;
 }
 
 /********
@@ -148,6 +200,10 @@ footer
 	color: black;
 }
 
+#mainNav ul{
+    margin:0px;
+}
+
 /********
  * Accueil.php
  ********/
@@ -228,27 +284,39 @@ footer
 
 .contenuCellier{
     display:flex;
-    flex-flow:row nowrap;
+    flex-flow:row wrap;
     align-items:flex-start;
+    justify-content:space-between;
+}
+
+.contenuCellier h2{
+    width:100%;
+    text-align:center;
 }
 
 /*action du formulaire*/
 
 .actionCellier{
     position:sticky;
-    top:0px;
+        top:0px;
     display:flex;
     flex-flow:column nowrap;
-    margin-top: 20px;
-    padding:10px;
+    box-sizing:border-box;
+    padding:15px;
     height:auto;
     background-color:white;
-    width:25%;
-     border:1px solid #ddd;
+    width:30%;
+    border:1px solid #ddd;
+    font-weight:bold;
+    font-size:13pt;
 }
 
 .actionCellier > div{
     margin-top:10px;
+}
+
+.actionCellier > div:first-of-type{
+    margin-top:0px;
 }
 
 .actionCellier > div:first-child > button{
@@ -264,12 +332,18 @@ footer
 	background-color: white;
 }
 
+.trier select{
+    font-size:11pt;
+}
+
 .listeChercheAutoComplete{
-    width:250px;
     list-style: none;
     color:black;
     display:block;
+    margin:0px;
     background-color: white;
+    font-size:11pt;
+    font-weight:normal;
 }
 
 .listeChercheAutoComplete li:not(.listCherche) {   
@@ -294,16 +368,18 @@ footer
  	display: flex;
  	flex-direction:column;
     align-items:center;
-	width:65%;
-	padding:10px 10px 10px 10px;
-    margin:auto;
-    background-color:white;
-    border:1px solid #ddd;
+	width:68%;
+	padding:0px 15px;
+    margin:0px 0px 20px;
 }
 
 .bouteille{
     width:100%;
     border-bottom:2px solid #730101;
+}
+
+.bouteille:last-child{
+    border:none;
 }
 
 /*division bouteille*/
@@ -328,8 +404,9 @@ footer
  	width:160px;
 }
 
-.information > div:nth-child(2) > div{
-    padding-top:5px;
+.information > div:nth-child(2) > div:first-child{
+    padding-top:0px;
+    margin-left:15px;
 }
 
 .information > div:nth-child(2) > div > p:first-child{
@@ -337,30 +414,68 @@ footer
     font-family: 'Libre Baskerville', serif;
  	font-weight: bold;
  	margin: 0; 	
+    padding:0px;
 }
 
 .information > div:nth-child(2) p{
- 	margin-bottom: 5px;
- 	margin-top: 5px;
- 	padding-left: 10px;
+ 	margin:0px;
 }
 
- .actionBouteille{
+.description{
+    display:flex;
+    flex-flow:row nowrap;
+    padding-right:10px;
+    margin:5px 0px;
+}
+
+.description > div{
+    padding:10px;
+}
+
+.description > div:first-child{
+    border-right:1px solid #ddd;
+}
+
+.description > div > p:first-child{
+    text-decoration:underline;
+    /*border-bottom:1px solid #ddd;*/
+}
+
+.actionBouteille{
  	display: flex;
     flex-flow:column;
  	justify-content: space-around;
  	padding: 10px;
  }
- .actionBouteille button{
- 	width: 32%;
- 	min-width: 67px;
- }
+ 
 
 /**liste des bouteilles**/
 
+.listeBouteille{
+    border-top:1px solid #ddd;
+    padding-top:5px;
+}
+
+.listeBouteille > p{
+    margin:0px;
+    text-align:right;
+}
+
+table{
+    margin:0px auto 10px;
+    text-align:center;
+}
+
+table td:first-of-type,table td:nth-child(2){
+    min-width:160px;
+}
+
+table td:nth-child(3){
+    min-width:95px;
+}
+
 table td button{
-    width:40px;
-    height:40px;
+    margin:0px 2px;
 }
 
 
@@ -379,17 +494,14 @@ table td button{
  ********/
 
 /* Div comportant un fomulaire*/
-.mesFormulaires, .contenuPage{
+.mesFormulaires{
 	width: 80%;
 	min-width: 320px;
-	margin-top: 30px;
-	margin-bottom: 30px;
-	padding: 20px;
-	padding-left: 50px;
-	background-color: white;
+	
 }
 
-.mesFormulaires h2, .contenuPage h2{
+.mesFormulaires h2{
+    margin:0px 0px 10px;
 	color: #730101;
 }
 
@@ -399,7 +511,7 @@ table td button{
 }
 
 .mesFormulaires .recherche{
-    width:250px;
+    
 }
 
 
@@ -453,7 +565,7 @@ table td button{
     box-sizing:border-box;
 	border: 2px solid black;
 	border-radius: 5px;
-	padding:5px 5px;
+	padding:0px 5px;
 	background-color: white;
 }
 
@@ -462,8 +574,6 @@ table td button{
 	box-shadow: none;
 }
 .recherche button{
-	width: 20px;
-	margin: 0;
 	background-color: transparent;
 	box-shadow: none;
     color:black;
@@ -473,7 +583,7 @@ table td button{
 	margin-bottom: 40px;
 }
 
-.mesFormulaires ::placeholder{
+.mesFormulaires::placeholder{
 	color: #222224;
 	transition: 1s;
 }
@@ -507,33 +617,12 @@ input:focus, select:focus{
 	position: relative;
 }
 
-
-button, .mesFormulaires input[type='button']{
-	width: 200px;
-	border: none;
-	box-shadow: 2px 2px 5px grey;
-	border-radius: 5px;
-	padding: 5px;
-    margin-top:10px;
-	margin-bottom: 0px;
-    background-color:#730101;
-    color:white;
-}
-/*
-.soumettre{
-    background-color: #730101;
-	color: white;
-}
-
-.retour{
-    background-color: lightgray;
-}
-*/
 .mesFormulaires button:hover, .mesFormulaires input[type='button']:hover{
 	box-shadow: none;
 }
 
 .boutonForm{
+    margin-top:10px;
     display:flex;
     flex-flow:row wrap-reverse;
     justify-content:space-between;
@@ -543,8 +632,16 @@ button, .mesFormulaires input[type='button']{
     color:red;
 }
 
+/*icone svg*/
 .icone{
     height:30px;
+}
+
+/*icone font awesome*/
+i{
+    line-height:30px;
+    vertical-align: middle;
+    font-size:15pt;
 }
 
 .succes{
@@ -630,17 +727,34 @@ button, .mesFormulaires input[type='button']{
 /********
  * formAjoutBout.php
  ********/
+
 .divAutoComplete{
 	position: relative;
-	margin-bottom: 10px;
+}
+
+.nouvelleBouteille .divAutoComplete{
+    width:300px;
+}
+
+.nouvelleBouteille .divAutoComplete input{
+    width:100%;
+}
+
+
+.nouvelleBouteille .divAutoComplete label{
+    vertical-align:middle;
+    text-align:center;
+    width:40px;
+    line-height:40px;
 }
 
  /* Affichage des resultats de l'autocomplete */
  .displayResultats{
- 	width: 240px;
- 	height: 150px;
+    width:100%;
+    box-sizing:border-box;
+ 	max-height:180px;
  	position: absolute;
- 		top: 40px;
+ 		top: 37px;
  	overflow-y: auto;
  	z-index: 2;
  	padding: 0;
@@ -648,6 +762,8 @@ button, .mesFormulaires input[type='button']{
  	background-color: white;
  	border: 2px solid black;
  	border-top: none;
+    border-bottom-left-radius:5px; 
+    border-bottom-right-radius:5px; 
  	box-shadow: 2px 2px 5px #8080809e;
  }
 
