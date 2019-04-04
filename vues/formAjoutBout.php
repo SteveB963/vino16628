@@ -24,9 +24,12 @@
                     <label for="garde_jusqua">Garder jusqu'à : </label><input type="date" name="garde_jusqua">
                     <p class="erreurgarde"></p>
                 </div>
-                <input type="button" name="ajouterNouvelleBouteille" value="Ajouter la bouteille">
-                <input type="hidden" name="cellier" value="<?= $_GET['id_cellier'] ?>">
+                <input type="hidden" name="id_cellier" value="<?= $_GET['id_cellier'] ?>">
             </form>
+            <div class="boutonForm">
+                <button class="retour largeBtn" name="retourCellier">Retour</button>
+                <button class="largeBtn" name="ajouterNouvelleBouteille">Ajouter la bouteille</button>
+            </div>
             
         </div>
     </div>

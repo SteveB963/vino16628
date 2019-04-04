@@ -1,8 +1,8 @@
-<h2>nom du cellier sélectionné</h2>
-<div class="content contenuCellier">
+<div class="contenuCellier">
+    <h2>nom du cellier sélectionné</h2>
     <div class="actionCellier">
         <div>
-            <button name="nouvelleBouteille">Ajouter une boueille</button>
+            <button class="largeBtn" name="nouvelleBouteille">Ajouter une boueille</button>
         </div>
         <div class="trier">
             Trier le cellier par:
@@ -18,7 +18,7 @@
         </div>
         <div class="search divAutoComplete">
             <div class="recherche">
-                 <input id='searchValue'  <?php if ($cherche!=''){?>value='<?php echo $cherche;}else?>' placeholder='Recherche'> 
+                <input id='searchValue'  <?php if ($cherche!=''){?>value='<?php echo $cherche;}else?>' placeholder='Recherche'> 
                 <button id='cherche'><i class="fa fa-search"></i></button>
             </div>
             <ul class="listeChercheAutoComplete">
@@ -39,7 +39,7 @@
             </ul>
         </div>
     </div>
-    <div class="cellier" data-cellier="<?php echo $_GET['id_cellier']?>">
+    <div class="content cellier" data-cellier="<?php echo $_GET['id_cellier']?>">
     <?php
         if($msgCount!=''){
             ?>
@@ -74,19 +74,20 @@
                         </button>
                     </div>
                     <div class="actionBouteille">
-                        <button class='btnModifier'><i class="fas fa-pen"></i></button>
-                        <button title="ajouter une bouteille" class='btnAjouter'><img class="icone" src="./images/icones/bouteille-plus.svg"></button>
-                        <button class='btnSupprimer'><i class="fas fa-trash-alt"></i></button>
+                        <button class='btnModifier moyenBtn'><i class="fas fa-pen"></i></button>
+                        <button class="btnAjouter moyenBtn" title="ajouter une bouteille"><img class="icone" src="./images/icones/bouteille-plus.svg"></button>
+                        <button class='btnSupprimer moyenBtn'><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
             </div>
             <div class="listeBouteille hideListe">
+                <p><small>* format des dates: année/mois/jour, peut différer lors de la modification</small></p>
                 <table>
                     <tr>
                         <th>Date d'ajout</th>
                         <th>Garder jusqu'à</th>
-                        <th>Bouton boire</th>
-                        <th>Bouton modifier</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <?php
                         foreach($data['bouteille'] as $bouteille){
@@ -95,8 +96,8 @@
                                 <tr data-id="<?php echo $bouteille['id'] ?>">
                                     <td data-date="<?php echo $bouteille['date_ajout'] ?>"><?php echo $bouteille['date_ajout'] ?></td>
                                     <td data-date="<?php echo $bouteille['garde_jusqua'] ?>"><?php echo $bouteille['garde_jusqua'] ?></td>
-                                    <td><button title="modifier date" class="modifDate"><i class="fas fa-pen"></i></button></td>
-                                    <td><button title="retirer bouteille" class="btnBoire"><span><img class="icone" src="./images/icones/bouteille-moins.svg"></span></button></td>
+                                    <td><button class="petitBtn" title="modifier date" class="modifDate"><i class="fas fa-pen"></i></button></td>
+                                    <td><button class="petitBtn" title="retirer bouteille" class="btnBoire"><span><img class="icone" src="./images/icones/bouteille-moins.svg"></span></button></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="erreur"></td>
@@ -117,8 +118,8 @@
     ?>	
     </div>
 </div>
-    <div id="msgContenuCellier" class='confirmBox'>
-        <p><?php if(isset($msgConfirmation)){echo $msgConfirmation;} ?></p>
-    </div>
+<div id="msgContenuCellier" class='confirmBox'>
+    <p><?php if(isset($msgConfirmation)){echo $msgConfirmation;} ?></p>
+</div>
 
 

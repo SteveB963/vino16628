@@ -403,7 +403,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             }
             else{
                 //replace l'icone dans le bouton
-                button.innerHTML = 'Supprimer';
+                button.innerHTML = '<i class="fas fa-trash-alt"></i>';
             }
         });                                                   
     });
@@ -733,36 +733,67 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         });
     }
 
+    function fetchAutoComplete(nom){
+        label.innerHTML = "<i class='loading fas fa-spinner'></i>";
+        let requete = new Request("index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
+        fetch(requete)
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } 
+            else {
+                throw new Error('Erreur');
+            }
+        })
+        .then(response => {
+            prevent = false;
+            label.innerHTML = "<i class='fas fa-search'></i>";
+            liste.innerHTML = "";
+            console.log("resultat de " + nom);
+
+            if(inputNomBouteille.value != ""){
+                response.forEach(function(element){
+                    liste.classList.add("displayResultats");
+                    liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
+                });
+                
+                if(inputNomBouteille.value != nom){
+                    prevent = true;
+                    fetchAutoComplete(inputNomBouteille.value);
+                }
+            }
+        }).catch(error => {
+          console.error(error);
+        });
+    }
     
     //autocomplete dans formulaire d'ajout d'un nouvelle bouteille
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
     let liste = document.querySelector('.listeAutoComplete');
+    let label = inputNomBouteille.nextSibling;
     if(inputNomBouteille){
-      inputNomBouteille.addEventListener("keyup", function(evt){
-        let nom = inputNomBouteille.value;
-        liste.innerHTML = "";
-        if(nom){
-          let requete = new Request("index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
-          fetch(requete)
-              .then(response => {
-                  if (response.status === 200) {
-                    return response.json();
-                  } else {
-                    throw new Error('Erreur');
-                  }
-                })
-                .then(response => {                 
-                  response.forEach(function(element){
-                    liste.classList.add("displayResultats");
-                    liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
-                  })
-                }).catch(error => {
-                  console.error(error);
-                });
-        }
+        var prevent = false;
+        
+        inputNomBouteille.addEventListener("input", function(evt){
+            var nom = inputNomBouteille.value;
+            console.log(nom)
+            
+            if(nom != "" && !prevent){
+                
+                prevent = true;
+                fetchAutoComplete(nom);
+                
+            }
+            else if(nom == ""){
+                liste.innerHTML = "";
+            }
+        });
         
         
-      });
+        
+        
+        
+        
 
       //champ du formulaire d'ajout
       let bouteille = {
@@ -777,8 +808,8 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             //console.dir(evt.target)
             if(evt.target.tagName == "LI"){
                 bouteille.nom.dataset.id = evt.target.dataset.id;
-                console.dir(evt.target.innerHTML);
-                inputNomBouteille.innerHTML = evt.target.innerHTML;
+                bouteille.nom.setAttribute("value", evt.target.innerHTML);
+                
                 liste.innerHTML = "";
                 inputNomBouteille.value = "";
 
