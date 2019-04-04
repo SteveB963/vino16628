@@ -1,9 +1,9 @@
 
-<h2>nom du cellier sélectionné</h2>
-<div class="content contenuCellier">
+<div class="contenuCellier">
+    <h2>nom du cellier sélectionné</h2>
     <div class="actionCellier">
         <div>
-            <button name="nouvelleBouteille">Ajouter une boueille</button>
+            <button class="xlargeBtn" name="nouvelleBouteille">Ajouter une boueille</button>
         </div>
         <div class="trier">
             Trier le cellier par:
@@ -19,7 +19,7 @@
         </div>
         <div class="search divAutoComplete">
             <div class="recherche">
-                <input id='searchValue' placeholder="Recherche"> 
+                <input id='searchValue'  <?php if ($cherche!=''){?>value='<?php echo $cherche;}else?>' placeholder='Recherche'> 
                 <button id='cherche'><i class="fa fa-search"></i></button>
             </div>
             <ul class="listeChercheAutoComplete">
@@ -40,17 +40,19 @@
             </ul>
         </div>
     </div>
-    <div class="cellier" data-cellier="<?php echo $_GET['id_cellier']?>">
+    <div class="content cellier" data-cellier="<?php echo $_GET['id_cellier']?>">
     <?php
-        if($data){
-            /*?>
+        if($msgCount!=''){
+            ?>
             <div class="count">
-                <h4> Resultat-<?php echo sizeof($data['info'])?> Bouteilles</h4>
+                <h4> <?php echo $msgCount?></h4>
             </div>
-           <?php*/
+           <?php
+        }
+        if($data){
             foreach ($data['info'] as $cle => $infoBout) {
         ?>
-        <div class="bouteille" id="bouteille<?php echo $infoBout['id_bouteille'] ?>"><!--METTRE LA CLASSE BOUTEILLE DANS CE DIV !!!!-->
+        <div class="bouteille" id="<?php echo $infoBout['id_bouteille'] ?>">
             <div class="information">
                 <div class="img">
                     <img class="imgvin" src="<?php echo $infoBout['image'] ?>">
@@ -59,31 +61,34 @@
                     <div>
                         <p><?php echo $infoBout['nom'] ?></p>
                         <div class="description">
-                            <p class="type"><?php echo $infoBout['type'] ?>, <?php echo $infoBout['pays'] ?>, <?php echo $infoBout['format'] ?> ml, millesime : <?php echo $infoBout['millesime'] ?></p>
-                            <p class="millesime"><?php echo $infoBout['prix'] ?> $, Code_SAQ: <?php echo $infoBout['code_saq'] ?>, <a href="<?php echo $infoBout['url_saq'] ?>">Page SAQ</a></p>
-                            <p></p>
+                            <div>
+                                <p class="titre">Détails :</p>
+                                <p><?php echo $infoBout['type'] ?>, <?php echo $infoBout['pays'] ?>, <?php echo $infoBout['format'] ?> ml<br>millesime : <?php echo $infoBout['millesime'] ?></p>
+                            </div>
+                            <div>
+                                <p>Information SAQ:</p>
+                                <p><?php echo $infoBout['prix'] ?> $, Code_SAQ: <?php echo $infoBout['code_saq'] ?><br><a href="<?php echo $infoBout['url_saq'] ?>">Visité la page SAQ</a></p>
+                            </div>
                         </div>
-                        <button class='btnBouteille'>Bouteille<?php
-                            if($infoBout['quantite'] > 1){
-                                echo "s";
-                            }
-                            echo "(" . $infoBout['quantite']; ?>)
+                        <button class='btnBouteille'>Liste des bouteilles(<?php
+                            echo $infoBout['quantite']; ?>) <i class="fas fa-sort-down"></i>
                         </button>
                     </div>
-                    <div class="actionBouteille" data-bouteille="<?php echo $infoBout['id_bouteille'] ?>">
-                        <button class='btnModifier'>Modifier</button>
-                        <button title="ajouter une bouteille" class='btnAjouter'><img class="icone" src="./images/icones/bouteille-plus.svg"></button>
-                        <button class='btnSupprimer'>Supprimer</button>
+                    <div class="actionBouteille">
+                        <button class='btnModifier moyenBtn'><i class="fas fa-pen"></i></button>
+                        <button class="btnAjouter moyenBtn" title="ajouter une bouteille"><img class="icone" src="./images/icones/bouteille-plus.svg"></button>
+                        <button class='btnSupprimer moyenBtn'><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
             </div>
             <div class="listeBouteille hideListe">
+                <p><small>* format des dates: année/mois/jour, peut différer lors de la modification</small></p>
                 <table>
                     <tr>
                         <th>Date d'ajout</th>
                         <th>Garder jusqu'à</th>
-                        <th>Bouton boire</th>
-                        <th>Bouton modifier</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     <?php
                         foreach($data['bouteille'] as $bouteille){
@@ -92,8 +97,8 @@
                                 <tr data-id="<?php echo $bouteille['id'] ?>">
                                     <td data-date="<?php echo $bouteille['date_ajout'] ?>"><?php echo $bouteille['date_ajout'] ?></td>
                                     <td data-date="<?php echo $bouteille['garde_jusqua'] ?>"><?php echo $bouteille['garde_jusqua'] ?></td>
-                                    <td><button title="modifier date" class="modifDate"><i class="fas fa-pen"></i></button></td>
-                                    <td><button title="retirer bouteille" class="btnBoire"><span><img class="icone" src="./images/icones/bouteille-moins.svg"></span></button></td>
+                                    <td><button class="petitBtn" title="modifier date" class="modifDate"><i class="fas fa-pen"></i></button></td>
+                                    <td><button class="petitBtn" title="retirer bouteille" class="btnBoire"><span><img class="icone" src="./images/icones/bouteille-moins.svg"></span></button></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="erreur"></td>
@@ -114,8 +119,8 @@
     ?>	
     </div>
 </div>
-    <div id="msgContenuCellier" class='confirmBox'>
-        <p><?php if(isset($msgConfirmation)){echo $msgConfirmation;} ?></p>
-    </div>
+<div id="msgContenuCellier" class='confirmBox'>
+    <p><?php if(isset($msgConfirmation)){echo $msgConfirmation;} ?></p>
+</div>
 
 

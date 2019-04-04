@@ -6,4 +6,5 @@
 	define('PASSWORD', '');
 	define('DATABASE', 'vino');
 
+
 ?>

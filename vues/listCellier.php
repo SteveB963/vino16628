@@ -1,12 +1,14 @@
 <!-- listCellier contenuPage -->
-<div class="listCellier content contenuCellier">
+<div class="listCellier contenuCellier">
 
-    <div class="listCellierDivDroite">
+    <div class="listCellierDivGauche">
         <div class="monCompte">
             <div>
                 <div>
                     <h2>Mon Compte</h2>
+                <!--
                     <p><a name="modifierCompte">Modifier<i class="fas fa-user-edit"></i></a></p>
+                -->
                 </div>
             </div>
 
@@ -25,11 +27,12 @@
                 <p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>
             </div>
         </div>
-        <button class='btnAjoutCellier'>Ajouter un cellier</button>
+        <button name="modifierCompte" class='xlargeBtn'>Modifier mon compte<i class="fas fa-user-edit"></i></button>
     </div>
 
     <div class="mesCelliers">
         <h2>Mes Celliers</h2>
+        <button class='btnAjoutCellier'>Ajouter un cellier</button>
         <!-- mesCellliers -->
         <div class="divMesCelliers">
 <?php
@@ -38,11 +41,13 @@ if($data){
     foreach ($data as $cle => $cellier) {
  
     ?>
-        <div class="">
+        <div>
             <p class="nom"><a href="?requete=afficheContenuCellier&id_cellier=<?php echo $cellier['id_cellier'] ?>"><?php echo $cellier['nom'] ?></a></p>
             <div class="options"  data-id="<?php echo $cellier['id_cellier']  ?>">
-                <button class='btnModifierNomCellier'>Modifier</button>
-                <button class='btnSupprimerCellier'>Supprimer</button>
+                <button class='btnModifierNomCellier btnWeb'>Modifier <i class="fas fa-pen"></i></button>
+                <button class='btnSupprimerCellier btnWeb'>Supprimer <i class="fas fa-trash-alt"></i></button>
+                <button class='btnModifierNomCellier btnMobile'><i class="fas fa-pen"></i></button>
+                <button class='btnSupprimerCellier btnMobile'><i class="fas fa-trash-alt"></i></button>
             </div>
            
         </div> 

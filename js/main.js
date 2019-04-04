@@ -181,7 +181,7 @@ window.addEventListener('load', function() {
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
             //div principal de la bouteille
-            let divBouteille = evt.currentTarget.closest(".divBouteille");
+            let divBouteille = evt.currentTarget.closest(".bouteille");
             //id du row dans cellier_contenu
             let id = evt.currentTarget.closest("tr").dataset.id;
             //nombre de ranger dans la liste de bouteille
@@ -237,7 +237,7 @@ window.addEventListener('load', function() {
             let button = evt.currentTarget;
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             //id de la bouteille et du cellier
-            let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
+            let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
             let id_cellier = document.querySelector(".cellier").dataset.cellier;   
             
             let param = {
@@ -266,7 +266,7 @@ window.addEventListener('load', function() {
                 }, 3000);
                 
                 //créer un nouvelle bouteille dans la liste de bouteille
-                let table = document.getElementById("bouteille" + id_bouteille).getElementsByTagName("tbody")[0];
+                let table = document.getElementById(id_bouteille).getElementsByTagName("tbody")[0];
                 let row = document.createElement("tr");
                 table.appendChild(row);
                 table.lastChild.setAttribute("data-id", data['ajout'].id);
@@ -280,7 +280,7 @@ window.addEventListener('load', function() {
                 actionModifierDate(table.lastChild.children[2].firstChild);
                 
                 //affiche la liste
-                document.getElementById("bouteille" + id_bouteille).children[1].classList.remove("hideListe");
+                document.getElementById(id_bouteille).children[1].classList.remove("hideListe");
                 
                 //applique animation higlight sur la nouvelle ajout
                 table.lastChild.classList.add("highlight");
@@ -292,7 +292,7 @@ window.addEventListener('load', function() {
                 table.lastChild.innerHTML = "<td colspan='4' class='erreur'></td>";
                 
                 //modifie la quantité des bouteilles 
-                let btnBouteille = document.getElementById("bouteille"+id_bouteille).querySelector(".btnBouteille");
+                let btnBouteille = document.getElementById(id_bouteille).querySelector(".btnBouteille");
                 quantite = btnBouteille.textContent.match(/\d+/);
                 btnBouteille.innerHTML = "Bouteilles(" + (parseInt(quantite[0]) + 1) + ")";
                 
@@ -345,20 +345,17 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     //affiche la liste des bouteilles
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
-            //console.log(evt.currentTarget)
-            /*
-            let id_bouteille = evt.target.parentElement.dataset.bouteille;  
+            let id_bouteille = evt.target.closest(".bouteille").getAttribute("id");
             
             //annule opération modif sur les autre champs
-            let champActif = document.getElementById("bouteille"+id_bouteille).querySelectorAll(".active");
+            let champActif = document.getElementById(id_bouteille).querySelectorAll(".active");
             if(champActif){
                 champActif.forEach(function(champ){
                     resetBoutonModifier(champ);
                 });
             }
             
-            document.getElementById("bouteille" + id_bouteille).children[1].classList.toggle("hideListe");
-            */
+            document.getElementById(id_bouteille).children[1].classList.toggle("hideListe");
         })
 
     });
@@ -370,7 +367,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
             if(confirm("Êtes vous sur de vouloir retiré cette bouteille de votre cellier ?")){
-                let id_bouteille = evt.currentTarget.parentElement.dataset.bouteille;
+                let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
                 let id_cellier = document.querySelector(".cellier").dataset.cellier;
 
                 let param = {
@@ -396,7 +393,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
                     }, 3000);
                     
                     if(data){
-                        let divBouteille = document.getElementById("bouteille" + id_bouteille);
+                        let divBouteille = document.getElementById(id_bouteille);
                         divBouteille.parentNode.removeChild(divBouteille);
                     }
                 
@@ -406,7 +403,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             }
             else{
                 //replace l'icone dans le bouton
-                button.innerHTML = 'Supprimer';
+                button.innerHTML = '<i class="fas fa-trash-alt"></i>';
             }
         });                                                   
     });
@@ -417,7 +414,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id_bouteille = evt.target.parentElement.dataset.bouteille;
+            let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
             let id_cellier = document.querySelector(".cellier").dataset.cellier;
             window.location.href ="index.php?requete=modifierBouteilleCellier&id_bouteille=" + id_bouteille + "&id_cellier=" + id_cellier; 
     
@@ -531,19 +528,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             }
         });
     }
-    
-    
-    
-    //buttonn Trier par le selct box value
-    let btnTrier = document.getElementById('trier');
-    if(btnTrier){
-        btnTrier.addEventListener("change", function(evt){
-            var trier=document.getElementById('trier').value;
-            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-            console.log(id_cellier);
-            window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
-        });
-    } 
+
     //autocomplete de rechercher champ
     let inputCherche = document.getElementById('searchValue');
     //console.log(inputCherche);
@@ -554,8 +539,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     let listeType = document.querySelector('.listeType');
     let listeMillesime = document.querySelector('.listeMillesime');
     let listeFormat = document.querySelector('.listeFormat');
-    let listeCode = document.querySelector('.listeCode');
-    
+    let listeCode = document.querySelector('.listeCode'); 
     if(inputCherche){
         inputCherche.addEventListener("keyup", function(evt){
            let cherche= inputCherche.value;
@@ -564,7 +548,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             listeCherche.classList.add("displayResultats");
 
             //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
-            listeNom.innerHTML ="<li>Nom:</li>";
+            listeNom.innerHTML="<li>Nom:</li>";
             listeNom.style.visibility="hidden";
             listePrix.innerHTML ="<li>Prix:</li>";
             listePrix.style.visibility="hidden";
@@ -582,24 +566,24 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
                 id_cellier: document.querySelector(".cellier").getAttribute("data-cellier"),
                 chercheValue:inputCherche.value 
             };
-             
+
             if(cherche!=""){
                 //separer le type de resultat de rechearche(nom,type, prix...etc) chaque resultat en liste separe
                 let requete = new Request("index.php?requete=autocompleteCherche", {method: 'POST', body: JSON.stringify(param)});
                 fetch(requete)
                   .then(response => {
-                      if (response.status === 200) {
-                        return response.json();
-                      } else {
-                        throw new Error('Erreur');
-                      }
+                        if (response.status === 200) {
+                            return response.json();
+                        } else {
+                            throw new Error('Erreur');
+                        }
                     })
                     .then(response => {
                     console.log(response);
                     //affiche l'autocomlplete resultat en liste
                     response.forEach(function(element){
                     //verifier chaque resultat de recherche 
-                      if(element.nom){
+                        if(element.nom){
                            listeNom.style.visibility="visible";
                             listeNom.innerHTML += "<li class='listCherche' id='"+element.nom +"'>"+element.nom+"</li>";  
                         }
@@ -655,55 +639,88 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
                     }).catch(error => {
                       console.error(error);
                     });
-           }
-           
+                }    
         });
     }
-   
+
     //prendre le valeur du liste de recherche
     if( listeCherche){
         listeCherche.addEventListener("click", function(evt){
             if(evt.target.className == 'listCherche'){
                 inputCherche.value = evt.target.id;
-                listeCherche.innerHTML = "";
+                listeCherche.innerHTML = "";      
             }
         });
     }
   
-   
     //button chercher  dans mon cellier
     let btnChercher = document.getElementById('cherche');
-    //quand on click en button chercher 
     if(btnChercher){
        btnChercher.addEventListener('click', function(){
             var inputCherche= document.getElementById('searchValue').value;
             //verifier le champ de chercher est vide ou pas
-             var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
             if(inputCherche!=''){
-                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
-             }
-            else{
-                alert('Vous devez entrer une valeur de champ rechercher');
-                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier  ;
+            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+                var trier=document.getElementById('trier').value;
+                console.log(id_cellier);
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche +"&trierCellier=" + trier;
             }
         });
     }
     
-   // vous pouvez clicker en button enter en clavier
-   let inpChercher=document.getElementById('searchValue');
-    if(inpChercher){
-        inpChercher.addEventListener('keyup', function(){
+    //on peux utilisez le clavier par cliquer enter
+    let Chercher=document.getElementById('searchValue');
+    if(Chercher){
+        Chercher.addEventListener('keyup', function(){
            if (event.keyCode === 13) {
-                let inputCherche= document.getElementById('searchValue').value;
-                var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+                var inputCherche= document.getElementById('searchValue').value;
                 //verifier le champ de chercher est vide ou pas
                 if(inputCherche!=''){
-                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche;
-                 }
-                else{
-                    alert('Vous devez entrer une valeur de champ rechercher') ;
+                    var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+                    var trier=document.getElementById('trier').value;
+                    console.log(id_cellier);
+                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche +"&trierCellier=" + trier;
                 }
-           }
+
+            }
+        });
+    }
+     
+    // ajout le button de refraicher quand le champ de recherche est pas vide
+    let search = document.querySelector('.recherche');
+    if(inputCherche){
+        if(Chercher.value!=''){
+            var retour=document.createElement("BUTTON");
+            retour.setAttribute("id", "cherche");
+            retour.innerHTML='<i class="fas fa-sync"></i>';  
+            search.appendChild(retour);   
+        }   
+    }
+    
+    //refrachier la page de cellier
+    if(retour){
+        retour.addEventListener('click', function(){
+            var inputCherche= document.getElementById('searchValue').value;
+            inputCherche.value="";
+            search.removeChild(retour); 
+            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+            window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier ;   
+        });    
+    }
+    
+    //buttonn Trier par le select box value
+    let btnTrier = document.getElementById('trier');
+    if(btnTrier){
+        btnTrier.addEventListener("change", function(evt){
+            var trier=document.getElementById('trier').value;
+            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+            let inputCherche=document.getElementById('searchValue').value;
+            if(inputCherche!=''){
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier+"&inputCherche=" + inputCherche;
+            }
+            else{
+                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
+            }
         });
     }
 
@@ -716,36 +733,68 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         });
     }
 
+    function fetchAutoComplete(nom){
+        label.innerHTML = "<i class='loading fas fa-spinner'></i>";
+        let requete = new Request("index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
+        fetch(requete)
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } 
+            else {
+                throw new Error('Erreur');
+            }
+        })
+        .then(response => {
+            prevent = false;
+            label.innerHTML = "<i class='fas fa-search'></i>";
+            liste.innerHTML = "";
+            console.log("resultat de " + nom);
+
+            if(inputNomBouteille.value != ""){
+                response.forEach(function(element){
+                    liste.classList.add("displayResultats");
+                    liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
+                });
+                
+                if(inputNomBouteille.value != nom){
+                    prevent = true;
+                    fetchAutoComplete(inputNomBouteille.value);
+                }
+            }
+        }).catch(error => {
+          console.error(error);
+        });
+    }
     
     //autocomplete dans formulaire d'ajout d'un nouvelle bouteille
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
-    let liste = document.querySelector('.listeAutoComplete');
+
     if(inputNomBouteille){
-      inputNomBouteille.addEventListener("keyup", function(evt){
-        let nom = inputNomBouteille.value;
-        liste.innerHTML = "";
-        if(nom){
-          let requete = new Request("index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
-          fetch(requete)
-              .then(response => {
-                  if (response.status === 200) {
-                    return response.json();
-                  } else {
-                    throw new Error('Erreur');
-                  }
-                })
-                .then(response => {                 
-                  response.forEach(function(element){
-                    liste.classList.add("displayResultats");
-                    liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
-                  })
-                }).catch(error => {
-                  console.error(error);
-                });
-        }
+        let liste = document.querySelector('.listeAutoComplete');
+        let label = inputNomBouteille.nextSibling;
+        var prevent = false;
+        
+        inputNomBouteille.addEventListener("input", function(evt){
+            var nom = inputNomBouteille.value;
+            console.log(nom)
+            
+            if(nom != "" && !prevent){
+                
+                prevent = true;
+                fetchAutoComplete(nom);
+                
+            }
+            else if(nom == ""){
+                liste.innerHTML = "";
+            }
+        });
         
         
-      });
+        
+        
+        
+        
 
       //champ du formulaire d'ajout
       let bouteille = {
@@ -755,18 +804,20 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         id_cellier : document.querySelector("[name='cellier']")
       };
 
-      //sélection d'un nom de bouteille dans le résultat de l'autocomplete
-      liste.addEventListener("click", function(evt){
-        if(evt.target.tagName == "LI"){
-          bouteille.nom.dataset.id = evt.target.dataset.id;
-          bouteille.nom.setAttribute("value", evt.target.innerHTML);
-          
-          liste.innerHTML = "";
-          inputNomBouteille.value = "";
-          liste.classList.remove("displayResutats");
-        }
-      });
-    
+    if(liste){
+        liste.addEventListener("click", function(evt){
+            //console.dir(evt.target)
+            if(evt.target.tagName == "LI"){
+                bouteille.nom.dataset.id = evt.target.dataset.id;
+                bouteille.nom.setAttribute("value", evt.target.innerHTML);
+                
+                liste.innerHTML = "";
+                inputNomBouteille.value = "";
+
+            }
+        });
+    }
+
       //formulaire d'ajout, bouton ajouter et traitement du formulaire
       let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
       if(btnAjouter){

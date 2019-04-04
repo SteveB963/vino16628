@@ -129,6 +129,14 @@
                 }
                 $bte = new Bouteille();
                 $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
+                
+                //affichage le numero de resultat de recherche 
+                if($cherche!=''){
+                    $msgCount='<h4> Resultat-' .sizeof($data['info']).' Bouteille Trouvé</h4>';
+                }
+                else{
+                    $msgCount='';
+                }
                 $cellier = new Cellier();
                 $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
                 include("vues/entete.php");
@@ -194,7 +202,7 @@
             $body = json_decode(file_get_contents('php://input'));
              //var_dump($_GET['id_cellier']);
             $bte = new Bouteille();
-            $list = $bte->autocompleteCherche($body->chercheValue, $body->id_cellier);
+            $list = $bte->autocompleteCherche($body->chercheValue,$body->id_cellier);
             echo json_encode($list);
         
     }
