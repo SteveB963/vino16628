@@ -139,6 +139,7 @@
                 }
                 $cellier = new Cellier();
                 $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
+                $data['nom_cellier'] = $cellier->getNomCellier($_GET['id_cellier']);
                 include("vues/entete.php");
                 include("vues/contenuCellier.php");
                 include("vues/pied.php");
@@ -200,9 +201,8 @@
     {
        
             $body = json_decode(file_get_contents('php://input'));
-             //var_dump($_GET['id_cellier']);
             $bte = new Bouteille();
-            $list = $bte->autocompleteCherche($body->chercheValue,$body->id_cellier);
+            $list = $bte->autocompleteCherche($body->cherche,$body->id_cellier);
             echo json_encode($list);
         
     }

@@ -70,8 +70,7 @@
             <!-- Menu Burger -->
 			<input type="checkbox" id="burger">
 			<i class='fas fa-user-circle iconeMenuMobile'></i>
-			<i class="fas fa-times"></i>
-
+			<i id="XBurger" class="fas fa-times"></i>
             <!-- Menu Principale -->
 			<nav>
                 <div id="mainNav">
