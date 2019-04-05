@@ -22,5 +22,5 @@
 			<p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>
 		</div>
 	</div>
-	<button name="modifierCompte" class='xlargeBtn'>Modifier mon compte<i class="fas fa-user-edit"></i></button>
+	<button name="modifierCompte" class='xlargeBtn compteModif'>Modifier mon compte<i class="fas fa-user-edit"></i></button>
 </div>

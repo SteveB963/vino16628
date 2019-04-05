@@ -1239,7 +1239,6 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         prenomInscri : document.querySelector("[name='prenomInscri']").value,
         nomInscri : document.querySelector("[name='nomInscri']").value,
         courrielInscri : document.querySelector("[name='courrielInscri']").value,
-        //id : document.querySelector("[name='idCompte']").value
       }
 
       var verif = {
@@ -1285,7 +1284,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
               //Affichage d'un message d'erreur lorsque la 
               //modification à échoué.
               document.querySelector("[name='msgErreur']").classList.add('errorBox');
-              var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Aucune modification n'as été éffectué.</p>";
+              var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Aucune modification à effectuer.</p>";
               document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
             }
             else{
