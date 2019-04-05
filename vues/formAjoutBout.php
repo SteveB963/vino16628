@@ -27,7 +27,7 @@
                 <input type="hidden" name="id_cellier" value="<?= $_GET['id_cellier'] ?>">
             </form>
             <div class="boutonForm">
-                <button class="retour largeBtn" name="retourCellier">Retour</button>
+                <button class="retour largeBtn btnWeb" name="retourCellier">Retour</button>
                 <button class="largeBtn" name="ajouterNouvelleBouteille">Ajouter la bouteille</button>
             </div>
             

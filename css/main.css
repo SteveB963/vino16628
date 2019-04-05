@@ -2,15 +2,19 @@
  * Votre CSS
  ********/
 
+html{
+	height: 100%;
+}
 body {
 	min-width: 320px;
+	min-height: 100%;
 	margin: 0;
 	background-color: #dddddd45;
 
 	font-family: 'Hind', sans-serif;
 	font-size: 95%;
     color: #202020;
-	
+    position: relative;
 }
 
 main{
@@ -19,14 +23,14 @@ main{
     display:flex;
     flex-flow:row nowrap;
     justify-content:center;
-    
+    padding-bottom: 50px;
+    height: 100%;
 }
 
 .content{
     box-sizing:border-box;
     border:1px solid #ddd;
     padding:15px;
-    margin:30px 0px;
 	background-color:white;
 }
 
@@ -82,8 +86,8 @@ footer
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
-	position: fixed;
-	bottom: 0;
+	position: absolute;
+	bottom: 0.5px;
 }
 
 /********
@@ -101,13 +105,10 @@ footer
 	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-items: center;
-    position:sticky;
-        top:0px;
-        left:0px;
 }
 
 #entete1 div{
-	width: 200px;
+	width: 30%;
 }
 
 #titreEntete{
@@ -169,11 +170,12 @@ footer
 	display: none;
 	width: 150px;
 	height: 100px;
-	background-color: white;
+	background-color: #dddddd;
 	margin-top: 90px;
 	justify-content: space-around;
 	align-items: center;
 	margin-left: 20px;
+	z-index: 3;
 }
 
 #entete1 #optionsCompte ul{
@@ -200,13 +202,13 @@ footer
 }
 
 #entete1 #optionsCompte ul li a{
-	color: gray;
+	color: black;
 	padding-bottom: 5px;
 	list-style: none;
 }
 
 #entete1 #optionsCompte ul li:hover a{
-	color: black;
+	color: grey;
 }
 
 #mainNav ul{
@@ -220,6 +222,7 @@ footer
 .accueil{
 	position: relative;
 	padding-bottom: 220px;
+	margin-top: 45px;
 }
 
 #divAccueil{
@@ -264,7 +267,7 @@ footer
 
 /* Div d'inscription rouge */
 .divRouge{
-	width: 100%;
+	width: 102%;
 	height: 300px;
 	display: flex;
 	padding-bottom: 20px;
@@ -276,6 +279,7 @@ footer
 	background-color: #730101;
 	position: absolute;
 	bottom: 0px;
+	left: -13px;
 	box-shadow: 0px -5px 7px #42424270 inset;
 	text-align: center;
 }
@@ -502,6 +506,7 @@ table td button{
 .mesFormulaires{
 	width: 80%;
 	min-width: 320px;
+	margin: 30px 0px;
 }
 
 .mesFormulaires h2{
@@ -514,11 +519,6 @@ table td button{
 	padding-bottom: 1px;
 }
 
-.mesFormulaires .recherche{
-    
-}
-
-
 .formulaire div input, .formulaire div select{
 	width: 100%;
 }
@@ -529,6 +529,7 @@ table td button{
 	margin-right: auto;
 	margin-left: auto;
 	margin-top: 15px;
+	margin-bottom: 5px;
 	display: flex;
 	flex-flow: column nowrap;
 	border-left: 2px solid #222224;
@@ -680,7 +681,7 @@ i{
 }
 
 .confirmBox{
-	width: 100%;
+	width: 97%;
 	height: 30px;
 	border-radius: 5px;
 	display: flex;
@@ -742,6 +743,7 @@ i{
 
 .monCompte div:first-child div{
 	border-bottom: 1px solid #ddd;
+	text-align: center;
 }
 
 /* Bouton de modification de compte*/
@@ -800,6 +802,33 @@ i{
 	color: #202020;
 }
 
+/* Dans le cas ou il n'y a aucun cellier... */
+.divMesCelliers .aucunCellier{
+	flex-direction: column;
+}
+
+.divMesCelliers .aucunCellierInfos{
+	justify-content: flex-start;
+}
+
+.divMesCelliers .aucunCellierInfos p, .divMesCelliers .aucunCellierInfos h4{
+	width: 100%;
+	font-size: 16px;
+}
+
+.divMesCelliers .aucunCellierInfos h4{
+	text-decoration: underline;
+}
+
+.divMesCelliers .aucunCellierInfos p{
+	font-family: 'Hind', sans-serif;
+}
+
+.aucunCellier > h4{
+	margin-top: 0;
+	margin-bottom: 30px;
+	text-align: center;
+}
 
 /********
  * formAjoutBout.php
@@ -865,10 +894,26 @@ i{
 	/********
 	 * Accueil.php
 	 ********/
+	.accueil{
+		margin-bottom: 0px;
+		margin-top: 20px;
+		padding: 0px 0px 220px 0px;
+		border: none;
+		background-color: transparent;
+	}
+
  	.accueil .divBlanche{
  		width: 25%;
  		min-width: 200px;
  	}
+
+ 	.accueil .divRouge{
+ 		height: 400px;
+ 		padding-bottom: 30px;
+ 		padding-top: 150px;
+ 		bottom: -55px;
+ 	}
+
 
  	/********
 	 * listCellier.php
@@ -898,40 +943,27 @@ i{
 		height: calc(100% - 230px);
 	}
 	
+	#entete1 #logo{
+		width: 80px;
+		height: 80px;
+	}
+	
 	/* Entête */
-	/*
- 	#entete1{
- 		height: 100px;
- 		flex-flow: row;
- 		align-items: center;
- 		justify-content: space-around;
- 		padding-right: 30%;
- 	}
- 	#entete1 div{
- 		width: 30%;
- 	}
-
- 	#entete1 div:nth-child(1){
- 		display: flex;
- 		justify-content: space-around;
- 		height: 100px;
- 	}
-
- 	#entete1 #logo{
- 		width: 100px;
- 		height: 100px;
- 	}
-
- 	#titreEntete{
- 		font-size: 0.7em;
- 		height: 60px;
- 		margin-bottom: 15px;
- 	}
- 	*/
-
  	#lienOptionsCompte p, #lienOptionsCompte div{
  		display: none;
  	}
+
+ 	#lienOptionsCompte{
+ 		display: none;
+ 	}
+
+ 	#titreEntete h1{
+ 		font-size: 35px;
+ 	}
+
+ 	#profile:checked ~ #optionsCompte{
+	 	display: none;
+	}
 
  	/* Menu burger */
  	#burger{
@@ -982,6 +1014,10 @@ i{
  		display: block !important;
  	}
 
+ 	#burger:checked ~ main{
+ 		display: none;
+ 	}
+
     /* Menu */ 
     nav{
         height:0px !important;
@@ -1009,10 +1045,10 @@ i{
 		margin-right: auto;
 		margin-top: 0px;
 		margin-bottom: 0px;
- 		padding-top: 20%;
+ 		padding-top: 35%;
  		padding-left: 0px;
  		align-items: center;
- 		height: 30%;
+ 		height: 20%;
  		list-style: none;
 		width: 80%;
  	}
@@ -1033,8 +1069,24 @@ i{
 	/********
 	 * Accueil.php
 	 ********/
+	.accueil{
+		margin: 0;
+		margin-bottom: 50px;
+		background-color: #222224;
+	}
+
+	.accueil .divRouge{
+		width: 100%;
+		left: 0;
+	}
+
  	.accueil .divBlanche{
- 		width: 80%;
+ 		width: 100%;
+ 		box-shadow: none;
+ 	}
+
+ 	.accueil .divBlanche:first-child{
+ 		margin-top: 0;
  	}
 
  	/********
@@ -1110,7 +1162,18 @@ i{
         width:100%;
     }
 
-
+    /********
+	 * formulaire
+	 ********/
+	.mesFormulaires{
+		width: 95%;
+	}
+	.formulaire{
+		width: 100%;
+		margin: 5px 15px 5px 0px;
+		border: none;
+		padding: 0;
+	}
 }
 
 /**************** Tout sauf mobile ****************/

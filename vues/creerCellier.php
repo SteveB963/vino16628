@@ -4,14 +4,14 @@
 	<p>Veuillez remplir le nom de votre nouveau cellier.</p>
     <div>
         
-            <form >
+            <form class="formulaire">
                 <div name="msgErreur"></div>
                 <div>
                     <input type="text" name="nom" placeholder="Nom du cellier" >
                     <p class="erreurNomCellier"></p>
                 </div>                 
             </form>
-            <button name="creerCellier">Créer votre cellier</button>
+            <button name="creerCellier" class="largeBtn">Créer votre cellier</button>
         
     </div>
 </div>

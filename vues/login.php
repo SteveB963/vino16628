@@ -23,7 +23,7 @@
 			<input type="password" name="motPasseCo" placeholder="Mot de passe">
 			<label for="motPasseCo" class="hide">Mot de passe:</label>
 		</div>
-		<input type="button" name="seConnecter" value="Se connecter">
-		<p>Je souhaite <a href="index.php?requete=inscription">m'inscrire</a>!</p>
 	</form>
+		<button name="seConnecter" class='largeBtn'>Se connecter</button>
+		<p>Je souhaite <a href="index.php?requete=inscription">m'inscrire</a>!</p>
 </div>

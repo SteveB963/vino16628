@@ -61,11 +61,13 @@ if($data){
 else{
 
 ?>
-    <div class="">
+    <div class="aucunCellier">
         <h2>Vous ne posséder aucun cellier pour le moment.</h2>
-        <h4>Vous pouvez créer un cellier personnel <a href="?requete=creerUnCellier">ici</a>.</h4>
-        <h4>À quoi sert le cellier?</h4>
-        <p>Avoir un cellier vous permettra par la suite d'y ajouter vos bouteilles, de les modifier et de les supprimer lorsqu'elles auront été bu. Il vous sera donc possible de toujours savoir quelles bouteilles vous posséder au chalet ou à la maison!</p>
+        <h4>Vous pouvez créer un cellier personnel en cliquant sur le bouton ci-dessus.</h4>
+        <div class="aucunCellierInfos">
+            <h4>À quoi sert le cellier?</h4>
+            <p>Avoir un cellier vous permettra par la suite d'y ajouter vos bouteilles, de les modifier et de les supprimer lorsqu'elles auront été bu. Il vous sera donc possible de toujours savoir quelles bouteilles vous posséder au chalet ou à la maison!</p>
+        </div>
     </div>
     
 <?php    
