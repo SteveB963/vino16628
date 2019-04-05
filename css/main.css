@@ -92,7 +92,7 @@ footer
 /********
  * entete.php
  ********/
-
+/* Alignement du contenu de l'entête */
 #entete1{
 	height: 100px;
 	background-color: #222224;
@@ -106,6 +106,7 @@ footer
 	align-items: center;
 }
 
+/* Dimension contenu entête*/
 #entete1 div{
 	width: 30%;
 }
@@ -251,6 +252,7 @@ footer
  	z-index: 1;
 }
 
+/* Divs de présentation du site */
  .accueil .divBlanche:nth-child(1){
  	background-image: url("../images/cellier.png");	
  }
@@ -261,7 +263,6 @@ footer
 
   .accueil .divBlanche:nth-child(3){
  	background-image: url("../images/bac_vin.png");	
- 	/*margin-bottom: 400px;*/
  }
 
 /* Div d'inscription rouge */
@@ -341,6 +342,7 @@ footer
     width:30%;
 }
 
+/* Menu de gauche sur la page contenuCellier */
 .actionCellier{
     position:sticky;
         top:0px;
@@ -368,6 +370,7 @@ footer
     width:100%;
 }
 
+/* Option de trie */
 .trier{
     border: 2px solid black;
     border-radius: 5px;
@@ -404,15 +407,11 @@ footer
 
  /*resultat recherche*/
 .count{
-     width:100%;
-    font-family: 'Roboto', 'RobotoDraft', sans-serif;
+    width:100%;
     font-size: 20px;
-    color:black;
-    text-align: center;
 }
 
 /*contenu du cellier*/
-
 .cellier{
  	display: flex;
  	flex-direction:column;
@@ -456,6 +455,7 @@ footer
     margin-left:15px;
 }
 
+/* Nom de la bouteille */
 .information > div:nth-child(2) > p:first-child{
     font-size:12pt;
     font-family: 'Libre Baskerville', serif;
@@ -464,10 +464,12 @@ footer
     padding:0px;
 }
 
+/* Bouton d'affichage des informations de la bouteille */
 .information > div:nth-of-type(2) > button:first-of-type{
     display:none;
 }
 
+/* Affichage de la descrition de la bouteille*/
 .description > div > p{
  	margin:0px;
 }
@@ -489,18 +491,16 @@ footer
 
 .description > div > p:first-child{
     text-decoration:underline;
-    /*border-bottom:1px solid #ddd;*/
 }
 
+/* Div contenant les boutons d'ajout, de modification
+   et de suppression de la bouteille */
 .actionBouteille{
  	display: flex;
     flex-flow:column;
  	justify-content: space-around;
  	padding: 10px;
  }
- 
-
-
 
 /**liste des bouteilles**/
 .listeBouteille{
@@ -537,10 +537,6 @@ table td button{
 }
 
 
-.erreur{
-    
-}
-
 /********
  * formulaire
  ********/
@@ -553,7 +549,7 @@ table td button{
 
 .mesFormulaires h2{
     margin:0px 0px 20px;
-	color: #730101;
+	/*color: #730101;*/
 }
 
 .mesFormulaires > div > label{
@@ -589,12 +585,15 @@ table td button{
 	border-bottom: 2px solid black;
 }
 
+/* Messages d'erreur sous les champs */
 .msg{
     width:60%;
     margin:5px auto;
     height:15px;
 }
 
+/* Boite d'affichage de message d'erreur en haut 
+   du formulaire */
 .msgBox{
 	margin: 0 !important;
 }
@@ -605,6 +604,8 @@ table td button{
     color:red;
 }
 
+/* Barre de recherche pour autocomplete
+   lors de l'ajout d'une bouteille */
 .recherche{
     display:flex;
     flex-flow:row nowrap;
@@ -736,11 +737,7 @@ i{
 	background-color: #00800042;
 }
 
-.formulaire > .confirmBox > p{
-    color:black;
-}
-
-.formulaire > .errorBox > p{
+.formulaire > .confirmBox > p, .formulaire > .errorBox > p{
     color:black;
 }
 
@@ -788,6 +785,10 @@ i{
 .monCompte div:first-child div{
 	border-bottom: 1px solid #ddd;
 	text-align: center;
+}
+
+.compteModif{
+	width: 250px;
 }
 
 /* Bouton de modification de compte*/
@@ -847,24 +848,26 @@ i{
 }
 
 /* Dans le cas ou il n'y a aucun cellier... */
-.divMesCelliers .aucunCellier{
+.divMesCelliers .aucunCellier, .cellier .aucunCellier{
 	flex-direction: column;
 }
 
-.divMesCelliers .aucunCellierInfos{
+.divMesCelliers .aucunCellierInfos, .cellier .aucunCellierInfos{
 	justify-content: flex-start;
 }
 
-.divMesCelliers .aucunCellierInfos p, .divMesCelliers .aucunCellierInfos h4{
+.divMesCelliers .aucunCellierInfos p, .divMesCelliers .aucunCellierInfos h4,
+.cellier .aucunCellierInfos p, .cellier .aucunCellierInfos h4{
 	width: 100%;
 	font-size: 16px;
 }
 
-.divMesCelliers .aucunCellierInfos h4{
+.divMesCelliers .aucunCellierInfos h4, .cellier .aucunCellierInfos h4{
 	text-decoration: underline;
+	text-align: left;
 }
 
-.divMesCelliers .aucunCellierInfos p{
+.divMesCelliers .aucunCellierInfos p, .cellier .aucunCellierInfos p{
 	font-family: 'Hind', sans-serif;
 }
 
@@ -968,7 +971,7 @@ i{
  		padding-top: 150px;
  		bottom: -55px;
  	}
-
+    
 
  	/********
 	 * listCellier.php
@@ -979,7 +982,7 @@ i{
 	.divMesCelliers > p{
 		width: 45%;
 	}
-	
+
     
     /********
 	 * contenuCellier.php
@@ -1005,11 +1008,22 @@ i{
     .cellier{
         width:auto;
     }
-    /*
- 	 .information > div:nth-child(2){
-        flex-flow:column;
-    }
-    */
+
+    /********
+	 * listCellier.php
+	 ********/
+	.divMesCelliers .options{
+		width: 65%;
+	}
+
+	.divMesCelliers p{
+		width: 45%;
+	}
+
+	.listCellier{
+		display: flex;
+		flex-flow: row nowrap;
+	}
 
 }
 
@@ -1141,6 +1155,7 @@ i{
 		font-size: 1.2em;
 		color: white;
 		transition: 0.5s;
+		text-decoration: none;
 	}
 
 	/********
@@ -1217,8 +1232,6 @@ i{
 	 ********/
     
     /*action cellier*/
-    
-    
     .actionCellierMobile > div:nth-child(3){
         width:auto;
     }
@@ -1243,7 +1256,7 @@ i{
         max-width:500px;
     }
     
-    
+    /* Bouton d'affichage des informations de la bouteille */
     .information{
  		flex-flow:row wrap;
         justify-content:space-between;
@@ -1269,6 +1282,8 @@ i{
         text-align:center;
     }
     
+    /* En mobile, la description de la bouteille est visible
+       au clique sur un bouton seulement */
     .information > div:nth-of-type(2) > .description{
         display:none;
     }
@@ -1277,10 +1292,6 @@ i{
         flex-flow:column;
         font-size:10pt;
         padding:0px;
-    }
-    
-    .descMobile{
-        
     }
     
     .descMobile div:first-of-type{
@@ -1296,6 +1307,7 @@ i{
         display:inline;
     }
     
+    /* Affichage de la liste des bouteilles du cellier*/
     .listeBouteille table{
         font-size:8pt;    
     }
@@ -1334,12 +1346,18 @@ i{
 	.mesFormulaires{
 		width: 95%;
 	}
+
 	.formulaire{
 		width: 100%;
 		margin: 5px 15px 5px 0px;
 		border: none;
 		padding: 0;
 	}
+
+	.compteModif{
+		width: 100%;
+	}
+
 }
 
 /**************** Tout sauf mobile ****************/
@@ -1382,53 +1400,55 @@ i{
 }
 
 @keyframes highlight{
+    /*
     0%{
-        box-shadow: 0px 0px 0px 0px white inset; 
+        box-shadow: 0px 0px 0px 0px #730101 inset; 
     }
     
     5%{
-        box-shadow: 0px 0px 2px 1px white inset;
+        box-shadow: 0px 0px 2px 1px #730101 inset;
     }
     
     10%{
-        box-shadow: 0px 0px 4px 2px white inset; 
+        box-shadow: 0px 0px 4px 2px #730101 inset; 
     }
     
     15%{
-        box-shadow: 0px 0px 6px 3px white inset; 
+        box-shadow: 0px 0px 6px 3px #730101 inset; 
     }
     
     20%{
-        box-shadow: 0px 0px 8px 4px white inset; 
+        box-shadow: 0px 0px 8px 4px #730101 inset; 
     }
     
     25%{
-        box-shadow: 0px 0px 10px 5px white inset; 
+        box-shadow: 0px 0px 10px 5px #730101 inset; 
     }
     
     75%{
-        box-shadow: 0px 0px 10px 5px white inset; 
+        box-shadow: 0px 0px 10px 5px #730101 inset; 
     }
     
     80%{
-        box-shadow: 0px 0px 8px 4px white inset; 
+        box-shadow: 0px 0px 8px 4px #730101 inset; 
     }
     
     85%{
-        box-shadow: 0px 0px 6px 3px white inset; 
+        box-shadow: 0px 0px 6px 3px #730101 inset; 
     }
     
     90%{
-        box-shadow: 0px 0px 4px 2px white inset; 
+        box-shadow: 0px 0px 4px 2px #730101 inset; 
     }
     
     95%{
-        box-shadow: 0px 0px 2px 1px white inset; 
+        box-shadow: 0px 0px 2px 1px #730101 inset; 
     }
     
     100%{
-        box-shadow: 0px 0px 0px 0px white inset; 
+        box-shadow: 0px 0px 0px 0px #730101 inset; 
     }
+    */
 }
 
 

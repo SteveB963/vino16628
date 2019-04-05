@@ -1,14 +1,11 @@
 <!-- listCellier contenuPage -->
-<div class="listCellier contenuCellier">
+<div class="contenuCellier listCellier">
 
     <div class="listCellierDivGauche">
         <div class="monCompte">
             <div>
                 <div>
                     <h2>Mon Compte</h2>
-                <!--
-                    <p><a name="modifierCompte">Modifier<i class="fas fa-user-edit"></i></a></p>
-                -->
                 </div>
             </div>
 
@@ -20,7 +17,6 @@
                 </div>";
     }
 ?>
-        
             <div>
                 <p><strong>Prenom: </strong><?php echo $_SESSION["prenomUtilisateur"] ?></p>
                 <p><strong>Nom: </strong><?php echo $_SESSION["nomUtilisateur"] ?></p>
@@ -33,7 +29,6 @@
     <div class="mesCelliers">
         <h2>Mes Celliers</h2>
         <button class='btnAjoutCellier'>Ajouter un cellier</button>
-        <!-- mesCellliers -->
         <div class="divMesCelliers">
 <?php
 if($data){

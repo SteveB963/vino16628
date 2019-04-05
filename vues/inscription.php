@@ -1,23 +1,21 @@
+<?php
+	if($page == "inscription"){
+        $titre = "Inscription";
+        $message = "Veuillez remplir le formulaire ci-dessous afin de vous inscrire.";
+    }
+    else{
+        $titre = "Modification de votre compte";
+        $message = "Veuillez remplir le formulaire ci-dessous afin de modifier votre compte.";
+    }
+?>
 <div class="actionCellierMobile">
     <div>
-        <button class="retour petitBtn rtrContenuCellier"><i class="fas fa-arrow-left"></i></button>
+        <button class="retour petitBtn rtrAccueil"><i class="fas fa-arrow-left"></i></button>
     </div>
 </div>
 <div class="inscription mesFormulaires content">
-<?php
-	if($page == "inscription"){
-?>
-	<h2>Inscription</h2>
-	<p>Veuillez remplir le formulaire ci-dessous afin de vous inscrire.</p>
-<?php
-	}
-	else{
-?>
-	<h2>Modification de votre compte</h2>
-	<p>Veuillez remplir le formulaire ci-dessous afin de modifier votre compte.</p>
-<?php
-	}
-?>
+    <h2><?php echo $titre ?></h2>
+	<p><?php echo $message ?></p>
 	<form class="formulaire">
 		<div name="msgErreur"></div>
 		<div>
@@ -49,7 +47,7 @@
 		
 	</form>
 	<div class="boutonForm">
-        <button class="retour btnWeb largeBtn" name="retourCompte">Retour</button>
+        <button class="retour btnWeb largeBtn rtrAccueil" name="retourCompte">Retour</button>
 <?php
 	if($page == "inscription"){
 ?>

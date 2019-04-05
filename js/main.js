@@ -496,6 +496,16 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         });
     }
     
+    //redirection vers l'accueil
+    let btnRetourCompte = document.querySelectorAll(".rtrAccueil");
+    if(btnRetourCompte){
+        btnRetourCompte.forEach(function(element){
+           element.addEventListener("click", function(evt){
+              window.location.href = "index.php?requete=acceuil";
+            });  
+        });
+    }
+    
     //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
     var modifier = document.querySelector("[name='modifier']");
     if(modifier){
@@ -769,9 +779,12 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             var inputCherche= document.getElementById('searchValue').value;
             //verifier le champ de chercher est vide ou pas
             if(inputCherche!=''){
-            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-                var trier=document.getElementById('trier').value;
-                console.log(id_cellier);
+                var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+                let url = new URL(document.URL)
+                var trier = url.searchParams.get("trierCelllier");
+                if(trier == null){
+                    trier = "nom";
+                }
                 window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche +"&trierCellier=" + trier;
             }
         });
@@ -801,7 +814,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         if(Chercher.value!=''){
             var retour=document.createElement("BUTTON");
             retour.setAttribute("id", "cherche");
-            retour.innerHTML='<i class="fas fa-sync"></i>';  
+            retour.innerHTML='<i class="fas fa-times"></i>';  
             search.appendChild(retour);   
         }   
     }
@@ -819,18 +832,20 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     }
     
     //buttonn Trier par le select box value
-    let btnTrier = document.getElementById('trier');
+    let btnTrier = document.querySelectorAll('.btnTrier');
     if(btnTrier){
-        btnTrier.addEventListener("change", function(evt){
-            var trier=document.getElementById('trier').value;
-            var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-            let inputCherche=document.getElementById('searchValue').value;
-            if(inputCherche!=''){
-                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier+"&inputCherche=" + inputCherche;
-            }
-            else{
-                window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
-            }
+        btnTrier.forEach(function(button){
+            button.addEventListener("change", function(evt){
+                let trier = button.value;
+                var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+                let inputCherche=document.getElementById('searchValue').value;
+                if(inputCherche!=''){
+                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier+"&inputCherche=" + inputCherche;
+                }
+                else{
+                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&trierCellier=" + trier;
+                }
+            });
         });
     }
 
@@ -1225,13 +1240,6 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     });
   }
 
-    //btnModif - redirection vers le formulaire de modification du compte
-    let btnRetourCompte = document.querySelector("[name='retourCompte']");
-    if(btnRetourCompte){
-        btnRetourCompte.addEventListener("click", function(evt){
-          window.location.href = "index.php?requete=afficheListCellier";
-        });
-    }
 
   //btnSauvCompte - Envoie les informations entrées dans le formulaire
   //au controleur afin de permettre leur sauvegarde dans la bd
@@ -1244,7 +1252,6 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         prenomInscri : document.querySelector("[name='prenomInscri']").value,
         nomInscri : document.querySelector("[name='nomInscri']").value,
         courrielInscri : document.querySelector("[name='courrielInscri']").value,
-        //id : document.querySelector("[name='idCompte']").value
       }
 
       var verif = {
@@ -1290,7 +1297,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
               //Affichage d'un message d'erreur lorsque la 
               //modification à échoué.
               document.querySelector("[name='msgErreur']").classList.add('errorBox');
-              var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Aucune modification n'as été éffectué.</p>";
+              var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Aucune modification à effectuer.</p>";
               document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
             }
             else{

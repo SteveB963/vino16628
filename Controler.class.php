@@ -21,6 +21,9 @@
         public function gerer()
         {
         switch ($_GET['requete']) {
+            case 'accueil':
+                $this->accueil();
+                break;
             case 'autocompleteBouteille':
                 $this->autocompleteBouteille();
                 break;
@@ -165,6 +168,10 @@
     {
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
+            //Afficher message de confirmation au retour d'une modification
+            if(isset($_GET["modif"])){
+                $msgConfirmation = "Les modifications ont bien été effectués.";
+            }
             $cel = new Cellier();
             $data = $cel->getListeCellier($_SESSION["idUtilisateur"]);
             include("vues/entete.php");

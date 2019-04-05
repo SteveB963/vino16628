@@ -7,7 +7,7 @@
         <div>
             <div class="trier">
                 Trier 
-                <select id="trier">
+                <select class="btnTrier">
                     <option value="nom" <?php echo $trier== 'nom' ? 'selected' : ''?>>Nom</option>
                     <option value="prix" <?php echo $trier == 'prix' ? 'selected' : ''?>>Prix</option>
                     <option value="pays" <?php echo $trier == 'pays' ? 'selected' : ''?>>Pays</option>
@@ -34,13 +34,11 @@
     </div>
     <h2><?php echo $data["nom_cellier"]["nom"] ?></h2>
     <div class="count">
-        <h4>
         <?php
         if($msgCount!=''){
             echo $msgCount;
             }
         ?>
-        </h4>
     </div>
     <div class="actionCellier">
         <div>
@@ -48,7 +46,7 @@
         </div>
         <div class="trier">
             Trier le cellier par:
-            <select id="trier">
+            <select class="btnTrier">
                 <option value="nom" <?php echo $trier== 'nom' ? 'selected' : ''?>>Nom</option>
                 <option value="prix" <?php echo $trier == 'prix' ? 'selected' : ''?>>Prix</option>
                 <option value="pays" <?php echo $trier == 'pays' ? 'selected' : ''?>>Pays</option>
@@ -87,7 +85,7 @@
     <div class="content cellier" data-cellier="<?php echo $_GET['id_cellier']?>">
     <?php
         
-        if($data){
+        if($data['info'] && $data['bouteille']){
             foreach ($data['info'] as $cle => $infoBout) {
         ?>
         <div class="bouteille" id="<?php echo $infoBout['id_bouteille'] ?>">
@@ -162,7 +160,17 @@
             }
         }
         else{
-            
+
+        ?>
+            <div class="aucunCellier">
+                <h2>Ce cellier est vide.</h2>
+                <h4>Vous pouvez y ajouter une bouteille en cliquant sur le bouton d'ajout.</h4>
+                <div class="aucunCellierInfos">
+                    <h4>Et après?</h4>
+                    <p>Ajouter des bouteilles à ce cellier vous permettra de consulter ses informations et de savoir combien de bouteilles de la sorte il vous reste dans le cellier. Mais ne vous en faites pas, ajouter une bouteille n'est pas une action définitive! Il vous sera par la suite possible de supprimer ou de modifier des bouteilles comme bon vous semble.</p>
+                </div>
+            </div>
+    <?php
         }
 
     ?>	
