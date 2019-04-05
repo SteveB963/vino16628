@@ -12,17 +12,18 @@ window.addEventListener('load', function() {
     
     const BaseURL = document.baseURI;
     
-    //bouton recherche mobile
+    //bouton recherche mobile ///NA PAS PU ÊTRE ADAPTER AVEC LE CODE RECHERCHE EXISTANT
     btnChercheMobile = document.querySelector(".chercheMobile");
     if(btnChercheMobile){
         btnChercheMobile.addEventListener("click", function(evt){
             if(window.innerWidth <= 768){
-                console.log(btnChercheMobile.value);
+                //fait apparaitre la barre de recherche
                 let input = document.querySelector(".inputChercheMobile");
                 let trier = evt.currentTarget.closest(".actionCellierMobile").children[1];
                 trier.classList.toggle("hideCherche");
                 input.classList.toggle("hideCherche");
                 input.closest(".divAutoComplete").parentNode.classList.toggle("searchMobile")
+                //remplace la loupe par un x pour fermer la recherche
                 if(btnChercheMobile.firstChild.getAttribute("class") == "fas fa-search"){
                     btnChercheMobile.innerHTML = "<i class='fas fa-times'></i>";
                 }
@@ -34,7 +35,7 @@ window.addEventListener('load', function() {
     }
     
     
-    //button modifier dans la liste
+    //button modifier date dans la liste bouteille
     document.querySelectorAll(".modifDate").forEach(function(element){
         actionModifierDate(element);
     });
@@ -59,8 +60,10 @@ window.addEventListener('load', function() {
             let tr = td.parentNode;
             let date_ajout = tr.children[0].dataset.date;
             let garde_jusqua = tr.children[1].dataset.date;
-            
+
+            //si écran mobile
             if(window.innerWidth <= 768){
+                //on remplace le bouton supprimer par bouton annuler modification
                 td.parentNode.classList.add("active");
                 td.innerHTML = "<button title='confirmer' class='petitBtn accpetModif'><i class='fas fa-check'></i></button>";
                 td.nextElementSibling.innerHTML = "<button title='annuler' class='petitBtn annuleModif'><i class='fas fa-times'></i></button>";
@@ -68,6 +71,8 @@ window.addEventListener('load', function() {
                 traitementModifierDate(td.firstChild);
                 annuleModifierDate(td.nextElementSibling.firstChild);
             }
+            
+            //sinon bouton confirmer et annuler apparaisse dans le même td
             else{
                 td.parentNode.classList.add("active");
                 td.innerHTML = "<button title='confirmer' class='petitBtn accpetModif'><i class='fas fa-check'></i></button>"+
@@ -76,13 +81,9 @@ window.addEventListener('load', function() {
                 annuleModifierDate(td.children[1]);
             }
             
+            //change les td en input
             tr.children[0].innerHTML = "<input type='date' name='date_ajout' value='" + date_ajout + "'>";
             tr.children[1].innerHTML = "<input type='date' name='garde_jusqua' value='" + garde_jusqua + "'>";
-            
-            
-            
-            
-            
         });
     }
     
@@ -93,12 +94,15 @@ window.addEventListener('load', function() {
      */
     function traitementModifierDate(element){
         element.addEventListener("click", function(evt){
+            
+            //applique l'animation de loading
             let button = evt.currentTarget;
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
             let tr = evt.currentTarget.parentNode.parentNode;
             let erreur = false;
   
+            //récupère les nouvelles dates dans les inputs
             let param = {
                 id: evt.currentTarget.parentNode.parentElement.dataset.id, 
                 date_ajout: document.querySelector("[name='date_ajout']").value,
@@ -110,14 +114,15 @@ window.addEventListener('load', function() {
                 date : verifChamp(param.date_ajout,"date"),
                 garde : verifChamp(param.garde_jusqua,"date")
             }
-
             Object.keys(verif).forEach(function(msg){
                 if(verif[msg] != ""){
                     erreur = true;
                 }
             });
             
+            //si tout les champs sont bien rempli
             if(!erreur){
+                //efface le message d'erreur
                 tr.nextElementSibling.children[0].innerHTML = "";
                 
                 let date_ajout = new Date(param.date_ajout);
@@ -345,7 +350,7 @@ window.addEventListener('load', function() {
 //bouton modifier le nom du cellier dans la liste des celliers
 document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
   element.addEventListener("click", function(evt){
-      let id_cellier = evt.target.parentElement.dataset.id;
+      let id_cellier = evt.currentTarget.parentElement.dataset.id;
       console.log(id_cellier);
       window.location.href = BaseURL + "index.php?requete=modifierNomCellier&id_cellier=" + id_cellier;    
   })
@@ -355,7 +360,7 @@ document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
 document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
   element.addEventListener("click", function(evt){
     if (confirm("Vous êtes sûr de supprimer ce cellier?")){
-      let id_cellier = evt.target.parentElement.dataset.id;
+      let id_cellier = evt.currentTarget.parentElement.dataset.id;
       let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
       console.log(id_cellier);
       fetch(requete)
@@ -383,7 +388,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     //affiche la liste des bouteilles
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
-            let id_bouteille = evt.target.closest(".bouteille").getAttribute("id");
+            let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
             
             //annule opération modif sur les autre champs
             let champActif = document.getElementById(id_bouteille).querySelectorAll(".active");
@@ -877,8 +882,8 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     //autocomplete dans formulaire d'ajout d'un nouvelle bouteille
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
     if(inputNomBouteille){
-        let liste = document.querySelector('.listeAutoComplete');
-        let label = inputNomBouteille.nextSibling;
+        var liste = document.querySelector('.listeAutoComplete');
+        var label = inputNomBouteille.nextSibling;
         var prevent = false;
         
         inputNomBouteille.addEventListener("input", function(evt){
@@ -906,7 +911,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         nom : document.querySelector(".nom_bouteille"),
         date_ajout : document.querySelector("[name='date_ajout']"),
         garde_jusqua : document.querySelector("[name='garde_jusqua']"),
-        id_cellier : document.querySelector("[name='cellier']")
+        id_cellier : document.querySelector("[name='id_cellier']")
         };
 
         if(liste){
@@ -978,7 +983,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
                         });
                     }
                     else{
-                        document.querySelector(".erreurgarde").innerHTML = "La date \"Garder jusqu'à\" doit être plus grande que la date d'ajout";
+                        document.querySelector(".erreurgarde").innerHTML = "La date \"Garder jusqu'à\" doit être supérieur à la date d'ajout";
                     } 
                 }
 

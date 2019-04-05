@@ -1,3 +1,8 @@
+<div class="actionCellierMobile">
+    <div>
+        <button class="retour petitBtn rtrContenuCellier"><i class="fas fa-arrow-left"></i></button>
+    </div>
+</div>
 <div class="inscription mesFormulaires content">
 <?php
 	if($page == "inscription"){

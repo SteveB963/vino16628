@@ -20,7 +20,7 @@ main{
     max-width:1300px;
     margin:auto;
     display:flex;
-    flex-flow:row nowrap;
+    flex-flow:row wrap;
     justify-content:center;
     padding-bottom: 50px;
     height: 100%;
@@ -67,7 +67,7 @@ button{
 
 .retour{
     font-weight:bold;
-    color:#730101;
+    color:#202020;
     background-color: lightgray;
 }
 
@@ -326,6 +326,7 @@ footer
     background-color: white;
     border:1px solid #ddd;
     font-size:12pt;
+    z-index:2;
 }
 
 .actionCellierMobile > div{
@@ -551,7 +552,7 @@ table td button{
 }
 
 .mesFormulaires h2{
-    margin:0px 0px 10px;
+    margin:0px 0px 20px;
 	color: #730101;
 }
 
@@ -934,6 +935,17 @@ i{
 
 /**************** Tablette ****************/
 @media all and (max-width:1024px){
+    
+    /* Retirer les boutons pour le web */
+	.btnWeb{
+		display: none;
+	}
+    
+    .btnMobile{
+        display:inline;
+    }
+    
+    
 	/********
 	 * Accueil.php
 	 ********/
@@ -967,9 +979,7 @@ i{
 	.divMesCelliers > p{
 		width: 45%;
 	}
-	.listCellier i{
-		display: none;
-	}
+	
     
     /********
 	 * contenuCellier.php
@@ -1171,10 +1181,7 @@ i{
 		width: 50%;
 	}
 
-	/* Retirer les boutons pour le web */
-	.btnWeb{
-		display: none;
-	}
+	
 
 	/* Afficher les font awesome des boutons */
 	.listCellier i{

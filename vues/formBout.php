@@ -1,3 +1,8 @@
+<div class="actionCellierMobile">
+    <div>
+        <button class="retour petitBtn rtrContenuCellier"><i class="fas fa-arrow-left"></i></button>
+    </div>
+</div>
 <div class="mesFormulaires content">
     <h2>Modification d'une bouteille au cellier</h2>
     <div >
@@ -74,7 +79,7 @@
         <input type="hidden" name="nonliste" value="<?php echo $donnee['bouteille']['non_liste'] ?>">
         <input type="hidden" name="id_cellier" value="<?php echo $donnee['id_cellier'] ?>">
         <div class="boutonForm">
-            <button class="retour largeBtn rtrContenuCellier">Retour</button>
+            <button class="retour btnWeb largeBtn rtrContenuCellier">Retour</button>
             <button class="largeBtn" name="modifier">Modifier la bouteille</button>
         </div>
         

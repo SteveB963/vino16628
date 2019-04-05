@@ -1,5 +1,9 @@
+<div class="actionCellierMobile">
+    <div>
+        <button class="retour petitBtn rtrListeCellier"><i class="fas fa-arrow-left"></i></button>
+    </div>
+</div>
 <div class="mesFormulaires content">
-
 	<h2>Modification du nom de votre cellier</h2>
 	<p>Veuillez modifier le nom ci-dessous.</p>
 
@@ -17,7 +21,7 @@
                  
             </form>
             <div class="boutonForm">
-                <button class="retour largeBtn btnWeb" name="retourListeCellier">Retour</button> 
+                <button class="retour largeBtn btnWeb rtrListeCellier">Retour</button> 
                 <button name='sauverNomCellier' class="largeBtn">Sauvegarder la modification</button>
             </div>
         

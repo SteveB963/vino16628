@@ -1,6 +1,10 @@
+<div class="actionCellierMobile">
+    <div>
+        <button class="retour petitBtn rtrContenuCellier"><i class="fas fa-arrow-left"></i></button>
+    </div>
+</div>
 <div class="mesFormulaires content">
     <h2>Ajouter une bouteille au cellier</h2>
-
     <div class="formNouvelleBouteille" vertical layout>
         <div class="divAutoComplete">
             <div class="recherche">

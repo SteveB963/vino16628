@@ -11,7 +11,6 @@
 						</div>
 					  </div>";
 			}
-
 		?>
 		<div name="msgErreur" ></div>
 		<div name="msgConfirmation" class="msgBox"></div>
