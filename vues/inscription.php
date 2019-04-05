@@ -44,16 +44,16 @@
 		
 	</form>
 	<div class="boutonForm">
-        <button class="retour" name="retourCompte">Retour</button>
+        <button class="retour btnWeb largeBtn" name="retourCompte">Retour</button>
 <?php
 	if($page == "inscription"){
 ?>
-		<button class="soumettre" name="ajouterNouveauCompte">S'inscrire!</button>
+		<button class="soumettre largeBtn" name="ajouterNouveauCompte">S'inscrire!</button>
 <?php
 	}
 	else{
 ?>
-		<button class="soumettre" name="sauvegardeModifCompte">Sauvegarder les modifications</button>
+		<button class="soumettre largeBtn" name="sauvegardeModifCompte">Sauvegarder les modifications</button>
 <?php
 	}
 ?>

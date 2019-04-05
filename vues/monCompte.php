@@ -1,11 +1,11 @@
-<div class="monCompte mesFormulaires content">
+<div class="mesFormulaires">
 
-	<div>
+	<div class="monCompte">
 		<div>
-			<h2>Mon Compte</h2>
-			<p><a name="modifierCompte">Modifier<i class="fas fa-user-edit"></i></a></p>
+			<div>
+				<h2>Mon Compte</h2>
+			</div>
 		</div>
-	</div>
 
 <?php
 	if(isset($msgConfirmation))
@@ -16,10 +16,11 @@
 	}
 ?>
 	
-	<div>
-		<p><strong>Prenom: </strong><?php echo $_SESSION["prenomUtilisateur"] ?></p>
-		<p><strong>Nom: </strong><?php echo $_SESSION["nomUtilisateur"] ?></p>
-		<p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>
+		<div>
+			<p><strong>Prenom: </strong><?php echo $_SESSION["prenomUtilisateur"] ?></p>
+			<p><strong>Nom: </strong><?php echo $_SESSION["nomUtilisateur"] ?></p>
+			<p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>
+		</div>
 	</div>
-
+	<button name="modifierCompte" class='xlargeBtn'>Modifier mon compte<i class="fas fa-user-edit"></i></button>
 </div>

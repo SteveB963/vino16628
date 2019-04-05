@@ -452,9 +452,7 @@
                 //grâce à la fonction d'authentification
                 $log = new Login(); 
                 $correcteInfos = $log->authentification($body);
-                //retourne un boolean qui correspond à la réussite ou à
-                //l'échec de l'authentification
-                echo json_encode($correcteInfos);
+                
 
                 //Création de la variable session lorsque la connexion à réussie
                 if($correcteInfos == true)
@@ -465,6 +463,10 @@
                     $_SESSION["prenomUtilisateur"] = $infosCompte["prenom"];
                     $_SESSION["emailUtilisateur"] = $infosCompte["email"];
                 }
+
+                //retourne un boolean qui correspond à la réussite ou à
+                //l'échec de l'authentification
+                echo json_encode($correcteInfos);
         
             } 
             

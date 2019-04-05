@@ -1,3 +1,4 @@
+
 <div class="contenuCellier">
     <div class="actionCellierMobile">
         <div>
@@ -43,7 +44,7 @@
     </div>
     <div class="actionCellier">
         <div>
-            <button class="nouvelleBouteille">Ajouter une Nouvelle bouteille</button>
+            <button class="xlargeBtn nouvelleBouteille">Ajouter une Nouvelle bouteille</button>
         </div>
         <div class="trier">
             Trier le cellier par:

@@ -6,7 +6,7 @@
 
     <div>
         
-            <form >
+            <form class="formulaire">
                 <div name="msgErreur"></div>
                 <div>
                 <input type="hidden" name="id_cellier" value="<?php echo $donnee['cellier']['id_cellier'] ?>">
@@ -16,8 +16,10 @@
                
                  
             </form>
-            <!-- <button class="retour" name="retourListeCellier">Retour</button> -->
-            <button name='sauverNomCellier'>Sauvegarder le nom votre cellier</button>
+            <div class="boutonForm">
+                <button class="retour largeBtn btnWeb" name="retourListeCellier">Retour</button> 
+                <button name='sauverNomCellier' class="largeBtn">Sauvegarder la modification</button>
+            </div>
         
     </div>
 </div>
