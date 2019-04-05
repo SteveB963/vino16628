@@ -25,7 +25,9 @@
 		
 		<base href="<?php echo BASEURL; ?>">
 		<script src="./js/main.js"></script>
+        <!--
 		<script src="./js/stylemenu.js"></script>
+    -->
 	</head>
 	<body>
 		<header>
