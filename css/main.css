@@ -9,7 +9,7 @@ html, body {
 	background-color: #dddddd45;
 	font-family: 'Hind', sans-serif;
 	font-size: 95%;
-    color:#730101;
+    color:#202020;
 	
 }
 
@@ -287,14 +287,46 @@ footer
     flex-flow:row wrap;
     align-items:flex-start;
     justify-content:space-between;
+    margin-bottom: 20px;
 }
 
-.contenuCellier h2{
+.contenuCellier h2, .contenuCellier h4{
+    text-transform:capitalize;
     width:100%;
     text-align:center;
 }
 
+.count, .contenuCellier h4{
+    margin:0px;
+    padding:0px;
+}
+
 /*action du formulaire*/
+/*version mobile*/
+.actionCellierMobile{
+    position:sticky;
+        top:0px;
+    width:100%;
+    box-sizing:border-box;
+    display:none;
+    flex-flow:row nowrap;
+    justify-content:space-between;
+    background-color: white;
+    border:1px solid #ddd;
+    font-size:12pt;
+}
+
+.actionCellierMobile > div{
+    box-sizing:border-box;
+    padding:5px;
+}
+
+.actionCellierMobile > div:nth-child(3){
+    width:70%;
+}
+.actionCellierMobile > div:nth-child(2){
+    width:30%;
+}
 
 .actionCellier{
     position:sticky;
@@ -319,7 +351,7 @@ footer
     margin-top:0px;
 }
 
-.actionCellier > div:first-child > button{
+.actionCellier > div:first-child > button, .actionCellier > div:last-child > button{
     width:100%;
 }
 
@@ -334,6 +366,10 @@ footer
 
 .trier select{
     font-size:11pt;
+}
+
+.hideCherche{
+    display:block;
 }
 
 .listeChercheAutoComplete{
@@ -394,9 +430,7 @@ footer
 
 .information > div:nth-child(2){
     width:100%;
-    display:flex;
-    flex-flow:row;
-    justify-content:space-between;
+    
 }
 
 
@@ -404,12 +438,12 @@ footer
  	width:160px;
 }
 
-.information > div:nth-child(2) > div:first-child{
+.information > div:nth-child(2){
     padding-top:0px;
     margin-left:15px;
 }
 
-.information > div:nth-child(2) > div > p:first-child{
+.information > div:nth-child(2) > p:first-child{
     font-size:12pt;
     font-family: 'Libre Baskerville', serif;
  	font-weight: bold;
@@ -417,7 +451,11 @@ footer
     padding:0px;
 }
 
-.information > div:nth-child(2) p{
+.description button:first-of-type{
+    display:none;
+}
+
+.description > div > p{
  	margin:0px;
 }
 
@@ -480,7 +518,7 @@ table td button{
 
 
 /*cache la liste de bouteille*/
-.hideListe{
+.hide{
     display:none;
 }
 
@@ -510,9 +548,7 @@ table td button{
 	padding-bottom: 1px;
 }
 
-.mesFormulaires .recherche{
-    
-}
+
 
 
 .formulaire div input, .formulaire div select{
@@ -570,10 +606,12 @@ table td button{
 }
 
 .recherche input{
+    width:100%;
 	border: none;
 	box-shadow: none;
 }
 .recherche button{
+    margin:1px 0px;
 	background-color: transparent;
 	box-shadow: none;
     color:black;
@@ -732,16 +770,16 @@ i{
 	position: relative;
 }
 
-.nouvelleBouteille .divAutoComplete{
+.formNouvelleBouteille .divAutoComplete{
     width:300px;
 }
 
-.nouvelleBouteille .divAutoComplete input{
+.formNouvelleBouteille .divAutoComplete input{
     width:100%;
 }
 
 
-.nouvelleBouteille .divAutoComplete label{
+.formNouvelleBouteille .divAutoComplete label{
     vertical-align:middle;
     text-align:center;
     width:40px;
@@ -796,10 +834,28 @@ i{
     /********
 	 * contenuCellier.php
 	 ********/
-
- 	 .information > div:nth-child(2){
-        flex-flow:column;
+    .contenuCellier{
+        width:100%;
+        flex-flow:column nowrap;
+        
     }
+    
+    .actionCellier{
+        display:none;
+    }
+    
+    .actionCellierMobile{
+        display:flex;
+    }
+    
+    .content{
+        margin:auto;
+    }
+    
+    .cellier{
+        width:auto;
+    }
+
 }
 
 /**************** Mobile ****************/
@@ -845,7 +901,7 @@ i{
  		cursor: pointer;
  	}
 
- 	.fa-bars{
+ 	#btnBurger{
  		display: block;
  		position: absolute;
  		top: 177px;
@@ -856,7 +912,7 @@ i{
  		
  	}
 
- 	.fa-times{
+ 	#XBurger{
  		display: block;
  		position: absolute;
  		top: 177px;
@@ -867,11 +923,11 @@ i{
  		transition: 1s;
  	}
 
- 	#burger:checked ~ .fa-bars{
+ 	#burger:checked ~ #btnBurger{
  		opacity: 0;
  	}
 
- 	#burger:checked ~ .fa-times{
+ 	#burger:checked ~ #XBurger{
  		opacity: 1;
  	}
 
@@ -937,25 +993,117 @@ i{
  	/********
 	 * ContenuCellier.php
 	 ********/
-    .options{
-        flex-flow:row;
+    
+    /*action cellier*/
+    
+    
+    .actionCellierMobile > div:nth-child(3){
+        width:auto;
     }
-
+        
+    
+    .actionCellierMobile > div:nth-child(2){
+        width:auto;
+    }
+    
+    .searchMobile{
+        width:100% !important;
+    }
+    
+    .hideCherche{
+        display:none;
+    }
+    
+    
+    .cellier{
+        width:inherit;
+        padding:0px 5px;
+        max-width:500px;
+    }
+    
+    
     .information{
- 		max-width:300px;
-        flex-flow:column;
+ 		flex-flow:row wrap;
+        justify-content:space-between;
  	}
+    
+    .information > div:nth-child(1){
+        width:65%;
+        margin:auto;
+    }
+    
+    .information > .img{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
      
-    .description{
-        display:none;
-     }
-     
-    .actionBouteille{
-        display:none;
-     }
-     
-    .informaiont > div:nth-child(2){
+    .information > div:nth-child(2){
+        order:3;
         width:100%;
+    }
+    
+    .information > div:nth-child(2){
+        text-align:center;
+    }
+    
+    .information > div:nth-of-type(2) > .description{
+        display:none;
+    }
+    
+    .information .descMobile{
+        flex-flow:column;
+        font-size:10pt;
+        padding:0px;
+    }
+    
+    .descMobile{
+        
+    }
+    
+    .descMobile div:first-of-type{
+        border:none;
+    }
+    
+    .information button{
+        min-width:35px;
+        margin:5px 5px 0px;
+    }
+    
+    .information button:first-of-type{
+        display:inline;
+    }
+    
+    .listeBouteille table{
+        font-size:8pt;    
+    }
+    
+    .listeBouteille table th{
+        font-size:9pt;    
+    }
+    
+    .listeBouteille table input{
+        max-width:100px;
+    }
+    
+    .listeBouteille table button{
+        width:35px;
+        height:35px;
+    }
+    
+    .listeBouteille table button img{
+        width:25px;
+        height:25px;
+    }
+    
+    .listeBouteille table td:first-of-type,
+    .listeBouteille table td:nth-of-type(2){
+        min-width:inherit;
+        width:auto;
+    }
+    
+    .listeBouteille table td:nth-child(3){
+        min-width:inherit;
     }
 
 
@@ -965,7 +1113,7 @@ i{
 @media all and (min-width:769px)
 {
 	/* Retirer les liens de menu du format mobile*/
-	#burger, .fa-bars, .fa-times, .menuMobile{
+	#burger, #btnBurger, #XBurger, .menuMobile{
 		display: none !important;
 	}
 }

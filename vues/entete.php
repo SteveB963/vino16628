@@ -68,8 +68,8 @@
 
             <!-- Menu Burger -->
 			<input type="checkbox" id="burger">
-			<i class="fas fa-bars"></i>
-			<i class="fas fa-times"></i>
+			<i id="btnBurger" class="fas fa-bars"></i>
+			<i id="XBurger" class="fas fa-times"></i>
 
             <!-- Menu Principale -->
 			<nav>

@@ -232,7 +232,7 @@ class Bouteille extends Modele {
      *  
 	 */
        
-	public function autocompleteCherche($cherche, $id_cellier=1)
+	public function autocompleteCherche($cherche, $id_cellier)
 	{
 		
 		$rows = Array();

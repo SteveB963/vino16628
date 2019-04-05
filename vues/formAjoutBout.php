@@ -1,7 +1,7 @@
 <div class="mesFormulaires content">
     <h2>Ajouter une bouteille au cellier</h2>
 
-    <div class="nouvelleBouteille" vertical layout>
+    <div class="formNouvelleBouteille" vertical layout>
         <div class="divAutoComplete">
             <div class="recherche">
                 <input type="text" name="nom_bouteille" placeholder="Rechercher"><label><i class="fas fa-search"></i></label>
@@ -27,7 +27,7 @@
                 <input type="hidden" name="id_cellier" value="<?= $_GET['id_cellier'] ?>">
             </form>
             <div class="boutonForm">
-                <button class="retour largeBtn" name="retourCellier">Retour</button>
+                <button class="retour largeBtn rtrContenuCellier">Retour</button>
                 <button class="largeBtn" name="ajouterNouvelleBouteille">Ajouter la bouteille</button>
             </div>
             

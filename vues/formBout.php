@@ -74,8 +74,8 @@
         <input type="hidden" name="nonliste" value="<?php echo $donnee['bouteille']['non_liste'] ?>">
         <input type="hidden" name="id_cellier" value="<?php echo $donnee['id_cellier'] ?>">
         <div class="boutonForm">
-            <button class="retour" name="retourCellier">Retour</button>
-            <button class="soumettre" name="modifier">Modifier la bouteille</button>
+            <button class="retour largeBtn rtrContenuCellier">Retour</button>
+            <button class="largeBtn" name="modifier">Modifier la bouteille</button>
         </div>
         
         
