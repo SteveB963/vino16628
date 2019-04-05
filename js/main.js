@@ -769,9 +769,10 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     
     //autocomplete dans formulaire d'ajout d'un nouvelle bouteille
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
-    let liste = document.querySelector('.listeAutoComplete');
-    let label = inputNomBouteille.nextSibling;
+
     if(inputNomBouteille){
+        let liste = document.querySelector('.listeAutoComplete');
+        let label = inputNomBouteille.nextSibling;
         var prevent = false;
         
         inputNomBouteille.addEventListener("input", function(evt){
@@ -1118,7 +1119,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
     let btnRetourCompte = document.querySelector("[name='retourCompte']");
     if(btnRetourCompte){
         btnRetourCompte.addEventListener("click", function(evt){
-          window.location.href = "index.php?requete=compte";
+          window.location.href = "index.php?requete=afficheListCellier";
         });
     }
 
@@ -1196,6 +1197,18 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
       
     });
   }
+
+   //Bouton ajout cellier
+   let btnAjoutCellier = document.querySelector(".btnAjoutCellier");
+
+   if(btnAjoutCellier){
+        btnAjoutCellier.addEventListener("click", function(){
+          window.location.href = "index.php?requete=creerUnCellier";
+        });
+   }
+   
+
+
    //bouton créer un cellier
    let btnCreer = document.querySelector("[name='creerCellier']");
     

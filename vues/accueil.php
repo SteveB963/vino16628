@@ -14,7 +14,6 @@
     </div>
     
     <div class="divRouge">
-        <!--Ajouter lien vers la page d'inscription-->
         <h2><a href="index.php?requete=inscription">Inscrivez-vous dès aujourd'hui!</a></h2>
         <h2><a href="index.php?requete=compte">Vous avez déjà un compte? Connectez-vous!</a></h2>
     </div>

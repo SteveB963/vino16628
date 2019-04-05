@@ -1,8 +1,9 @@
+
 <div class="contenuCellier">
     <h2>nom du cellier sélectionné</h2>
     <div class="actionCellier">
         <div>
-            <button class="largeBtn" name="nouvelleBouteille">Ajouter une boueille</button>
+            <button class="xlargeBtn" name="nouvelleBouteille">Ajouter une boueille</button>
         </div>
         <div class="trier">
             Trier le cellier par:

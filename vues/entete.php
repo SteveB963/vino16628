@@ -38,6 +38,7 @@
                     <div id="titreEntete">
                         <h1>Vino</h1>
                     </div>
+                    <div class="menuMobile"></div>
                     <!-- Menu Burger des options liés au compte -->
                     <div id="lienOptionsCompte">
                         <p><i class='fas fa-user-circle'></i></p><input type='checkbox' id='profile'>
@@ -48,7 +49,7 @@
     //est connecté ou pas.
     if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != ""){
         echo " <li>" . $_SESSION['prenomUtilisateur'] . " " . $_SESSION['nomUtilisateur'] . "</li>
-                <li><a href='?requete=compte'>Voir mon profile</a></li>
+                <li><a href='?requete=modificationCompte'>Modifier mon compte</a></li>
                 <li><a href='?requete=deconnexion'>Se déconnecter</a></li>
                 ";
     }
@@ -68,7 +69,7 @@
 
             <!-- Menu Burger -->
 			<input type="checkbox" id="burger">
-			<i class="fas fa-bars"></i>
+			<i class='fas fa-user-circle iconeMenuMobile'></i>
 			<i class="fas fa-times"></i>
 
             <!-- Menu Principale -->
