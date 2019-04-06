@@ -130,8 +130,6 @@
                 else{
                     $trier = "nom";
                 }
-                $bte = new Bouteille();
-                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
                 
                 //affichage le numero de resultat de recherche 
                 if($cherche!=''){
@@ -140,15 +138,20 @@
                 else{
                     $msgCount='';
                 }
+                
+                //récupère donné sur chaque bouteille
+                $bte = new Bouteille();
+                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
+                
+                //récupère tous les exemplaire dans le cellier et le nom du cellier
                 $cellier = new Cellier();
                 $data['bouteille'] = $cellier->getContenuCellier($_GET['id_cellier']);
                 $data['nom_cellier'] = $cellier->getNomCellier($_GET['id_cellier']);
+                
                 include("vues/entete.php");
                 include("vues/contenuCellier.php");
-                include("vues/pied.php");
-              
+                include("vues/pied.php"); 
             }
-            
             else{
                 $this->afficheListCellier();
             }
@@ -214,9 +217,9 @@
         
     }
     /**
-     * 
+     * ajoute une nouvelle bouteille dans un cellier
      *
-     * /////////DOIT ÊTRE DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
+     * 
      */
     private function ajouterNouvelleBouteille()
     {

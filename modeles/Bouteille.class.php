@@ -19,7 +19,6 @@ class Bouteille extends Modele {
      * @param int $id id de la bouteille à récupèrer les informations
 	 *  
 	 * @return Array $rows informations de tous les pays
-     * //////////////////////////////NOM PAYS ET TYPE POURAIS ÊTRE RETIRER DE LA REQUETE ???//////////////////////////////
 	 */
     public function getBouteille($id)
 	{
@@ -80,7 +79,7 @@ class Bouteille extends Modele {
 	{
 		$rows = Array();
         $requete = 'SELECT DISTINCT 
-                        (SELECT COUNT(*) FROM cellier_contenu WHERE id_bouteille = b.id_bouteille) as quantite,
+                        (SELECT COUNT(*) FROM cellier_contenu WHERE id_bouteille = b.id_bouteille AND id_cellier = ' . $id_cellier . ') as quantite,
                         b.*, 
                         p.pays,
                         t.type
@@ -139,14 +138,14 @@ class Bouteille extends Modele {
      *  ///////////////////PAS ÉTÉ TESTÉ ENCORE////////////////////////////
 	 */
        
-	public function autocomplete($nom, $nb_resultat=10)
+	public function autocomplete($nom)
 	{
 		
 		$rows = Array();
 		$nom = $this->_db->real_escape_string($nom);
 		$nom = preg_replace("/\*/","%" , $nom);
 		 
-		$requete ='SELECT id_bouteille, nom FROM bouteille where LOWER(nom) like LOWER("%'. $nom .'%") LIMIT 0,'. $nb_resultat; 
+		$requete ='SELECT id_bouteille, nom FROM bouteille where LOWER(nom) like LOWER("%'. $nom .'%") AND non_liste = 0'; 
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)

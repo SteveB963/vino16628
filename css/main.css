@@ -106,7 +106,6 @@ footer
 	justify-content: space-between;
 	align-items: center;
     position:relative;
-    z-index:5;
 }
 
 /* Dimension contenu entête*/
@@ -1035,6 +1034,10 @@ i{
 	main{
 		height: calc(100% - 230px);
 	}
+    
+    #entete1{
+        z-index:5;
+    }
 	
 	#entete1 #logo{
 		width: 80px;

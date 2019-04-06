@@ -223,12 +223,14 @@ window.addEventListener('load', function() {
             let button = evt.currentTarget;
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
+            let id_cellier = document.querySelector(".cellier").dataset.cellier
             //div principal de la bouteille
             let divBouteille = evt.currentTarget.closest(".bouteille");
             //id du row dans cellier_contenu
             let id = evt.currentTarget.closest("tr").dataset.id;
             //nombre de ranger dans la liste de bouteille
             let nbRange = evt.currentTarget.closest("tbody").childElementCount;
+            console.log(evt.currentTarget.closest("tbody"));
             
             let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
             fetch(requete)
@@ -251,9 +253,14 @@ window.addEventListener('load', function() {
                     }, 3000);
                 
                     if(data == true){
+                        console.log(nbRange);
+                        
                         //si c'est le dernier élément de la liste on supprime la bouteille
-                        if(nbRange <= 2){
+                        if(nbRange <= 3){
                             divBouteille.parentNode.removeChild(divBouteille);
+                            if(document.querySelector(".cellier").childElementCount == 0){
+                                    window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" +   id_cellier; 
+                            }
                         }
                         //sinon on supprime la ligne et on modifie la quantité restante
                         else{
@@ -448,6 +455,9 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
                     if(data){
                         let divBouteille = document.getElementById(id_bouteille);
                         divBouteille.parentNode.removeChild(divBouteille);
+                        if(document.querySelector(".cellier").childElementCount == 0){
+                            window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" +   id_cellier; 
+                        }
                     }
                 
                 }).catch(error => {
@@ -1180,25 +1190,40 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
   }
 
 
-  //Connexion - Gestion du formulaire de connexion
-  let infoConnection = {
+    //Connexion - Gestion du formulaire de connexion
+    let infoConnection = {
     courriel : document.querySelector("[name='courrielCo']"),
     motDePasse : document.querySelector("[name='motPasseCo']"),
-  };
+    };
 
-  let btnConnection = document.querySelector("[name='seConnecter']");
-  if(btnConnection){
-    //Envoie des données du formulaire vers le controleur lors d'un clique 
-    //sur le bouton de connexion
-    btnConnection.addEventListener("click", function(evt){
-      var param = {
-        "courrielCo": infoConnection.courriel.value,
-        "motPasseCo": infoConnection.motDePasse.value,
-      }
-      //Envoie au controleur
-      let requete = new Request("index.php?requete=login", {method: 'POST', body: JSON.stringify(param)});
+    let btnConnection = document.querySelector("[name='seConnecter']");
+    if(btnConnection){
+        //Envoie des données du formulaire vers le controleur lors d'un clique 
+        //sur le bouton de connexion
+        btnConnection.addEventListener("click", function(evt){
+            traitementConnection();
+        });
+        let input = document.querySelectorAll("input");
+        input.forEach(function(element){
+            element.addEventListener("focus",function(evt){
+                element.addEventListener("keypress", function(evt){
+                    if(evt.keyCode == 13){
+                        traitementConnection();
+                    }
+                });
+            });
+        });
+    }
+    
+    function traitementConnection(){
+        var param = {
+            "courrielCo": infoConnection.courriel.value,
+            "motPasseCo": infoConnection.motDePasse.value,
+        }
+        //Envoie au controleur
+        let requete = new Request("index.php?requete=login", {method: 'POST', body: JSON.stringify(param)});
 
-      fetch(requete)
+        fetch(requete)
         .then(response =>{
           //Si la requete à fonctionné
           if (response.status === 200) {
@@ -1225,12 +1250,11 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
             document.querySelector(".eraseBox").innerHTML = "";
           }
-          
+
         }).catch(error => {
           console.error(error);
         });
-    });
-  }
+    }
 
   //btnModif - redirection vers le formulaire de modification du compte
   let btnModif = document.querySelector("[name='modifierCompte']");
