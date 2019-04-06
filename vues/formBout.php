@@ -73,6 +73,7 @@
                 <input type="text" name="urlsaq" value="<?php echo $donnee['bouteille']['url_saq'] ?>" placeholder="URL SAQ :"><label for="urlsaq">URL SAQ : </label>
                 <p class="erreururlsaq"></p>
             </div>
+            <input type="submit">
         </form>
         <p class="msg"></p>
         <input type="hidden" name="id_bouteille" value="<?php echo $donnee['bouteille']['id_bouteille'] ?>">

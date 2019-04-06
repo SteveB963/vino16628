@@ -1,6 +1,6 @@
 <div class="login mesFormulaires content">
 	<h2>Connexion</h2>
-		<form class="formulaire">
+		<form class="formulaire" id="test">
 		<?php
 
 			if(isset($msgConfirmation))
@@ -15,14 +15,15 @@
 		<div name="msgErreur" ></div>
 		<div name="msgConfirmation" class="msgBox"></div>
 		<div>
-			<input type="email" name="courrielCo" placeholder="Courriel">
-			<label for="courrielCo" class="hide">Courriel:</label>
+            <label for="courrielCo" class="hide">Courriel:</label>
+			<input type="text" name="courrielCo" placeholder="Courriel">
 		</div>
 		<div>
+            <label for="motPasseCo" class="hide">Mot de passe:</label>
 			<input type="password" name="motPasseCo" placeholder="Mot de passe">
-			<label for="motPasseCo" class="hide">Mot de passe:</label>
 		</div>
-	</form>
-		<button name="seConnecter" class='largeBtn'>Se connecter</button>
-		<p>Je souhaite <a href="index.php?requete=inscription">m'inscrire</a>!</p>
+        <input type=submit>
+    </form>
+    <button name="seConnecter" class='largeBtn'>Se connecter</button>
+    <p>Je souhaite <a href="index.php?requete=inscription">m'inscrire</a>!</p>
 </div>

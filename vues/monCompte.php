@@ -21,6 +21,7 @@
 ?>
 	
 		<div>
+            <p><strong>Prenom: </strong><?php echo $_SESSION["idUtilisateur"] ?></p>
 			<p><strong>Prenom: </strong><?php echo $_SESSION["prenomUtilisateur"] ?></p>
 			<p><strong>Nom: </strong><?php echo $_SESSION["nomUtilisateur"] ?></p>
 			<p><strong>Adresse Courriel: </strong><?php echo $_SESSION["emailUtilisateur"] ?></p>

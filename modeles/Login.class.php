@@ -67,12 +67,11 @@ class Login extends Modele{
 		//compte est déjà existant
 		if($allMails->num_rows)
 		{
-
             while($row = $allMails->fetch_assoc())
             {
             	if(strtolower($data->courrielInscri) == $row["email"]){
             		$mailExistant = true;
-            		break;
+                    break;
             	}else{
             		$mailExistant = false;
             	}

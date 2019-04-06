@@ -17,7 +17,7 @@
         </div>
         <form class="formulaire">
             <div>
-                <label id="labelNom">Nom : </label><input data-id="" class="nom_bouteille" disabled>
+                <label id="labelNom">Nom : </label><input data-id="" type="text" class="nom_bouteille" disabled>
                 <p class="erreurnom"></p>
             </div>
             <div>
@@ -29,6 +29,7 @@
                 <p class="erreurgarde"></p>
             </div>
             <input type="hidden" name="id_cellier" value="<?= $_GET['id_cellier'] ?>">
+            <input type="submit">
         </form>
         <div class="boutonForm">
             <button class="retour largeBtn btnWeb rtrContenuCellier">Retour</button>

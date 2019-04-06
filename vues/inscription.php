@@ -29,7 +29,7 @@
 			<p class="erreurNomUsager"></p>
 		</div>
 		<div>
-			<input type="email" name="courrielInscri" placeholder="Courriel" value="<?php if(isset($_SESSION['emailUtilisateur'])){echo $_SESSION['emailUtilisateur'];}?>">
+			<input type="text" name="courrielInscri" placeholder="Courriel" value="<?php if(isset($_SESSION['emailUtilisateur'])){echo $_SESSION['emailUtilisateur'];}?>">
 			<label for="courrielInscri" class="hide">Courriel:</label>
 			<p class="erreurCourrielUsager"></p>
 		</div>
@@ -44,7 +44,7 @@
 <?php
 	}
 ?>
-		
+		<input type="submit">
 	</form>
 	<div class="boutonForm">
         <button class="retour btnWeb largeBtn rtrAccueil" name="retourCompte">Retour</button>

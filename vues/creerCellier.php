@@ -8,16 +8,16 @@
 	<p>Veuillez remplir le nom de votre nouveau cellier.</p>
     <div>
         
-            <form class="formulaire">
-                <div name="msgErreur"></div>
-                <div>
-                    <input type="text" name="nom" placeholder="Nom du cellier" >
-                    <p class="erreurNomCellier"></p>
-                </div>                 
-            </form>
-    <div class="boutonForm">
-        <button class="retour largeBtn btnWeb rtrListeCellier">Retour</button> 
-        <button name="creerCellier" class="largeBtn">Créer votre cellier</button>
-    </div>
+        <form class="formulaire">
+            <div name="msgErreur"></div>
+            <div>
+                <input type="text" name="nom" placeholder="Nom du cellier" >
+                <p class="erreurNomCellier"></p>
+            </div>                 
+        </form>
+        <div class="boutonForm">
+            <button class="retour largeBtn btnWeb rtrListeCellier">Retour</button> 
+            <button name="creerCellier" class="largeBtn">Créer votre cellier</button>
+        </div>
     </div>
 </div>

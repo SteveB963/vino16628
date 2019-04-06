@@ -131,6 +131,10 @@
                     $trier = "nom";
                 }
                 
+                //récupère donné sur chaque bouteille
+                $bte = new Bouteille();
+                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
+                
                 //affichage le numero de resultat de recherche 
                 if($cherche!=''){
                     $msgCount='<h4> Resultat-' .sizeof($data['info']).' Bouteille Trouvé</h4>';
@@ -138,10 +142,6 @@
                 else{
                     $msgCount='';
                 }
-                
-                //récupère donné sur chaque bouteille
-                $bte = new Bouteille();
-                $data['info'] = $bte->getInfoBouteilleCellier($_GET['id_cellier'], $trier,$cherche);
                 
                 //récupère tous les exemplaire dans le cellier et le nom du cellier
                 $cellier = new Cellier();
@@ -191,9 +191,7 @@
 
 
      /**
-     * 
-     *
-     * /////////DOIT ÊTRE DOCUMENTÉ ET TESTÉ////////
+     *  récupère tout les possibilité de nom à la recherche
      */
     private function autocompleteBouteille()
     {
@@ -569,8 +567,9 @@
                 echo json_encode($ajoutFonctionel);
             }
             else{
-                //Si la création à échoué, retourne false
-                echo json_encode(false);
+                //Si email est déjà existant
+                $msgRetour = "mail";
+                echo json_encode($msgRetour);
             }
         }
         else

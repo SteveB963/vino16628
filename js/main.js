@@ -9,8 +9,38 @@
  */
 
 window.addEventListener('load', function() {
-    
     const BaseURL = document.baseURI;
+    
+    //bouton retour au contenu d'un cellier
+    var retourContenuCellier = document.querySelectorAll(".rtrContenuCellier");
+    if(retourContenuCellier){
+        retourContenuCellier.forEach(function(button){
+            let id_cellier = document.querySelector("[name='id_cellier']").value;
+            button.addEventListener("click", function(evt){
+                window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" +   id_cellier; 
+            }); 
+        });
+    }
+    
+    //bouton retour à la liste d'un cellier
+    var retourContenuCellier = document.querySelectorAll(".rtrListeCellier");
+    if(retourContenuCellier){
+        retourContenuCellier.forEach(function(button){
+            button.addEventListener("click", function(evt){
+                window.location.href = BaseURL + "index.php?requete=afficheListCellier"; 
+            }); 
+        });
+    }
+    
+    //redirection vers l'accueil
+    let btnRetourCompte = document.querySelectorAll(".rtrAccueil");
+    if(btnRetourCompte){
+        btnRetourCompte.forEach(function(element){
+           element.addEventListener("click", function(evt){
+              window.location.href = "index.php?requete=acceuil";
+            });  
+        });
+    }
     
     //bouton recherche mobile ///NA PAS PU ÊTRE ADAPTER AVEC LE CODE RECHERCHE EXISTANT
     btnChercheMobile = document.querySelector(".chercheMobile");
@@ -354,42 +384,42 @@ window.addEventListener('load', function() {
 
     });
 
-//bouton modifier le nom du cellier dans la liste des celliers
-document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
-  element.addEventListener("click", function(evt){
-      let id_cellier = evt.currentTarget.parentElement.dataset.id;
-      console.log(id_cellier);
-      window.location.href = BaseURL + "index.php?requete=modifierNomCellier&id_cellier=" + id_cellier;    
-  })
+    //bouton modifier le nom du cellier dans la liste des celliers
+    document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
+      element.addEventListener("click", function(evt){
+          let id_cellier = evt.currentTarget.parentElement.dataset.id;
+          console.log(id_cellier);
+          window.location.href = BaseURL + "index.php?requete=modifierNomCellier&id_cellier=" + id_cellier;    
+      })
 
-});
-//bouton supprimer le cellier dans la liste des celliers
-document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
-  element.addEventListener("click", function(evt){
-    if (confirm("Vous êtes sûr de supprimer ce cellier?")){
-      let id_cellier = evt.currentTarget.parentElement.dataset.id;
-      let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
-      console.log(id_cellier);
-      fetch(requete)
-      .then(response => {
-          if (response.status === 200) {
-            return response.json();
-          } else {
-            throw new Error('Erreur');
-          }
-        })
-        .then(data => { 
-          console.log(data);
-          if(data == true){
-             window.location.href = "index.php?requete=afficheListCellier";
-          }        
-        }).catch(error => {
-          console.error(error);
-        });  
-      } 
-  })
+    });
+    //bouton supprimer le cellier dans la liste des celliers
+    document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
+      element.addEventListener("click", function(evt){
+        if (confirm("Vous êtes sûr de supprimer ce cellier?")){
+          let id_cellier = evt.currentTarget.parentElement.dataset.id;
+          let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
+          console.log(id_cellier);
+          fetch(requete)
+          .then(response => {
+              if (response.status === 200) {
+                return response.json();
+              } else {
+                throw new Error('Erreur');
+              }
+            })
+            .then(data => { 
+              console.log(data);
+              if(data == true){
+                 window.location.href = "index.php?requete=afficheListCellier";
+              }        
+            }).catch(error => {
+              console.error(error);
+            });  
+          } 
+      })
 
-});
+    });
   
     
     //affiche la liste des bouteilles
@@ -470,9 +500,6 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             }
         });                                                   
     });
-
-    
-    
     
     //bouton modifier bouteille dans un cellier
     document.querySelectorAll(".btnModifier").forEach(function(element){
@@ -485,133 +512,110 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
 
     });
     
-    //bouton retour au contenu d'un cellier
-    var retourContenuCellier = document.querySelectorAll(".rtrContenuCellier");
-    if(retourContenuCellier){
-        retourContenuCellier.forEach(function(button){
-            let id_cellier = document.querySelector("[name='id_cellier']").value;
-            button.addEventListener("click", function(evt){
-                window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" +   id_cellier; 
-            }); 
-        });
-    }
-    
-    //bouton retour à la liste d'un cellier
-    var retourContenuCellier = document.querySelectorAll(".rtrListeCellier");
-    if(retourContenuCellier){
-        retourContenuCellier.forEach(function(button){
-            button.addEventListener("click", function(evt){
-                window.location.href = BaseURL + "index.php?requete=afficheListCellier"; 
-            }); 
-        });
-    }
-    
-    //redirection vers l'accueil
-    let btnRetourCompte = document.querySelectorAll(".rtrAccueil");
-    if(btnRetourCompte){
-        btnRetourCompte.forEach(function(element){
-           element.addEventListener("click", function(evt){
-              window.location.href = "index.php?requete=acceuil";
-            });  
-        });
-    }
-    
     //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
     var modifier = document.querySelector("[name='modifier']");
     if(modifier){
         modifier.addEventListener("click", function(evt){
-            let erreur = false;
-            //récupère les informations de la bouteille dans les inputs
-            let bouteille = {
-                id_bouteille : document.querySelector("[name='id_bouteille']").value,
-                id_cellier : document.querySelector("[name='id_cellier']").value,
-                nom : document.querySelector("[name='nom']").value,
-                image : document.querySelector("[name='image']").value,
-                prix : document.querySelector("[name='prix']").value.replace(/,/,'.'),
-                format : document.querySelector("[name='format']").value,
-                id_type : document.querySelector("[name='type']").value,
-                id_pays : document.querySelector("[name='pays']").value,
-                millesime : document.querySelector("[name='millesime']").value,
-                code_saq : document.querySelector("[name='codesaq']").value,
-                url_saq : document.querySelector("[name='urlsaq']").value,
-                non_liste : document.querySelector("[name='nonliste']").value
-            };
-            
-            //vérifi si les champs sont remplis
-            let verif = {
-                nom : verifChamp(bouteille.nom,"text"),
-                image : verifChamp(bouteille.image,"text"),
-                prix : verifChamp(bouteille.prix,"prix"),
-                format : verifChamp(bouteille.format,"num"),
-                millesime : verifChamp(bouteille.millesime,"num",4),
-                codesaq : verifChamp(bouteille.code_saq,"num",8),
-                urlsaq : verifChamp(bouteille.url_saq,"text")
-            };
-            
-            Object.keys(verif).forEach(function(msg){
-                if(verif[msg] != ""){
-                    erreur = true;
+            traitementModifierBouteille();
+        });
+        document.querySelector("form").addEventListener("submit", function(evt){
+            evt.preventDefault();
+            traitementModifierBouteille();
+        });
+    }
+    
+    function traitementModifierBouteille(){
+        let erreur = false;
+        //récupère les informations de la bouteille dans les inputs
+        let bouteille = {
+            id_bouteille : document.querySelector("[name='id_bouteille']").value,
+            id_cellier : document.querySelector("[name='id_cellier']").value,
+            nom : document.querySelector("[name='nom']").value,
+            image : document.querySelector("[name='image']").value,
+            prix : document.querySelector("[name='prix']").value.replace(/,/,'.'),
+            format : document.querySelector("[name='format']").value,
+            id_type : document.querySelector("[name='type']").value,
+            id_pays : document.querySelector("[name='pays']").value,
+            millesime : document.querySelector("[name='millesime']").value,
+            code_saq : document.querySelector("[name='codesaq']").value,
+            url_saq : document.querySelector("[name='urlsaq']").value,
+            non_liste : document.querySelector("[name='nonliste']").value
+        };
+
+        //vérifi si les champs sont remplis
+        let verif = {
+            nom : verifChamp(bouteille.nom,"text"),
+            image : verifChamp(bouteille.image,"text"),
+            prix : verifChamp(bouteille.prix,"prix"),
+            format : verifChamp(bouteille.format,"num"),
+            millesime : verifChamp(bouteille.millesime,"num",4),
+            codesaq : verifChamp(bouteille.code_saq,"num",8),
+            urlsaq : verifChamp(bouteille.url_saq,"text")
+        };
+
+        Object.keys(verif).forEach(function(msg){
+            if(verif[msg] != ""){
+                erreur = true;
+            }
+            document.querySelector(".erreur"+msg).innerHTML = verif[msg];
+        });
+
+
+        if(!erreur){
+            //envoie de la requete avec les informations du formulaire et les erreurs de champs
+            let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: JSON.stringify(bouteille)});
+
+            fetch(requete)
+            .then(response => {
+                if(response.status === 200) {
+                  return response.json();
+                } else {
+                  throw new Error('Erreur');
                 }
-                document.querySelector(".erreur"+msg).innerHTML = verif[msg];
-            });
-            
-                                       
-            if(!erreur){
-                //envoie de la requete avec les informations du formulaire et les erreurs de champs
-                let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: JSON.stringify(bouteille)});
-            
-                fetch(requete)
-                .then(response => {
-                    if(response.status === 200) {
-                      return response.json();
-                    } else {
-                      throw new Error('Erreur');
+            })
+            .then(data =>{
+                //éhec sql affiche l'erreur sql
+                if(data.echec){
+                    document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i>" + data.echec;
+                }
+                else{
+                    //si l'operation est un succès
+                    if(data.succes == true){
+                        //affiche le message
+                        document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
+                        document.querySelector(".msg").firstElementChild.classList.add("succes");
+
+                        //si ajout et remplacement d'id est effectuer, l'id dans le form est mit à jour ainsi que lui dans l'url
+                        if(data.status == "remplaceBouteille"){
+                            document.querySelector("[name='id_bouteille']").setAttribute("value", data.idNouvelle);
+                            document.querySelector("[name='nonliste']").setAttribute("value", 1);
+                            history.pushState("modification", "Vino", BaseURL + "index.php?requete=modifierBouteilleCellier&id_bouteille=" + data.idNouvelle + "&id_cellier=" + bouteille.id_cellier);
+                        }
+                        setTimeout(function(){ 
+                            document.querySelector(".msg").innerHTML = "";
+                        }, 2000);
                     }
-                })
-                .then(data =>{
-                    //éhec sql affiche l'erreur sql
-                    if(data.echec){
-                        document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i>" + data.echec;
+                    //si pas eu de modification
+                    else if(data.succes == "dup"){
+                        document.querySelector(".msg").classList.remove("attention");
+                        document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
+                        setTimeout(function(){ 
+                            document.querySelector(".msg").innerHTML = "";
+                        }, 2000);
                     }
                     else{
-                        //si l'operation est un succès
-                        if(data.succes == true){
-                            //affiche le message
-                            document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
-                            document.querySelector(".msg").firstElementChild.classList.add("succes");
-
-                            //si ajout et remplacement d'id est effectuer, l'id dans le form est mit à jour ainsi que lui dans l'url
-                            if(data.status == "remplaceBouteille"){
-                                document.querySelector("[name='id_bouteille']").setAttribute("value", data.idNouvelle);
-                                document.querySelector("[name='nonliste']").setAttribute("value", 1);
-                                history.pushState("modification", "Vino", BaseURL + "index.php?requete=modifierBouteilleCellier&id_bouteille=" + data.idNouvelle + "&id_cellier=" + bouteille.id_cellier);
-                            }
-                            setTimeout(function(){ 
-                                document.querySelector(".msg").innerHTML = "";
-                            }, 2000);
-                        }
-                        //si pas eu de modification
-                        else if(data.succes == "dup"){
-                            document.querySelector(".msg").classList.remove("attention");
-                            document.querySelector(".msg").innerHTML = "Aucune modification effectuer";
-                            setTimeout(function(){ 
-                                document.querySelector(".msg").innerHTML = "";
-                            }, 2000);
-                        }
-                        else{
-                            document.querySelector(".msg").classList.add("attention");
-                            document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Erreur lors de la modification";
-                        } 
-                    }
-                }).catch(error => {
-                    console.error(error);
-                });
-            }
-            else{
-                document.querySelector(".msg").classList.add("attention");
-                document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
-            }
-        });
+                        document.querySelector(".msg").classList.add("attention");
+                        document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Erreur lors de la modification";
+                    } 
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+        else{
+            document.querySelector(".msg").classList.add("attention");
+            document.querySelector(".msg").innerHTML = "<i class='fas fa-exclamation-triangle'></i> Corriger les erreurs et réessayer";
+        }
     }
     
     function fetchCherche(mot){
@@ -798,10 +802,29 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
                 window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche +"&trierCellier=" + trier;
             }
         });
+        let input = document.getElementById('searchValue');
+        input.addEventListener("focus", function(evt){
+            document.addEventListener("keypress", function(evt){
+                if(evt.keyCode === 13){
+                    var inputCherche= document.getElementById('searchValue').value;
+                    //verifier le champ de chercher est vide ou pas
+                    if(inputCherche!=''){
+                        var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
+                        let url = new URL(document.URL)
+                        var trier = url.searchParams.get("trierCelllier");
+                        if(trier == null){
+                            trier = "nom";
+                        }
+                        window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche +"&trierCellier=" + trier;
+                    }
+                }
+            });
+        });
     }
     
     //on peux utilisez le clavier par cliquer enter
     let Chercher=document.getElementById('searchValue');
+    /*
     if(Chercher){
         Chercher.addEventListener('keyup', function(){
            if (event.keyCode === 13) {
@@ -816,7 +839,7 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
 
             }
         });
-    }
+    }*/
      
     // ajout le button de refraicher quand le champ de recherche est pas vide
     let search = document.querySelectorAll('.recherche')[1];
@@ -925,14 +948,8 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             }
         });
         
-        
-        
-        
-        
-        
-
         //champ du formulaire d'ajout
-        let bouteille = {
+        var bouteille = {
         nom : document.querySelector(".nom_bouteille"),
         date_ajout : document.querySelector("[name='date_ajout']"),
         garde_jusqua : document.querySelector("[name='garde_jusqua']"),
@@ -957,63 +974,70 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
         if(btnAjouter){
             btnAjouter.addEventListener("click", function(evt){
-                let erreur = false;
-
-                //recupère donné formulaire
-                let param = {
-                    id_bouteille : bouteille.nom.dataset.id,
-                    id_cellier : bouteille.id_cellier.value,
-                    date_ajout : bouteille.date_ajout.value,
-                    garde_jusqua : bouteille.garde_jusqua.value
-                };
-
-                //vérifie si les champ sont bien remlpi
-                let verif = {
-                    nom : verifChamp(bouteille.nom.value,"text"),
-                    date : verifChamp(param.date_ajout,"date"),
-                    garde : verifChamp(param.garde_jusqua,"date")
-                }
-
-                Object.keys(verif).forEach(function(msg){
-                    if(verif[msg] != ""){
-                        erreur = true;
-                    }
-                    if(msg == "nom" && verif[msg] != ""){
-                        verif[msg] = "Utiliser la recherche pour sélectionner un nom";
-                    }
-                    document.querySelector(".erreur"+msg).innerHTML = verif[msg];
-                });
-
-
-                if(!erreur){
-                    //vérifi si la date garde jusqua est plus grand que la date d'ajout
-                    let date_ajout = new Date(param.date_ajout);
-                    let garde_jusqua = new Date(param.garde_jusqua);
-
-                    if(date_ajout < garde_jusqua){
-                        let requete = new Request("index.php?requete=ajouterNouvelleBouteille", {method: 'POST', body: JSON.stringify(param)});
-                        fetch(requete)
-                        .then(response => {
-                            if (response.status === 200) {
-                                return response.json();
-                            } else {
-                                throw new Error('Erreur');
-                            }
-                        })
-                        .then(data => {
-                            //si ajout redirection vers le cellier
-                            window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" + param.id_cellier; 
-                        }).catch(error => {
-                           console.error(error);
-                        });
-                    }
-                    else{
-                        document.querySelector(".erreurgarde").innerHTML = "La date \"Garder jusqu'à\" doit être supérieur à la date d'ajout";
-                    } 
-                }
-
+                traitementAjouterNouvelleBouteille();
+            });
+            document.querySelector("form").addEventListener("submit", function(evt){
+                evt.preventDefault();
+                traitementAjouterNouvelleBouteille();
             });
         } 
+    }
+    
+    function traitementAjouterNouvelleBouteille(){
+        let erreur = false;
+
+        //recupère donné formulaire
+        let param = {
+            id_bouteille : bouteille.nom.dataset.id,
+            id_cellier : bouteille.id_cellier.value,
+            date_ajout : bouteille.date_ajout.value,
+            garde_jusqua : bouteille.garde_jusqua.value
+        };
+
+        //vérifie si les champ sont bien remlpi
+        let verif = {
+            nom : verifChamp(bouteille.nom.value,"text"),
+            date : verifChamp(param.date_ajout,"date"),
+            garde : verifChamp(param.garde_jusqua,"date")
+        }
+
+        Object.keys(verif).forEach(function(msg){
+            if(verif[msg] != ""){
+                erreur = true;
+            }
+            if(msg == "nom" && verif[msg] != ""){
+                verif[msg] = "Utiliser la recherche pour sélectionner un nom";
+            }
+            document.querySelector(".erreur"+msg).innerHTML = verif[msg];
+        });
+
+
+        if(!erreur){
+            //vérifi si la date garde jusqua est plus grand que la date d'ajout
+            let date_ajout = new Date(param.date_ajout);
+            let garde_jusqua = new Date(param.garde_jusqua);
+
+            if(date_ajout < garde_jusqua){
+                let requete = new Request("index.php?requete=ajouterNouvelleBouteille", {method: 'POST', body: JSON.stringify(param)});
+                fetch(requete)
+                .then(response => {
+                    if (response.status === 200) {
+                        return response.json();
+                    } else {
+                        throw new Error('Erreur');
+                    }
+                })
+                .then(data => {
+                    //si ajout redirection vers le cellier
+                    window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" + param.id_cellier; 
+                }).catch(error => {
+                   console.error(error);
+                });
+            }
+            else{
+                document.querySelector(".erreurgarde").innerHTML = "La date \"Garder jusqu'à\" doit être supérieur à la date d'ajout";
+            } 
+        }
     }
     
     
@@ -1110,92 +1134,97 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
             element.setAttribute("src", "./images/vindefault.jpg")
         }
     });
-  
-    //Inscription - Ajout d'un nouveau compte
-    let compte = {
-    prenom : document.querySelector("[name='prenomInscri']"),
-    nom : document.querySelector("[name='nomInscri']"),
-    courriel : document.querySelector("[name='courrielInscri']"),
-    motDePasse : document.querySelector("[name='motPasseInscri']"),
-    };
 
 
+    let btnInscription = document.querySelector("[name='ajouterNouveauCompte']");
+        if(btnInscription){
+        //Envoie des données du formulaire vers le controleur lors d'un clique 
+        //sur le bouton d'inscription
+        btnInscription.addEventListener("click", function(evt){
+            traitementInscription();
+        });
+        document.querySelector("form").addEventListener("submit", function(evt){
+            evt.preventDefault();
+            traitementInscription();
+        });
+    }
+    
+    /**
+     * traitement du formulaire d'inscription d'un nouveau compte
+     * affiche les erreurs si il y a lieu
+     * redirige vers la page des celliers lorsque réussi
+     */
+    function traitementInscription(){
+        //Inscription - Ajout d'un nouveau compte
+        let compte = {
+            prenom : document.querySelector("[name='prenomInscri']"),
+            nom : document.querySelector("[name='nomInscri']"),
+            courriel : document.querySelector("[name='courrielInscri']"),
+            motDePasse : document.querySelector("[name='motPasseInscri']"),
+        };
+        
+        var param = {
+            "prenomInscri": compte.prenom.value,
+            "nomInscri": compte.nom.value,
+            "courrielInscri": compte.courriel.value,
+            "motPasseInscri": compte.motDePasse.value,
+          };
 
-  let btnInscription = document.querySelector("[name='ajouterNouveauCompte']");
-  if(btnInscription){
-    //Envoie des données du formulaire vers le controleur lors d'un clique 
-    //sur le bouton d'inscription
-    btnInscription.addEventListener("click", function(evt){
-      var param = {
-        "prenomInscri": compte.prenom.value,
-        "nomInscri": compte.nom.value,
-        "courrielInscri": compte.courriel.value,
-        "motPasseInscri": compte.motDePasse.value,
-      };
+          var verif = {
+            prenom : verifChamp(param.prenomInscri, "text"),
+            nom : verifChamp(param.nomInscri, "text"),
+            courriel : verifChamp(param.courrielInscri, "email"),
+            motPasse : verifChamp(param.motPasseInscri, "text", 6)
+          }
 
-      var verif = {
-        prenom : verifChamp(param.prenomInscri, "text"),
-        nom : verifChamp(param.nomInscri, "text"),
-        courriel : verifChamp(param.courrielInscri, "email"),
-        motPasse : verifChamp(param.motPasseInscri, "text", 6)
-      }
+          document.querySelector(".erreurPrenomUsager").innerHTML = verif.prenom;
+          document.querySelector(".erreurNomUsager").innerHTML = verif.nom;
+          document.querySelector(".erreurCourrielUsager").innerHTML = verif.courriel;
+          document.querySelector(".erreurMotPasse").innerHTML = verif.motPasse;
 
-      document.querySelector(".erreurPrenomUsager").innerHTML = verif.prenom;
-      document.querySelector(".erreurNomUsager").innerHTML = verif.nom;
-      document.querySelector(".erreurCourrielUsager").innerHTML = verif.courriel;
-      document.querySelector(".erreurMotPasse").innerHTML = verif.motPasse;
+          if(verif.prenom == "" && verif.nom == "" && verif.courriel == "" && verif.motPasse == ""){
+            //Envoie au controleur
+            let requete = new Request("index.php?requete=creerCompteUsager", {method: 'POST', body: JSON.stringify(param)});
 
-      if(verif.prenom == "" && verif.nom == "" && verif.courriel == "" && verif.motPasse == ""){
-        //Envoie au controleur
-        let requete = new Request("index.php?requete=creerCompteUsager", {method: 'POST', body: JSON.stringify(param)});
-
-        fetch(requete)
-          .then(response => {
-            //Si la requete à fonctionné
-            if (response.status === 200) {
-              //Traitement de la réponse du controleur
-              return response.json();
-            } else {
-              //Sinon, affiche une erreur
-              throw new Error('Erreur');
-            }
-          })
-          .then(data => {
-            console.log(data);
-            //Si la réponse émise par le controleur est égale à true
-            if(data == true){
-              //Redirection vers la page monCompte
-              window.location.href ="index.php?requete=afficheListCellier";
-            }
-            else if(data == "vide"){
-              //Affichage d'un message d'erreur lorsque la 
-              //connexion à échoué.
-              document.querySelector("[name='msgErreur']").classList.add('errorBox');
-              var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i>Modification impossible. Veuillez vous assurez que tout les champs sont bien remplis.</p>";
-              document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
-            }
-            else{
-              //Affichage d'un message d'erreur lorsque la 
-              //connexion à échoué.
-              document.querySelector("[name='msgErreur']").classList.add('errorBox');
-              var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Les informations entrées sont incorrectes.</p>";
-              document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
-            }
-          }).catch(error => {
-            console.error(error);
-          });
-      }
-      
-    });
-  }
-
-
-    //Connexion - Gestion du formulaire de connexion
-    let infoConnection = {
-    courriel : document.querySelector("[name='courrielCo']"),
-    motDePasse : document.querySelector("[name='motPasseCo']"),
-    };
-
+            fetch(requete)
+              .then(response => {
+                //Si la requete à fonctionné
+                if (response.status === 200) {
+                  //Traitement de la réponse du controleur
+                  return response.json();
+                } else {
+                  //Sinon, affiche une erreur
+                  throw new Error('Erreur');
+                }
+              })
+              .then(data => {
+                console.log(data);
+                //Si la réponse émise par le controleur est égale à true
+                if(data == true){
+                  //Redirection vers la page monCompte
+                  window.location.href ="index.php?requete=afficheListCellier";
+                }
+                else if(data == "mail"){
+                    //Affichage d'un message d'erreur lorsque la 
+                    //modification à échoué.
+                    document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                    var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le courriel entré est déjà utilisé par un autre utilisateur.</p>";
+                    document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+                }
+                else{
+                  //Affichage d'un message d'erreur lorsque la 
+                  //connexion à échoué.
+                  document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                  var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Les informations entrées sont incorrectes.</p>";
+                  document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+                }
+              }).catch(error => {
+                console.error(error);
+              });
+          }
+    }
+    
+    
     let btnConnection = document.querySelector("[name='seConnecter']");
     if(btnConnection){
         //Envoie des données du formulaire vers le controleur lors d'un clique 
@@ -1203,19 +1232,25 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         btnConnection.addEventListener("click", function(evt){
             traitementConnection();
         });
-        let input = document.querySelectorAll("input");
-        input.forEach(function(element){
-            element.addEventListener("focus",function(evt){
-                element.addEventListener("keypress", function(evt){
-                    if(evt.keyCode == 13){
-                        traitementConnection();
-                    }
-                });
-            });
+        document.querySelector("form").addEventListener("submit", function(evt){
+            evt.preventDefault();
+            traitementConnection();
         });
     }
     
+    
+    /**
+     * traitement du formulaire de connection
+     * affiche les erreurs si il y a lieu
+     * redirige vers la page des celliers lorsque réussi
+     */
     function traitementConnection(){
+        //Connexion - Gestion du formulaire de connexion
+        let infoConnection = {
+            courriel : document.querySelector("[name='courrielCo']"),
+            motDePasse : document.querySelector("[name='motPasseCo']"),
+        };
+
         var param = {
             "courrielCo": infoConnection.courriel.value,
             "motPasseCo": infoConnection.motDePasse.value,
@@ -1256,208 +1291,225 @@ document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
         });
     }
 
-  //btnModif - redirection vers le formulaire de modification du compte
-  let btnModif = document.querySelector("[name='modifierCompte']");
-  if(btnModif){
-    btnModif.addEventListener("click", function(evt){
-      window.location.href = "index.php?requete=modificationCompte";
-    });
-  }
-
-
-  //btnSauvCompte - Envoie les informations entrées dans le formulaire
-  //au controleur afin de permettre leur sauvegarde dans la bd
-  let btnSauvCompte = document.querySelector("[name='sauvegardeModifCompte']");
-  if(btnSauvCompte){
-    //Envoie des données du formulaire vers le controleur lors d'un clique 
-    //sur le bouton de sauvegarde des modifications
-    btnSauvCompte.addEventListener("click", function(evt){
-      var param = {
-        prenomInscri : document.querySelector("[name='prenomInscri']").value,
-        nomInscri : document.querySelector("[name='nomInscri']").value,
-        courrielInscri : document.querySelector("[name='courrielInscri']").value,
-      }
-
-      var verif = {
-        prenom : verifChamp(param.prenomInscri, "text"),
-        nom : verifChamp(param.nomInscri, "text"),
-        courriel : verifChamp(param.courrielInscri, "email")
-      }
-
-      document.querySelector(".erreurPrenomUsager").innerHTML = verif.prenom;
-      document.querySelector(".erreurNomUsager").innerHTML = verif.nom;
-      document.querySelector(".erreurCourrielUsager").innerHTML = verif.courriel;
-
-      if(verif.prenom == "" && verif.nom == "" && verif.courriel == ""){
-        let requete = new Request("index.php?requete=modificationCompte", {method: 'POST', body: JSON.stringify(param)});
-
-        fetch(requete)
-          .then(response =>{
-            //Si la requete à fonctionné
-            if (response.status === 200) {
-              //Traitement de la réponse du controleur
-              return response.json();
-            }
-            else{
-              //Sinon, affiche une erreur
-              throw new Error('Erreur');
-            }
-          })
-          .then(data => {
-            //Redirection vers la page monCompte lorsque la
-            //modification à réussie.
-            console.log(data);
-            if(data == "fonctionnel"){
-              window.location.href ="index.php?requete=compte&modif=true";
-            }
-            else if(data == "mail"){
-                //Affichage d'un message d'erreur lorsque la 
-                //modification à échoué.
-                document.querySelector("[name='msgErreur']").classList.add('errorBox');
-                var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le courriel entré est déjà utilisé par un autre utilisateur.</p>";
-                document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
-            }
-            else if(data == "sansModif"){
-              //Affichage d'un message d'erreur lorsque la 
-              //modification à échoué.
-              document.querySelector("[name='msgErreur']").classList.add('errorBox');
-              var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Aucune modification à effectuer.</p>";
-              document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
-            }
-            else{
-                //Affichage d'un message d'erreur lorsque la 
-                //modification à échoué.
-                document.querySelector("[name='msgErreur']").classList.add('errorBox');
-                var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Modification impossible. Veuillez vous assurez que tout les champs sont bien remplis.</p>";
-                document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
-            }  
-          }).catch(error => {
-            console.error(error);
-          });
-      }
-      
-    });
-  }
-
-   //Bouton ajout cellier
-   let btnAjoutCellier = document.querySelector(".btnAjoutCellier");
-
-   if(btnAjoutCellier){
-        btnAjoutCellier.addEventListener("click", function(){
-          window.location.href = "index.php?requete=creerUnCellier";
-        });
-   }
-   
-
-
-   //bouton créer un cellier
-   let btnCreer = document.querySelector("[name='creerCellier']");
     
-   if(btnCreer){
-     let cellier = { 
-       nom : document.querySelector("[name='nom']") 
-     };
-     btnCreer.addEventListener("click", function(){              
-       var param = {            
-         "nom":cellier.nom.value
-       };
-       var verif = {
-         nom : verifChamp(param.nom, "text")
-       
-       }
-       console.log(verif.nom);
-       document.querySelector(".erreurNomCellier").innerHTML = verif.nom;
-       if(verif.nom == ""){
-       let requete = new Request("index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
-       console.log(JSON.stringify(param));
-       
-       fetch(requete)
-             .then(response => {
-                 if (response.status === 200) {
-                   return response.json();
-                 } else {
-                   throw new Error('Erreur');
-                 }
-               })
-               .then(data => { 
-                 console.log(data);
-                 if(data == true){
-                    window.location.href = "index.php?requete=afficheListCellier";
-                 }
-                 else if(data == false){
-                  //  alert("deja");
+    //btnModif - redirection vers le formulaire de modification du compte
+    let btnModif = document.querySelector("[name='modifierCompte']");
+    if(btnModif){
+        btnModif.addEventListener("click", function(evt){
+          window.location.href = "index.php?requete=modificationCompte";
+        });
+    }
+
+
+    //btnSauvCompte - Envoie les informations entrées dans le formulaire
+    //au controleur afin de permettre leur sauvegarde dans la bd
+    let btnSauvCompte = document.querySelector("[name='sauvegardeModifCompte']");
+    if(btnSauvCompte){
+        //Envoie des données du formulaire vers le controleur lors d'un clique 
+        //sur le bouton de sauvegarde des modifications
+        btnSauvCompte.addEventListener("click", function(evt){
+            traitementModificationCompte();
+        });
+        document.querySelector("form").addEventListener("submit", function(evt){
+            evt.preventDefault();
+            traitementModificationCompte();
+        });
+    }
+    
+    function traitementModificationCompte(){
+        var param = {
+            prenomInscri : document.querySelector("[name='prenomInscri']").value,
+            nomInscri : document.querySelector("[name='nomInscri']").value,
+            courrielInscri : document.querySelector("[name='courrielInscri']").value,
+        }
+
+        var verif = {
+            prenom : verifChamp(param.prenomInscri, "text"),
+            nom : verifChamp(param.nomInscri, "text"),
+            courriel : verifChamp(param.courrielInscri, "email")
+        }
+
+        document.querySelector(".erreurPrenomUsager").innerHTML = verif.prenom;
+        document.querySelector(".erreurNomUsager").innerHTML = verif.nom;
+        document.querySelector(".erreurCourrielUsager").innerHTML = verif.courriel;
+
+        if(verif.prenom == "" && verif.nom == "" && verif.courriel == ""){
+            let requete = new Request("index.php?requete=modificationCompte", {method: 'POST', body: JSON.stringify(param)});
+
+            fetch(requete)
+            .then(response =>{
+                //Si la requete à fonctionné
+                if (response.status === 200) {
+                  //Traitement de la réponse du controleur
+                  return response.json();
+                }
+                else{
+                  //Sinon, affiche une erreur
+                  throw new Error('Erreur');
+                }
+            })
+            .then(data => {
+                //Redirection vers la page monCompte lorsque la
+                //modification à réussie.
+                console.log(data);
+                if(data == "fonctionnel"){
+                  window.location.href ="index.php?requete=compte&modif=true";
+                }
+                else if(data == "mail"){
+                    //Affichage d'un message d'erreur lorsque la 
+                    //modification à échoué.
+                    document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                    var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le courriel entré est déjà utilisé par un autre utilisateur.</p>";
+                    document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+                }
+                else if(data == "sansModif"){
                   //Affichage d'un message d'erreur lorsque la 
                   //modification à échoué.
                   document.querySelector("[name='msgErreur']").classList.add('errorBox');
-                  // var messageErreur = "Le nom entré est déjà utilisé.";
-                  var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le nom entré est déjà utilisé.</p>";
+                  var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Aucune modification à effectuer.</p>";
                   document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
-              }
-                 
-                
-               
-               }).catch(error => {
-                 console.error(error);
-               });
-             }
-     });
-   }
+                }
+                else{
+                    //Affichage d'un message d'erreur lorsque la 
+                    //modification à échoué.
+                    document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                    var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Modification impossible. Veuillez vous assurez que tout les champs sont bien remplis.</p>";
+                    document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+                }  
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+    }
 
+    //Bouton ajout cellier, dirige vers le formulaire de création d'un cellier
+    let btnAjoutCellier = document.querySelector(".btnAjoutCellier");
+    if(btnAjoutCellier){
+        btnAjoutCellier.addEventListener("click", function(){
+          window.location.href = "index.php?requete=creerUnCellier";
+        });
+    }
+   
+    //bouton créer un cellier
+    let btnCreer = document.querySelector("[name='creerCellier']");
+    if(btnCreer){
+        btnCreer.addEventListener("click", function(){  
+            traitementCreerCellier();
+        });
+        document.querySelector("form").addEventListener("submit", function(evt){
+            evt.preventDefault();
+            traitementCreerCellier();
+        });
+    }
+    
+    /**
+     * traitement du formulaire de création de cellier
+     * affiche erreur si il y a lieu
+     * retour à la liste de cellier si valide
+     */
+    function traitementCreerCellier(){
+        let cellier = { 
+            nom : document.querySelector("[name='nom']") 
+        };
+         
+        var param = {            
+            "nom":cellier.nom.value
+        };
+         
+        var verif = {
+            nom : verifChamp(param.nom, "text")
+        }
+        
+        document.querySelector(".erreurNomCellier").innerHTML = verif.nom;
+        if(verif.nom == ""){
+            let requete = new Request("index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
+            console.log(JSON.stringify(param));
 
-
-   //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
-   var sauverNomCellier = document.querySelector("[name='sauverNomCellier']");
-   if(sauverNomCellier){
-    let cellier = { 
-      id_cellier: document.querySelector("[name='id_cellier']"),
-      nom : document.querySelector("[name='nom']") 
-    };
-    sauverNomCellier.addEventListener("click", function(evt){              
-      var param = {  
-        "id_cellier":cellier.id_cellier.value,          
-        "nom":cellier.nom.value
-      };
-      var verif = {
-        nom : verifChamp(param.nom, "text")
-      
-      }
-      console.log(verif.nom);
-      document.querySelector(".erreurNomCellier").innerHTML = verif.nom;
-      if(verif.nom == ""){
-      let requete = new Request("index.php?requete=modifierNomCellier", {method: 'POST', body: JSON.stringify(param)});
-      console.log(JSON.stringify(param));
-      
-      fetch(requete)
+            fetch(requete)
             .then(response => {
                 if (response.status === 200) {
-                  return response.json();
+                    return response.json();
                 } else {
-                  throw new Error('Erreur');
+                    throw new Error('Erreur');
                 }
-              })
-              .then(data => { 
-                console.log(data);
+            })
+            .then(data => { 
                 if(data == true){
-                   window.location.href = "index.php?requete=afficheListCellier";
+                    window.location.href = "index.php?requete=afficheListCellier";
                 }
                 else if(data == false){
-                 //  alert("deja");
-                 //Affichage d'un message d'erreur lorsque la 
-                 //modification à échoué.
-                 document.querySelector("[name='msgErreur']").classList.add('errorBox');
-                 // var messageErreur = "Le nom entré est déjà utilisé.";
-                 var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le nom entré est déjà utilisé.</p>";
-                 document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
-             }
-                
-               
-              
-              }).catch(error => {
+                    //  alert("deja");
+                    //Affichage d'un message d'erreur lorsque la 
+                    //modification à échoué.
+                    document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                    // var messageErreur = "Le nom entré est déjà utilisé.";
+                    var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le nom entré est déjà utilisé.</p>";
+                    document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+                }
+            }).catch(error => {
                 console.error(error);
-              });
-          }
-    });
-   }
+            });
+        }
+    }
 
+
+
+    //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
+    var sauverNomCellier = document.querySelector("[name='sauverNomCellier']");
+    if(sauverNomCellier){
+        sauverNomCellier.addEventListener("click", function(evt){  
+            traitementModificationCellier();
+        });
+        document.querySelector("form").addEventListener("submit", function(evt){
+            evt.preventDefault();
+            traitementModificationCellier();
+        });
+    }
+    
+    function traitementModificationCellier(){
+        let cellier = { 
+            id_cellier: document.querySelector("[name='id_cellier']"),
+            nom : document.querySelector("[name='nom']") 
+        };
+        
+        var param = {  
+            "id_cellier":cellier.id_cellier.value,          
+            "nom":cellier.nom.value
+        };
+        
+        var verif = {
+            nom : verifChamp(param.nom, "text")
+        }
+        
+        document.querySelector(".erreurNomCellier").innerHTML = verif.nom;
+        if(verif.nom == ""){
+            let requete = new Request("index.php?requete=modifierNomCellier", {method: 'POST', body: JSON.stringify(param)});
+
+            fetch(requete)
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw new Error('Erreur');
+                }
+            })
+            .then(data => { 
+                if(data == true){
+                    window.location.href = "index.php?requete=afficheListCellier";
+                }
+                else if(data == false){
+                    //  alert("deja");
+                    //Affichage d'un message d'erreur lorsque la 
+                    //modification à échoué.
+                    document.querySelector("[name='msgErreur']").classList.add('errorBox');
+                    // var messageErreur = "Le nom entré est déjà utilisé.";
+                    var messageErreur = "<p><i class='fas fa-exclamation-triangle'></i> Le nom entré est déjà utilisé.</p>";
+                    document.querySelector("[name='msgErreur']").innerHTML = messageErreur;
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+    }
 });
 

@@ -22,7 +22,7 @@ class Cellier extends Modele {
 	public function creerUnNouveauCellier($data)
 	{
 		$rows = Array();
-		$allCelliers = $this->_db->query('SELECT nom FROM ' . self::TABLE);
+		$allCelliers = $this->_db->query('SELECT nom FROM ' . self::TABLE . ' WHERE id_usager = ' . $_SESSION["idUtilisateur"]);
 		$nomExistant = false;
 		//Vérifier si le nom entrer pour la création du nouveau
 		//cellier est déjà existant
@@ -44,7 +44,7 @@ class Cellier extends Modele {
 		{
 			$requete = "INSERT INTO cellier(id_usager,nom) VALUES (".
 			"'".$data["idUsager"]."',".
-			"'".$data["nomCellier"]."')";
+			"'".strtolower($data["nomCellier"])."')";
 			$res = $this->_db->query($requete);			
 			return $res;
 		}
@@ -57,7 +57,7 @@ class Cellier extends Modele {
 	public function modifierNomCellier($data)
 	{
 		$rows = Array();
-		$allCelliers = $this->_db->query('SELECT * FROM ' . self::TABLE);
+		$allCelliers = $this->_db->query('SELECT * FROM ' . self::TABLE . ' WHERE id_usager = ' . $_SESSION["idUtilisateur"]);
 		$nomExistant = false;
 		//Vérifier si le nom entrer pour la création du nouveau
 		//cellier est déjà existant
@@ -87,7 +87,7 @@ class Cellier extends Modele {
 			
 
 			$requete = "UPDATE cellier SET 
-			nom = "."'".$data["nomCellier"]."' WHERE id_cellier = " . $data["id_cellier"];
+			nom = "."'".strtolower($data["nomCellier"])."' WHERE id_cellier = " . $data["id_cellier"];
 			$res = $this->_db->query($requete);			
 			return $res;
 		}

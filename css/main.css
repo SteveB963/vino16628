@@ -559,6 +559,10 @@ table td button{
 	padding-bottom: 1px;
 }
 
+.mesFormulaires input[type="submit"]{
+    display:none;
+}
+
 .formulaire div input, .formulaire div select{
 	width: 100%;
 }
