@@ -87,6 +87,7 @@ footer
 	justify-content: space-around;
 	position: absolute;
 	bottom: 0.5px;
+    z-index:3;
 }
 
 /********
@@ -104,6 +105,8 @@ footer
 	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-items: center;
+    position:relative;
+    z-index:5;
 }
 
 /* Dimension contenu entête*/
@@ -1063,7 +1066,7 @@ i{
  		display: block;
  		width: 40px;
  		height: 32px;
- 		z-index: 2;
+ 		z-index: 6;
  		opacity: 0;
  		cursor: pointer;
  	}
@@ -1076,7 +1079,7 @@ i{
  		font-size: 28pt;
  		color: white;
  		transition: 1s;
- 		
+ 		z-index:5;
  	}
 
  	#XBurger{
@@ -1088,6 +1091,7 @@ i{
  		color: white;
  		opacity: 0;
  		transition: 1s;
+        z-index:5;
  	}
 
 
@@ -1117,13 +1121,12 @@ i{
  	#mainNav{
  		display: none !important;
  		position: absolute;
- 		top: 120px;
- 		height: 90%;
+ 		top: 0px;
+ 		height: 100%;
  		width: 100%;
  		z-index: 2;
  		display: flex;
  		flex-flow: column;
- 		justify-content: space-around;
  		background-color: #222224;
  		
  	}
@@ -1131,7 +1134,7 @@ i{
  	#mainNav ul{
  		display: flex;
  		flex-flow: column;
- 		justify-content: space-around;
+ 		justify-content: flex-start;
  		margin-left: auto;
 		margin-right: auto;
 		margin-top: 0px;
@@ -1145,6 +1148,7 @@ i{
  	}
 
  	#mainNav ul li{
+        margin:10px 0px;
  		width: 100%;
  		text-align: center;
  		border-bottom: 2px solid #730101;
