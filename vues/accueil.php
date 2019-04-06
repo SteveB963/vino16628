@@ -1,15 +1,15 @@
 <div class="accueil content">
     <div id="divAccueil">
         <div class="divBlanche">
-            <h2>Créer vos propres celliers virtuels afin de toujours savoir ce qui se trouve chez vous!</h2>
+            <h2>Gérer l'inventaire de vos cellier grâce à des cellier virtuels</h2>
         </div>
         
         <div class="divBlanche">
-            <h2>Ajouter des vins à vos celliers et supprimer-les lorsqu'ils ont été bu.</h2>
+            <h2>Créer plusieur cellier virtuel pour chacun de vos celliers réels</h2>
         </div>
         
         <div class="divBlanche">
-            <h2>Notez les vins que vous avez bu afin de vous souvenir de vos préférés!</h2>
+            <h2>Ajouter des bouteilles dans vos celliers à partir de l'inventaire de la SAQ</h2>
         </div>
     </div>
     

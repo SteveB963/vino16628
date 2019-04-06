@@ -222,7 +222,7 @@ footer
 .accueil{
 	position: relative;
 	padding-bottom: 220px;
-	margin-top: 45px;
+	margin-top:45px;
 }
 
 #divAccueil{
@@ -254,15 +254,15 @@ footer
 
 /* Divs de présentation du site */
  .accueil .divBlanche:nth-child(1){
- 	background-image: url("../images/cellier.png");	
+ 	background-image: url("../images/cellier.jpg");	
  }
 
   .accueil .divBlanche:nth-child(2){
- 	background-image: url("../images/boire.png");	
+ 	background-image: url("../images/boire.jpg");	
  }
 
   .accueil .divBlanche:nth-child(3){
- 	background-image: url("../images/bac_vin.png");	
+ 	background-image: url("../images/bac_vin.jpg");	
  }
 
 /* Div d'inscription rouge */
@@ -327,7 +327,7 @@ footer
     background-color: white;
     border:1px solid #ddd;
     font-size:12pt;
-    z-index:2;
+    z-index:1;
 }
 
 .actionCellierMobile > div{
@@ -969,7 +969,7 @@ i{
  		height: 400px;
  		padding-bottom: 30px;
  		padding-top: 150px;
- 		bottom: -55px;
+ 		bottom: -50px;
  	}
     
 
