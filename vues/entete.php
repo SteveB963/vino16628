@@ -1,3 +1,8 @@
+<!--
+Project : vino
+Page : entete.php
+Description : Entete de page avec le logo et le menu avec les options de profile
+-->
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
@@ -7,15 +12,11 @@
 		<meta name="viewport" content="width=device-width, minimum-scale=0.5, initial-scale=1.0, user-scalable=yes">
 
 		<meta name="description" content="Un petit verre de vino">
-		<meta name="author" content="Jonathan Martel (jmartel@cmaisonneuve.qc.ca)">
-
+		<meta name="keyword" content="Vino, vin, cellier, SAQ">
 		<link rel="stylesheet" href="./css/normalize.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="./css/base_h5bp.css" type="text/css" media="screen">
 		<link rel="stylesheet" href="./css/main.css" type="text/css" media="screen">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
-
 
 		<!-- font-family: 'Libre Baskerville', serif; -->
 		<link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
@@ -25,9 +26,7 @@
 		
 		<base href="<?php echo BASEURL; ?>">
 		<script src="./js/main.js"></script>
-        <!--
-		<script src="./js/stylemenu.js"></script>
-    -->
+        
 	</head>
 	<body>
 		<header>

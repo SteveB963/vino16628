@@ -1,3 +1,8 @@
+<!--
+Project : vino
+Page : login.php
+Description : formulaire de connection d'un usager, avec un lien vers l'inscription
+-->
 <div class="login mesFormulaires content">
 	<h2>Connexion</h2>
 		<form class="formulaire" id="test">

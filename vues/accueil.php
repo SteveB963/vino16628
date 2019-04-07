@@ -1,3 +1,8 @@
+<!--
+Project : vino
+Page : accueil.php
+Description : Page d'accueil du site vino
+-->
 <div class="accueil content">
     <div id="divAccueil">
         <div class="divBlanche">
@@ -18,5 +23,3 @@
         <h2><a href="index.php?requete=compte">Vous avez déjà un compte? Connectez-vous!</a></h2>
     </div>
 </div>
-
-

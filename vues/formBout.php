@@ -1,3 +1,9 @@
+<!--
+Project : vino
+Page : formBout.php
+Description : formulaire de modification d'une bouteille dans un cellier
+-->
+
 <div class="actionCellierMobile">
     <div>
         <button class="retour petitBtn rtrContenuCellier"><i class="fas fa-arrow-left"></i></button>

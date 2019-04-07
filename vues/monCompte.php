@@ -1,3 +1,8 @@
+<!--
+Project : vino
+Page : monCompte.php
+Description : Affiche les informations sur le compte de l'usager connecter
+-->
 <div class="actionCellierMobile">
     <div>
         <button class="retour petitBtn rtrListeCellier"><i class="fas fa-arrow-left"></i></button>

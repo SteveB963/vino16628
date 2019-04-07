@@ -1,3 +1,8 @@
+<!--
+Project : vino
+Page : inscription.php
+Description : Formulaire d'inscription et de modification d'un usager
+-->
 <?php
 	if($page == "inscription"){
         $titre = "Inscription";

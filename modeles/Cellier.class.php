@@ -1,14 +1,10 @@
 <?php
 /**
- * Class Bouteille
- * Cette classe possède les fonctions de gestion des bouteilles dans le cellier et des bouteilles dans le catalogue complet.
+ * Class Cellier
+ * Cette classe possède les fonctions de gestion des celliers.
  * 
- * @author Jonathan Martel
- * @version 1.0
- * @update 2019-01-21
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
- * 
+ * @file Cellier.class.php
+ * @project vino
  */
 class Cellier extends Modele {
 	const TABLE = 'cellier';
@@ -99,13 +95,12 @@ class Cellier extends Modele {
 	
 	
 
- /**
+    /**
 	 * récupère tous les cellier d'un usager
 	 * 
-	 * @param int $id id d'usager !!!À VENIR
+	 * @param int $id id d'usager
      * 
 	 * @return Array $rows les informations de chaque cellier 
-     * ///////////////////DOIT AJOUTER UN ID POUR SELECTIONNER LE CELLIER////////////////////
 	 */
 	public function getListeCellier($id) 
 	{
@@ -145,7 +140,6 @@ class Cellier extends Modele {
                         FROM ' . self::TABLE . '_contenu 
                         WHERE id_cellier = ' . $id_cellier . ' 
                         ORDER BY date_ajout ASC';
-    
       
 		if(($res = $this->_db->query($requete)) == true)
 		{
@@ -191,6 +185,7 @@ class Cellier extends Modele {
 		return $row;
 	}
     
+    
     /**
 	 * supprime une bouteille dans le cellier
 	 * 
@@ -205,6 +200,7 @@ class Cellier extends Modele {
         
 		return $res;
 	}
+    
     
     /**
 	 * ajouter un bouteille dans le contenu du cellier
@@ -263,6 +259,7 @@ class Cellier extends Modele {
 		return $res;
 	}
 
+    
 	public function getNomCellier($id)
 	{
 		$row = Array();
@@ -278,6 +275,7 @@ class Cellier extends Modele {
 		
 		return $row;
 	}
+    
 
 	public function supprimerCellier($id)
 	{

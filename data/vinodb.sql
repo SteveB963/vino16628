@@ -1,8 +1,6 @@
 /**
 *   Création de la bd pour le site vino
-*   @projet vino16628
-*   @author Steve Bourgault
-*   @date 03/11/2019
+*   @project vino
 *   @file vinodb.sql
 */
 

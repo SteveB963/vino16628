@@ -1,7 +1,7 @@
 <?php
 /**
  * Class Modele
- * Template de classe modèle. Dupliquer et modifier pour votre usage.
+ * Template de classe modèle.
  * 
  * @author Jonathan Martel
  * @version 1.0

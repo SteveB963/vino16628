@@ -1,14 +1,10 @@
 <?php
 /**
  * Class Bouteille
- * Cette classe possède les fonctions de gestion des bouteilles dans le cellier et des bouteilles dans le catalogue complet.
+ * Cette classe possède les fonctions de gestion des bouteilles dans le cellier.
  * 
- * @author Jonathan Martel
- * @version 1.0
- * @update 2019-01-21
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
- * 
+ * @file Bouteille.class.php
+ * @project vino
  */
 class Bouteille extends Modele {
 	const TABLE = 'bouteille';
@@ -23,14 +19,7 @@ class Bouteille extends Modele {
     public function getBouteille($id)
 	{
 		$row = Array();
-		/*$res = $this->_db->query('SELECT 
-                                    b.*,
-                                    t.type,
-                                    p.pays 
-                                    FROM '. self::TABLE . ' b 
-                                    JOIN bouteille_type t ON t.id_type = b.id_type
-                                    JOIN pays p ON p.id_pays = b.id_pays 
-                                    WHERE b.id_bouteille = ' . $id);*/
+
         $res = $this->_db->query('SELECT 
                                     * 
                                     FROM '. self::TABLE . '
@@ -41,29 +30,6 @@ class Bouteille extends Modele {
 		}
 		
 		return $row;
-	}
-    
-    
-     /**
-	 * récupère tous les bouteilles listés 
-	 *  
-	 * @return Array $rows les informations de chaque bouteille de la bd
-     * ///////////////////VÉRIFIER ET TESTER LA REQUETE SQL////////////////////
-	 */
-	public function getListeBouteille()
-	{
-		
-		$rows = Array();
-		$res = $this->_db->query('Select * from '. self::TABLE);
-		if($res->num_rows)
-		{
-			while($row = $res->fetch_assoc())
-			{
-				$rows[] = $row;
-			}
-		}
-		
-		return $rows;
 	}
 	
     /**
@@ -102,19 +68,14 @@ class Bouteille extends Modele {
         }
         $requete .= ' AND c.id_cellier = ' . $id_cellier . '
                                 ORDER BY '.$trier;
-       //var_dump($requete)  ;          
-
       
 		if(($res = $this->_db->query($requete)) == true)
 		{
 			if($res->num_rows)
 			{
-                 
 				while($row = $res->fetch_assoc())
 				{
 					$rows[] = $row;
-                
-                   
 				}
 			}
 		}
@@ -135,12 +96,9 @@ class Bouteille extends Modele {
 	 * @throws Exception Erreur de requête sur la base de données 
 	 * 
 	 * @return array id et nom de la bouteille trouvée dans le catalogue
-     *  ///////////////////PAS ÉTÉ TESTÉ ENCORE////////////////////////////
 	 */
-       
 	public function autocomplete($nom)
-	{
-		
+	{	
 		$rows = Array();
 		$nom = $this->_db->real_escape_string($nom);
 		$nom = preg_replace("/\*/","%" , $nom);
@@ -153,15 +111,12 @@ class Bouteille extends Modele {
 				while($row = $res->fetch_assoc())
 				{
 					$rows[] = $row;
-                    
-					
 				}
 			}
 		}
 		else 
 		{
 			throw new Exception("Erreur de requête sur la base de données", 1);
-			 
 		}
 		return $rows;
 	}
@@ -230,7 +185,6 @@ class Bouteille extends Modele {
 	 * @return array result de le valeur dans le base de donnees
      *  
 	 */
-       
 	public function autocompleteCherche($cherche, $id_cellier)
 	{
 		
@@ -378,15 +332,14 @@ class Bouteille extends Modele {
 		}
 		return $rows;
 	}
-    	/**
-	 *
+    
+    
 	/**
 	 * Cette méthode ajoute une ou des payss au cellier
 	 * 
 	 * @param Array $data Tableau des données représentants la bouteille.
 	 * 
 	 * @return Boolean Succès ou échec de l'ajout.
-     *  ///////////////////PAS ÉTÉ TESTÉ ENCORE////////////////////////////
 	 */
 	public function ajouterNouvelleBouteille($data)
 	{
@@ -401,37 +354,10 @@ class Bouteille extends Modele {
 		return $res;
 	}
 
-	
-	
-	/**
-	 * Cette méthode change la quantité d'une bouteille en particulier dans le cellier
-	 * 
-	 * @param int $id id de la bouteille
-	 * @param int $nombre Nombre de bouteille a ajouter ou retirer
-	 * 
-	 * @return Boolean Succès ou échec de l'ajout.
-	 */
-	public function modifierQuantiteBouteilleCellier($id, $nombre)
-	{
-		$requete = "UPDATE cellier_contenu SET quantite = GREATEST(quantite + ". $nombre. ", 0) WHERE id = ". $id;
-        $res = $this->_db->query($requete);
-        
-		return $res;
-	}
-    
-    public function obtenirQuantiteBouteilleCellier($id)
-	{				
-		$requete1 = "SELECT quantite from cellier_contenu WHERE id = ". $id;
-		$res = $this->_db->query($requete1);
-		$row = $res->fetch_assoc();
-        
-		return $row;
-	}
 
     // requette pour cherche le valeur en cellier
     public function ChercheEnCellier($id_cellier,$cherche) 
-	{
-		
+	{	
 		$rows = Array();
         //filtre le data par value de champ recherche
         $requete ='SELECT 
@@ -459,9 +385,8 @@ class Bouteille extends Modele {
                         OR b.format like LOWER("%'. $cherche .'%")
                         OR t.type like LOWER("%'. $cherche .'%")
                         OR c.quantite like LOWER("%'. $cherche .'%"))
-                        WHERE c.id_cellier = ' . $id_cellier 
-                    ; 
-        var_dump($requete);
+                        WHERE c.id_cellier = ' . $id_cellier;
+        
 		if(($res = $this->_db->query($requete)) ==	 true)
 		{
 			if($res->num_rows)
@@ -481,11 +406,9 @@ class Bouteille extends Modele {
 	 * Remplace l'id d'une bouteille liste par une bouteille non liste
 	 * 
 	 * @param int $idAncien l'id de l'ancienne bouteille à remplacer
-	 * @param int $idAncien l'id de la nouvelle bouteille à remplacer
+	 * @param int $idNouvelle l'id de la nouvelle bouteille à remplacer
 	 * 
 	 * @return Boolean Succès ou échec de l'update
-     *
-     * /////////////BESOIN D'UN ID DE CELLIER//////////////////
 	 */
 	public function remplaceBouteilleCellier($idCellier, $idAncienne, $idNouvelle)
 	{
@@ -497,9 +420,6 @@ class Bouteille extends Modele {
     
     /**
 	 * Retourne l'id de la dernière bouteille entré
-	 * 
-	 * @param int $idAncien l'id de l'ancienne bouteille à remplacer
-	 * @param int $idAncien l'id de la nouvelle bouteille à remplacer
 	 * 
 	 * @return Boolean Succès ou échec de l'update
 	 */

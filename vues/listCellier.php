@@ -1,4 +1,8 @@
-<!-- listCellier contenuPage -->
+<!--
+Project : vino
+Page : ListCellier.php
+Description : Affiche tous les celliers d'un usager, permet d'ajouter, modifier et supprimer
+-->
 <div class="contenuCellier listCellier">
 
     <div class="listCellierDivGauche">

@@ -1,11 +1,8 @@
 /**
- * @file Script contenant les fonctions de base
- * @author Jonathan Martel (jmartel@cmaisonneuve.qc.ca)
- * @version 0.1
- * @update 2019-01-21
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
- *
+ * Contient les fonctions de traitement de formulaire et les action du site
+ * 
+ * @file main.js
+ * @project vino
  */
 
 window.addEventListener('load', function() {
@@ -42,7 +39,7 @@ window.addEventListener('load', function() {
         });
     }
     
-    //bouton recherche mobile ///NA PAS PU ÊTRE ADAPTER AVEC LE CODE RECHERCHE EXISTANT
+    //bouton recherche mobile ///NA PAS PU ÊTRE ADAPTER AVEC LE CODE DE RECHERCHE DESKTOP
     btnChercheMobile = document.querySelector(".chercheMobile");
     if(btnChercheMobile){
         btnChercheMobile.addEventListener("click", function(evt){
@@ -169,7 +166,9 @@ window.addEventListener('load', function() {
                         }
                     })
                     .then(data => {
+                        //si modification réussi
                         if(data.succes){
+                            //remplace les inputs par les nouvelles date sauvegarder
                             tr.classList.remove("active");
                             tr.children[0].innerHTML = data.donnee.date_ajout;
                             tr.children[0].setAttribute("data-date", data.donnee.date_ajout);
@@ -177,24 +176,24 @@ window.addEventListener('load', function() {
                             tr.children[1].setAttribute("data-date", data.donnee.garde_jusqua);
                             tr.children[2].innerHTML = "<button class='petitBtn modifDate'><i class='fas fa-pen'></i></button>";
                             actionModifierDate(tr.children[2].firstChild);
-                        
                         }
                         else{
                             button.innerHTML = "<i class='fas fa-check'></i>";
                             tr.nextElementSibling.children[0].innerHTML = "erreur de traitement";
                         }
-
                     })
                     .catch(error => {
                         console.error(error);
                     });
                 }
                 else{
+                    //si la date garde jusqu'a n'est pas supérieur à la date d'ajout
                     button.innerHTML = "<i class='fas fa-check'></i>";
                     tr.nextElementSibling.children[0].innerHTML = "Garder jusqu'à doit être plus grand";
                 }
             }
             else{
+                //si entré invalide
                 button.innerHTML = "<i class='fas fa-check'></i>";
                 tr.nextElementSibling.children[0].innerHTML = "date invalide";
             }
@@ -209,7 +208,6 @@ window.addEventListener('load', function() {
     function annuleModifierDate(element){
         element.addEventListener("click", function(evt){
             let tr = evt.currentTarget.parentNode.parentNode;
-            
             resetBoutonModifier(tr);
         });
     }
@@ -223,27 +221,33 @@ window.addEventListener('load', function() {
     function resetBoutonModifier(tr){
         let date_ajout = tr.children[0].dataset.date;
         let garde_jusqua = tr.children[1].dataset.date;
-
+        
+        //retire les inputs et inscrit les ancienne valeur avant la modification
         tr.classList.remove("active");
         tr.children[0].innerHTML = date_ajout;
         tr.children[1].innerHTML = garde_jusqua;
+        
+        //affiche le bouton modifier et applique l'action
         tr.children[2].innerHTML = "<button class='petitBtn modifDate'><i class='fas fa-pen'></i></button>";
         actionModifierDate(tr.children[2].firstChild);
+        
+        //MOBILE si le bouton boire à été remplacer par le bouton annuler
         if(tr.children[3].firstChild.getAttribute("title") == "annuler"){
+            //replace le bouton boire avec l'action
             tr.children[3].innerHTML = "<button class='petitBtn btnBoire'><img class='icone' src='./images/icones/bouteille-moins.svg'></button>";
             actionBtnBoire(tr.children[3].firstChild);
         }
-
+        //efface le message d'erreur
         tr.nextElementSibling.children[0].innerHTML = "";
     }
     
-    //button Boire
+    //button retirer un exemplaire de bouteille
     document.querySelectorAll(".btnBoire").forEach(function(element){
         actionBtnBoire(element);
     });
     
     /**
-     * applique le traitement de l'action de boire une bouteille sur un bouton boire
+     * applique le traitement de l'action retirer l'exemplaire d'une bouteille
      *
      * @param DOM Element element bouton boire
      */
@@ -254,13 +258,11 @@ window.addEventListener('load', function() {
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
             let id_cellier = document.querySelector(".cellier").dataset.cellier
-            //div principal de la bouteille
             let divBouteille = evt.currentTarget.closest(".bouteille");
             //id du row dans cellier_contenu
             let id = evt.currentTarget.closest("tr").dataset.id;
             //nombre de ranger dans la liste de bouteille
             let nbRange = evt.currentTarget.closest("tbody").childElementCount;
-            console.log(evt.currentTarget.closest("tbody"));
             
             let requete = new Request("index.php?requete=boireBouteille", {method: 'POST', body: '{"id": '+id+'}'});
             fetch(requete)
@@ -272,18 +274,16 @@ window.addEventListener('load', function() {
                 }
               })
               .then(data => {
-                    //replace l'icone dans le bouton
+                    //replace l'icone "bouteille -" dans le bouton
                     button.innerHTML = '<img class="icone" src="./images/icones/bouteille-moins.svg">';
                     
-                    //affichage du message dans le bas de la page
-                    document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>Bouteille retiré avec succès</p>";
-                    document.getElementById("msgContenuCellier").classList.add("affichemsg");
-                    setTimeout(function(){ 
-                        document.getElementById("msgContenuCellier").classList.remove("affichemsg");
-                    }, 3000);
-                
-                    if(data == true){
-                        console.log(nbRange);
+                    if(data == true){     
+                        //affichage du message dans le bas de la page
+                        document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>Bouteille retiré avec succès</p>";
+                        document.getElementById("msgContenuCellier").classList.add("affichemsg");
+                        setTimeout(function(){ 
+                            document.getElementById("msgContenuCellier").classList.remove("affichemsg");
+                        }, 3000);
                         
                         //si c'est le dernier élément de la liste on supprime la bouteille
                         if(nbRange <= 3){
@@ -303,6 +303,14 @@ window.addEventListener('load', function() {
                             btnBouteille.innerHTML = "Liste des bouteilles(" + (parseInt(quantite[0]) - 1) + ") <i class='fas fa-sort-down'></i>";
                         }
                     }
+                    else{
+                        //affichage du message dans le bas de la page
+                        document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-exclamation-triangle'></i>Erreur lors du retrait de la bouteille</p>";
+                        document.getElementById("msgContenuCellier").classList.add("affichemsg");
+                        setTimeout(function(){ 
+                            document.getElementById("msgContenuCellier").classList.remove("affichemsg");
+                        }, 3000);
+                    }
               }).catch(error => {
                 console.error(error);
               });
@@ -316,10 +324,10 @@ window.addEventListener('load', function() {
             //animation de chargement
             let button = evt.currentTarget;
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
+            
             //id de la bouteille et du cellier
             let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
             let id_cellier = document.querySelector(".cellier").dataset.cellier;   
-            
             let param = {
                 id_bouteille : id_bouteille,
                 id_cellier : id_cellier
@@ -335,7 +343,7 @@ window.addEventListener('load', function() {
                 }
             })
             .then(data => {
-                //replace l'icone dans le bouton
+                //replace l'icone "bouteille plus" dans le bouton
                 button.innerHTML = '<img class="icone" src="./images/icones/bouteille-plus.svg">';
                 
                 //affiche du message dans le bas de la page
@@ -375,7 +383,6 @@ window.addEventListener('load', function() {
                 let btnBouteille = document.getElementById(id_bouteille).querySelector(".btnBouteille");
                 quantite = btnBouteille.textContent.match(/\d+/);
                 btnBouteille.innerHTML = "Liste des bouteilles(" + (parseInt(quantite[0]) + 1) + ") <i class='fas fa-sort-down'></i>";
-                
             }).catch(error => {
                 console.error(error);
             });
@@ -383,58 +390,20 @@ window.addEventListener('load', function() {
         })
 
     });
-
-    //bouton modifier le nom du cellier dans la liste des celliers
-    document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
-      element.addEventListener("click", function(evt){
-          let id_cellier = evt.currentTarget.parentElement.dataset.id;
-          console.log(id_cellier);
-          window.location.href = BaseURL + "index.php?requete=modifierNomCellier&id_cellier=" + id_cellier;    
-      })
-
-    });
-    //bouton supprimer le cellier dans la liste des celliers
-    document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
-      element.addEventListener("click", function(evt){
-        if (confirm("Vous êtes sûr de supprimer ce cellier?")){
-          let id_cellier = evt.currentTarget.parentElement.dataset.id;
-          let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
-          console.log(id_cellier);
-          fetch(requete)
-          .then(response => {
-              if (response.status === 200) {
-                return response.json();
-              } else {
-                throw new Error('Erreur');
-              }
-            })
-            .then(data => { 
-              console.log(data);
-              if(data == true){
-                 window.location.href = "index.php?requete=afficheListCellier";
-              }        
-            }).catch(error => {
-              console.error(error);
-            });  
-          } 
-      })
-
-    });
-  
     
     //affiche la liste des bouteilles
     document.querySelectorAll(".btnBouteille").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
             
-            //annule opération modif sur les autre champs
+            //annule opération modif date ajout sur tous les champs
             let champActif = document.getElementById(id_bouteille).querySelectorAll(".active");
             if(champActif){
                 champActif.forEach(function(champ){
                     resetBoutonModifier(champ);
                 });
             }
-            
+            //fait apparaitre la liste de bouteille
             document.getElementById(id_bouteille).children[1].classList.toggle("hide");
         })
 
@@ -453,9 +422,11 @@ window.addEventListener('load', function() {
     //bouton supprimer une bouteille
     document.querySelectorAll(".btnSupprimer").forEach(function(element){
         element.addEventListener("click", function(evt){
+            //animation de chargement
             let button = evt.currentTarget;
             button.innerHTML = "<i class='loading fas fa-spinner'></i>";
             
+            //confirmation de l'utilisateur
             if(confirm("Êtes vous sur de vouloir retiré cette bouteille de votre cellier ?")){
                 let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
                 let id_cellier = document.querySelector(".cellier").dataset.cellier;
@@ -475,41 +446,41 @@ window.addEventListener('load', function() {
                     }
                 })
                 .then(data => {
-                    //affiche du message dans le bas de la page
-                    document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>La bouteille à été retirer du cellier</p>";
-                    document.getElementById("msgContenuCellier").classList.add("affichemsg");
-                    setTimeout(function(){ 
-                        document.getElementById("msgContenuCellier").classList.remove("affichemsg");
-                    }, 3000);
-                    
                     if(data){
+                        //affiche du message dans le bas de la page
+                        document.getElementById("msgContenuCellier").children[0].innerHTML = "<i class='fas fa-check-circle'></i>La bouteille à été retirer du cellier</p>";
+                        document.getElementById("msgContenuCellier").classList.add("affichemsg");
+                        setTimeout(function(){ 
+                            document.getElementById("msgContenuCellier").classList.remove("affichemsg");
+                        }, 3000);
+                        
+                        //efface la bouteille
                         let divBouteille = document.getElementById(id_bouteille);
                         divBouteille.parentNode.removeChild(divBouteille);
+                        //si il ne reste plus de bouteille après la suppression on recharge la page
                         if(document.querySelector(".cellier").childElementCount == 0){
                             window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" +   id_cellier; 
                         }
                     }
-                
                 }).catch(error => {
                     console.error(error);
                 });
             }
             else{
-                //replace l'icone dans le bouton
+                //replace l'icone "poubelle" dans le bouton
                 button.innerHTML = '<i class="fas fa-trash-alt"></i>';
             }
         });                                                   
     });
     
-    //bouton modifier bouteille dans un cellier
+    
+    //bouton modifier bouteille dans un cellier, redirige vers le formualire
     document.querySelectorAll(".btnModifier").forEach(function(element){
         element.addEventListener("click", function(evt){
             let id_bouteille = evt.currentTarget.closest(".bouteille").getAttribute("id");
             let id_cellier = document.querySelector(".cellier").dataset.cellier;
             window.location.href ="index.php?requete=modifierBouteilleCellier&id_bouteille=" + id_bouteille + "&id_cellier=" + id_cellier; 
-    
         })
-
     });
     
     //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
@@ -524,6 +495,10 @@ window.addEventListener('load', function() {
         });
     }
     
+    /**
+     * Formulaire modification Bouteille, vérifi si chaque champ sont bien rempli
+     * retour les messages d'erreur approprié, si bien rempli sauvegarde les changements
+     */
     function traitementModifierBouteille(){
         let erreur = false;
         //récupère les informations de la bouteille dans les inputs
@@ -560,11 +535,9 @@ window.addEventListener('load', function() {
             document.querySelector(".erreur"+msg).innerHTML = verif[msg];
         });
 
-
+        //si tout les champ sont bien rempli
         if(!erreur){
-            //envoie de la requete avec les informations du formulaire et les erreurs de champs
             let requete = new Request(BaseURL+"index.php?requete=modifierBouteilleCellier", {method: 'POST', body: JSON.stringify(bouteille)});
-
             fetch(requete)
             .then(response => {
                 if(response.status === 200) {
@@ -585,7 +558,8 @@ window.addEventListener('load', function() {
                         document.querySelector(".msg").innerHTML = "<i class='fas fa-check-circle'></i> Modification sauvegarder";
                         document.querySelector(".msg").firstElementChild.classList.add("succes");
 
-                        //si ajout et remplacement d'id est effectuer, l'id dans le form est mit à jour ainsi que lui dans l'url
+                        //si la bouteille était liste, elle est remplacer par une bouteille non liste
+                        //doit remplacer l'id_bouteille dans le formulaire ainsi que le status non listé
                         if(data.status == "remplaceBouteille"){
                             document.querySelector("[name='id_bouteille']").setAttribute("value", data.idNouvelle);
                             document.querySelector("[name='nonliste']").setAttribute("value", 1);
@@ -618,6 +592,9 @@ window.addEventListener('load', function() {
         }
     }
     
+    /**
+     *  function traitement de la recherche de cellier
+     */
     function fetchCherche(mot){
         btnCherche.innerHTML = "<i class='loading fas fa-spinner'></i>";
         
@@ -822,25 +799,7 @@ window.addEventListener('load', function() {
         });
     }
     
-    //on peux utilisez le clavier par cliquer enter
-    let Chercher=document.getElementById('searchValue');
-    /*
-    if(Chercher){
-        Chercher.addEventListener('keyup', function(){
-           if (event.keyCode === 13) {
-                var inputCherche= document.getElementById('searchValue').value;
-                //verifier le champ de chercher est vide ou pas
-                if(inputCherche!=''){
-                    var id_cellier = document.querySelector(".cellier").getAttribute("data-cellier");
-                    var trier=document.getElementById('trier').value;
-                    console.log(id_cellier);
-                    window.location.href = "index.php?requete=afficheContenuCellier&id_cellier=" + id_cellier + "&inputCherche=" + inputCherche +"&trierCellier=" + trier;
-                }
-
-            }
-        });
-    }*/
-     
+    let Chercher=document.getElementById('searchValue'); 
     // ajout le button de refraicher quand le champ de recherche est pas vide
     let search = document.querySelectorAll('.recherche')[1];
     if(inputCherche){
@@ -882,7 +841,7 @@ window.addEventListener('load', function() {
         });
     }
 
-    //bouton dirige vers le formulaire d'ajout d'un bouteille
+    //bouton "ajout nouvelle bouteille" dirige vers le formulaire d'ajout d'un bouteille
     var btnNouvelleBouteille = document.querySelectorAll(".nouvelleBouteille");
     if(btnNouvelleBouteille){
         btnNouvelleBouteille.forEach(function(button){
@@ -892,8 +851,14 @@ window.addEventListener('load', function() {
             }); 
         });
     }
-
+    
+    /**
+     * récupère tous les résultats correspondant à la recherche d'un nom de bouteille
+     * 
+     * @param mot string mot à rechercher dans les nom de bouteille existant
+     */
     function fetchAutoComplete(nom){
+        //affiche animation de chargement
         label.innerHTML = "<i class='loading fas fa-spinner'></i>";
         
         let requete = new Request("index.php?requete=autocompleteBouteille", {method: 'POST', body: '{"nom": "'+nom+'"}'});
@@ -907,17 +872,23 @@ window.addEventListener('load', function() {
             }
         })
         .then(response => {
+            //permet l'envoi d'une prochaine requête
             prevent = false;
+            //efface la liste existant et affiche replace l'icone recherche
             label.innerHTML = "<i class='fas fa-search'></i>";
             liste.innerHTML = "";
-
+            
+            //affiche le résultat si le champ de recherche n'a pas été vidé entre temps
             if(inputNomBouteille.value != ""){
                 response.forEach(function(element){
                     liste.classList.add("displayResultats");
                     liste.innerHTML += "<li data-id='"+element.id_bouteille +"'>"+element.nom+"</li>";
                 });
                 
+                //si le mot rechercher n'est pas le même que lui dans l'input après la recherche
+                //on refait automatiquement une recherche
                 if(inputNomBouteille.value != nom){
+                    //empêche l'envoi d'une nouvelle requete
                     prevent = true;
                     fetchAutoComplete(inputNomBouteille.value);
                 }
@@ -927,22 +898,28 @@ window.addEventListener('load', function() {
         });
     }
     
-    //autocomplete dans formulaire d'ajout d'un nouvelle bouteille
+    //si autocomplete dans formulaire d'ajout d'un nouvelle bouteille
+    //traite la recherche, applique action sur la liste de résultat et sur le bouton ajout
     let inputNomBouteille = document.querySelector("[name='nom_bouteille']");
     if(inputNomBouteille){
         var liste = document.querySelector('.listeAutoComplete');
         var label = inputNomBouteille.nextSibling;
+        
+        //empêche le renvoi d'une nouvelle requete si la requete précédent n'est pas encore terminer
         var prevent = false;
         
+        //si ecriture dans le champ recherche
         inputNomBouteille.addEventListener("input", function(evt){
             var nom = inputNomBouteille.value;
             
-            if(nom != "" && !prevent){
-                
+            //traite la recherche si le champs n'est pas vide 
+            //et si l'envoi de requete est permis
+            if(nom != "" && !prevent){  
+                //rempêche l'envoi de nouvelle requete
                 prevent = true;
                 fetchAutoComplete(nom);
-                
             }
+            //si le champ est vide efface la liste de résultat
             else if(nom == ""){
                 liste.innerHTML = "";
             }
@@ -950,27 +927,27 @@ window.addEventListener('load', function() {
         
         //champ du formulaire d'ajout
         var bouteille = {
-        nom : document.querySelector(".nom_bouteille"),
-        date_ajout : document.querySelector("[name='date_ajout']"),
-        garde_jusqua : document.querySelector("[name='garde_jusqua']"),
-        id_cellier : document.querySelector("[name='id_cellier']")
+            nom : document.querySelector(".nom_bouteille"),
+            date_ajout : document.querySelector("[name='date_ajout']"),
+            garde_jusqua : document.querySelector("[name='garde_jusqua']"),
+            id_cellier : document.querySelector("[name='id_cellier']")
         };
 
+        //si liste de résultat applique action sur les choix dans le liste
         if(liste){
             liste.addEventListener("click", function(evt){
-                //console.dir(evt.target)
                 if(evt.target.tagName == "LI"){
+                    //affiche le nom est l'id_bouteille dans le champ nom
                     bouteille.nom.dataset.id = evt.target.dataset.id;
                     bouteille.nom.setAttribute("value", evt.target.innerHTML);
-
+                    //efface la liste
                     liste.innerHTML = "";
                     inputNomBouteille.value = "";
-
                 }
             });
         }
 
-        //formulaire d'ajout, bouton ajouter et traitement du formulaire
+        //formulaire d'ajout, bouton ajouter affectu le traitement du formulaire
         let btnAjouter = document.querySelector("[name='ajouterNouvelleBouteille']");
         if(btnAjouter){
             btnAjouter.addEventListener("click", function(evt){
@@ -983,6 +960,10 @@ window.addEventListener('load', function() {
         } 
     }
     
+    /**
+     * Formulaire ajouter nouvelle bouteille, vérification des champs
+     * affiche les erreurs approprié et traite l'envoi si tout es bien rempli
+     */
     function traitementAjouterNouvelleBouteille(){
         let erreur = false;
 
@@ -1005,6 +986,7 @@ window.addEventListener('load', function() {
             if(verif[msg] != ""){
                 erreur = true;
             }
+            //si il n'y a pas de nom choisi dans la recherche, affiche ce message
             if(msg == "nom" && verif[msg] != ""){
                 verif[msg] = "Utiliser la recherche pour sélectionner un nom";
             }
@@ -1028,12 +1010,13 @@ window.addEventListener('load', function() {
                     }
                 })
                 .then(data => {
-                    //si ajout redirection vers le cellier
+                    //si ajout a fonctionné redirection vers le cellier
                     window.location.href = BaseURL + "index.php?requete=afficheContenuCellier&id_cellier=" + param.id_cellier; 
                 }).catch(error => {
                    console.error(error);
                 });
             }
+            //si garde jusqu'a n'est pas suppérieur
             else{
                 document.querySelector(".erreurgarde").innerHTML = "La date \"Garder jusqu'à\" doit être supérieur à la date d'ajout";
             } 
@@ -1125,6 +1108,7 @@ window.addEventListener('load', function() {
         
         return resultat;
     }
+    
     
     //si la source d'une image d'une bouteille de vin ne charge pas
     //l'image par défault sera affiché
@@ -1316,6 +1300,9 @@ window.addEventListener('load', function() {
         });
     }
     
+    /**
+     * Traitement du formulaire de modification de compte
+     */
     function traitementModificationCompte(){
         var param = {
             prenomInscri : document.querySelector("[name='prenomInscri']").value,
@@ -1452,6 +1439,16 @@ window.addEventListener('load', function() {
         }
     }
 
+    
+    //bouton modifier le nom du cellier dans la liste des celliers
+    document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
+      element.addEventListener("click", function(evt){
+          let id_cellier = evt.currentTarget.parentElement.dataset.id;
+          console.log(id_cellier);
+          window.location.href = BaseURL + "index.php?requete=modifierNomCellier&id_cellier=" + id_cellier;    
+      })
+
+    });
 
 
     //vérifie les champs et sauvegrade les modifications effectués sur une bouteille dans un cellier
@@ -1466,6 +1463,9 @@ window.addEventListener('load', function() {
         });
     }
     
+    /**
+     * traitement du formulaire de modification d'un nom de cellier
+     */
     function traitementModificationCellier(){
         let cellier = { 
             id_cellier: document.querySelector("[name='id_cellier']"),
@@ -1511,5 +1511,33 @@ window.addEventListener('load', function() {
             });
         }
     }
+    
+    //bouton supprimer le cellier dans la liste des celliers
+    document.querySelectorAll(".btnSupprimerCellier").forEach(function(element){
+      element.addEventListener("click", function(evt){
+        if (confirm("Vous êtes sûr de supprimer ce cellier?")){
+          let id_cellier = evt.currentTarget.parentElement.dataset.id;
+          let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
+          console.log(id_cellier);
+          fetch(requete)
+          .then(response => {
+              if (response.status === 200) {
+                return response.json();
+              } else {
+                throw new Error('Erreur');
+              }
+            })
+            .then(data => { 
+              console.log(data);
+              if(data == true){
+                 window.location.href = "index.php?requete=afficheListCellier";
+              }        
+            }).catch(error => {
+              console.error(error);
+            });  
+          } 
+      })
+
+    });
 });
 

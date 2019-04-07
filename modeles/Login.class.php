@@ -3,12 +3,8 @@
  * Class Login
  * Cette classe permet de vérifier l'autentification de l'utilisateur
  * 
- * @author Alyson Métivier
- * @version 1.0
- * @update 2019-03-18
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
- * 
+ * @file Login.class.php
+ * @project vino
  */
 class Login extends Modele{
 	const TABLE = 'usager';

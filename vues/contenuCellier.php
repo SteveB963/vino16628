@@ -1,3 +1,10 @@
+<!--
+Project : vino
+Page : contenuCellier.php
+Description : Affiche un exemplaire de chaque bouteille contenu dans un cellier
+                l'usager peut aussi affiche la liste de chaque exemplaire pour une bouteille,
+                ajouter modifier et supprimer des bouteilles
+-->
 
 <div class="contenuCellier">
     <div class="actionCellierMobile">

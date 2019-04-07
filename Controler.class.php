@@ -2,12 +2,9 @@
 /**
  * Class Controler
  * Gère les requêtes HTTP
- * 
- * @author Jonathan Martel
- * @version 1.0
- * @update 2019-01-21
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
+ *  
+ * @file Controleur.class.php
+ * @poject vino
  * 
  */
 
@@ -110,21 +107,24 @@
     }
 
     /**
-     * Affiche la liste des bouteilles d'un cellier
+     * Affiche les bouteilles d'un cellier
      *
      */
     private function afficheContenuCellier()
     {
+        //si l'usager est authentifier sinon rediriger à le page non conecter
         if(isset($_SESSION["idUtilisateur"]) && $_SESSION["idUtilisateur"] != "")
         {
             if(isset($_GET['id_cellier'])){
                if(isset($_GET['inputCherche'])){
+                   //récupère recherche
                     $cherche = $_GET['inputCherche'];
                 }
                 else{
                     $cherche='';
                 }
                if(isset($_GET['trierCellier'])){
+                   //récupère valeur de trie
                     $trier = $_GET['trierCellier']; 
                 }
                 else{
@@ -153,6 +153,7 @@
                 include("vues/pied.php"); 
             }
             else{
+                //si ne recoit pas d'id_cellier rediriger vers la liste des celliers
                 $this->afficheListCellier();
             }
         }
@@ -215,9 +216,8 @@
         
     }
     /**
-     * ajoute une nouvelle bouteille dans un cellier
-     *
-     * 
+     * ajoute une nouvelle bouteille dans un cellier, si recoit donné du formulaire
+     * sinon amene au formulaire d'ajout de Nouvelle bouteille
      */
     private function ajouterNouvelleBouteille()
     {
@@ -269,8 +269,6 @@
 
     /**
      * Retirer une bouteille du cellier
-     * ?? ajout d'une note dans historique pour les statistiques
-     *
      */
     private function boireBouteille()
     {
@@ -282,15 +280,15 @@
 
     /**
      * Ajoute une bouteille du cellier
-     * ?? ajout d'une note dans historique pour les statistiques
-     *
      */
     private function ajouterBouteille()
     {
         $body = json_decode(file_get_contents('php://input'));
         
+        //date d'aujourd'hui pour la date d'ajout
         $body -> date_ajout = date('Y-m-d');
         $garde_jusqua = new DateTime($body -> date_ajout);
+        //1 an de plus que la date d'aujourd'hui pour la date garde jusqu'a
         $garde_jusqua = $garde_jusqua -> add(new DateInterval('P1Y'));
         $body -> garde_jusqua = $garde_jusqua -> format('Y-m-d');
         
@@ -303,7 +301,6 @@
     
     /**
      * supprimer tous les bouteilles du même id dans un cellier
-     *
      */
     private function supprimerBouteille(){
         $body = json_decode(file_get_contents('php://input'));
@@ -314,7 +311,6 @@
     
     /**
      * Modifie la date d'ajout et la date garder jusqu'à d'un bouteille dans un cellier
-     *
      */
     private function modifierContenuCellier(){
         $body = json_decode(file_get_contents('php://input'));
@@ -326,10 +322,8 @@
     }
 
     /**
-     * redirige vers le formulaire de modification d'une bouteille dans un cellier
-     * et traite le formulaire
-     *
-     * @return obj $resultat resultat des requetes sql et retourne les erreurs.
+     * traitement du formualire de modification de bouteille
+     * si ne recoit pas de donne affiche le formulaire de modification de bouteille
      */
     private function modifierBouteilleCellier(){
         $body = json_decode(file_get_contents('php://input'));
@@ -339,10 +333,10 @@
             $donnee['bouteille'] = $bte->getBouteille($_GET['id_bouteille']);
             
             $donnee['id_cellier'] = $_GET['id_cellier'];
-
+            //récupère la liste des pays
             $pays = new Pays();
             $donnee['pays'] = $pays->getTousPays();
-
+            //récupère la liste de type de vin
             $type = new Type();
             $donnee['type'] = $type->getTousTypes();
 
