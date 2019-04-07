@@ -412,7 +412,6 @@ window.addEventListener('load', function() {
     //affiche la liste des bouteilles
     document.querySelectorAll(".btnDetail").forEach(function(element){
         element.addEventListener("click", function(evt){
-            console.log(evt.currentTarget);
             evt.currentTarget.closest(".information").querySelector(".img").children[0].classList.toggle("hide");
             evt.currentTarget.closest(".information").querySelector(".img").children[1].classList.toggle("hide");
         })
@@ -711,7 +710,6 @@ window.addEventListener('load', function() {
 
     //autocomplete de rechercher champ
     let inputCherche = document.getElementById('searchValue');
-    //console.log(inputCherche);
     let listeCherche = document.querySelector('.listeChercheAutoComplete');
     let listeNom = document.querySelector('.listeNom');
     let listePrix = document.querySelector('.listePrix');
@@ -1182,7 +1180,6 @@ window.addEventListener('load', function() {
                 }
               })
               .then(data => {
-                console.log(data);
                 //Si la réponse émise par le controleur est égale à true
                 if(data == true){
                   //Redirection vers la page monCompte
@@ -1257,7 +1254,6 @@ window.addEventListener('load', function() {
         .then(data => {
           //Redirection vers la page monCompte lorsque la
           //connection à réussie.
-          console.log(data);
           if(data == true){
             window.location.href ="index.php?requete=afficheListCellier";
           }
@@ -1338,7 +1334,6 @@ window.addEventListener('load', function() {
             .then(data => {
                 //Redirection vers la page monCompte lorsque la
                 //modification à réussie.
-                console.log(data);
                 if(data == "fonctionnel"){
                   window.location.href ="index.php?requete=compte&modif=true";
                 }
@@ -1410,7 +1405,6 @@ window.addEventListener('load', function() {
         document.querySelector(".erreurNomCellier").innerHTML = verif.nom;
         if(verif.nom == ""){
             let requete = new Request("index.php?requete=creerUnCellier", {method: 'POST', body: JSON.stringify(param)});
-            console.log(JSON.stringify(param));
 
             fetch(requete)
             .then(response => {
@@ -1444,7 +1438,6 @@ window.addEventListener('load', function() {
     document.querySelectorAll(".btnModifierNomCellier").forEach(function(element){
       element.addEventListener("click", function(evt){
           let id_cellier = evt.currentTarget.parentElement.dataset.id;
-          console.log(id_cellier);
           window.location.href = BaseURL + "index.php?requete=modifierNomCellier&id_cellier=" + id_cellier;    
       })
 
@@ -1518,7 +1511,6 @@ window.addEventListener('load', function() {
         if (confirm("Vous êtes sûr de supprimer ce cellier?")){
           let id_cellier = evt.currentTarget.parentElement.dataset.id;
           let requete = new Request("index.php?requete=supprimerCellier", {method: 'POST', body: '{"id_cellier": '+id_cellier+'}'});
-          console.log(id_cellier);
           fetch(requete)
           .then(response => {
               if (response.status === 200) {
@@ -1528,7 +1520,6 @@ window.addEventListener('load', function() {
               }
             })
             .then(data => { 
-              console.log(data);
               if(data == true){
                  window.location.href = "index.php?requete=afficheListCellier";
               }        

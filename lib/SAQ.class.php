@@ -1,14 +1,10 @@
 <?php
 /**
- * Class MonSQL
- * Classe qui génère ma connection à MySQL à travers un singleton
+ * Class SAQ
+ * Classe qui gere l'insertion de bouteille du site de la saq dans la bd
  *
- *
- * @author Jonathan Martel
- * @version 1.0
- *
- *
- *
+ * @file SAQ.class.php
+ * project vino
  */
 class SAQ extends Modele {
 
